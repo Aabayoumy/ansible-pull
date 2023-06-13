@@ -1,10 +1,15 @@
 - name: Install packages
   apt:
     name:
-      - htop
+      - bpytop
       - mc
       - fish
-      - neovim
       - git
       - tmux
-
+      - software-properties-common
+      - python-dev
+      - python-pip
+      - python3-dev
+      - python3-pip
+      - build-essential
+      - cmake
