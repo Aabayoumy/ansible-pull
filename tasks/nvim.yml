@@ -18,8 +18,12 @@
 - name: move bin folder
   command: "rsync -a /tmp/nvim/ /"
 
+- name: clean 1
+  ansible.builtin.command: "rm -rf ~/.config/nvim"
+
+- name: clean 2
+  ansible.builtin.command: "rm -rf ~/.local/share/nvim"
+
+
 - name: NvChad
-  ansible.builtin.command: 
-    - "rm -rf ~/.config/nvim"
-    - "rm -rf ~/.local/share/nvim"
-    - "git clone https://github.com/NvChad/NvChad ~/.config/nvim --depth 1"
+  ansible.builtin.command: "git clone https://github.com/NvChad/NvChad ~/.config/nvim --depth 1"
