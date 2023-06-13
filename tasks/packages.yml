@@ -12,6 +12,7 @@
       - byobu
       - software-properties-common
       - rsync
+      - fuse3
 
 - name: Enable SSH
   ansible.builtin.systemd:
