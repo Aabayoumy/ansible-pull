@@ -4,7 +4,7 @@
     path: /tmp/nvim
     state: directory
     mode: '0755'
-    
+
 - name: Download nvim
   unarchive:
     remote_src: yes
@@ -16,4 +16,4 @@
       - --no-anchored
 
 - name: move folder
-  command: "mv /tmp/nvim/* /"
+  command: "mv /tmp/nvim/ /"
