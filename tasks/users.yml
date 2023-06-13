@@ -1,6 +1,3 @@
-- name: Import all public key files
-  ansible.builtin.debug: msg={{ lookup('ansible.builtin.fileglob', 'files/*.pub') }}
-
 - name: copy sudoers_abayoumy
   copy:
     src: files/sudoers_abayoumy
@@ -9,7 +6,7 @@
     group: root
     mode: 0440
 
-- name: Set authorized key taken from file
+- name: Import all files/*.pub authorized key
   ansible.posix.authorized_key:
     user: abayoumy
     state: present
