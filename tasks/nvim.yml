@@ -15,8 +15,8 @@
       - --strip=1
       - --no-anchored
 
-- name: move bin folder
-  command: "rsync -a /tmp/nvim/ /"
+# - name: move bin folder
+#   command: "rsync -a /tmp/nvim/ /"
 
 - name: clean 1
   ansible.builtin.command: "rm -rf ~/.config/nvim"
