@@ -1,10 +1,12 @@
 ---  
-- name: neovim
+- name: Download neovim
   unarchive:
     remote_src: yes
     src: "https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz"
-    dest: "/tmp"
+    dest: "/"
     keep_newer: yes
     extra_opts:
       - --strip=1
       - --no-anchored
+- name: mv files
+  
