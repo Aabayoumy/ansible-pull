@@ -1,11 +1,19 @@
 ---  
-- name: Download neovim
+- name: create folder
+  ansible.builtin.file:
+    path: /tmp/nvim
+    state: directory
+    mode: '0755'
+    
+- name: Download nvim
   unarchive:
     remote_src: yes
     src: "https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz"
-    dest: "/"
+    dest: "/tmp/nvim"
     keep_newer: yes
     extra_opts:
       - --strip=1
       - --no-anchored
-  
+
+- name: move folder
+  command: "mv /tmp/nvim/* /"
