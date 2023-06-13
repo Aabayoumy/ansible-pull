@@ -1,3 +1,7 @@
+- name: Add neovim ppa
+  ansible.builtin.apt_repository:
+    repo: ppa:neovim-ppa/stable
+
 - name: Install packages
   apt:
     name:
@@ -12,3 +16,4 @@
       - python3-pip
       - build-essential
       - cmake
+      - neovim
