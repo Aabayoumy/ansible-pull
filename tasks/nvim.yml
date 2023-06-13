@@ -3,7 +3,7 @@
   unarchive:
     remote_src: yes
     src: "https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz"
-    dest: "files/neovim"
+    dest: "/tmp"
     keep_newer: yes
     extra_opts:
       - --strip=1
