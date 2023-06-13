@@ -9,6 +9,12 @@
       - mc
       - fish
       - git
-      - tmux
+      - byobu
       - software-properties-common
       - rsync
+
+- name: Enable SSH
+  ansible.builtin.systemd:
+    state: restarted
+    enabled: true
+    name: sshd
