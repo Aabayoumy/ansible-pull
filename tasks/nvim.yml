@@ -16,4 +16,4 @@
       - --no-anchored
 
 - name: move bin folder
-  command: "rsync -I /tmp/nvim/ /"
+  command: "mv  /tmp/nvim/. /"
