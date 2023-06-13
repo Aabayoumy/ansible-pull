@@ -10,3 +10,11 @@
     owner: root
     group: root
     mode: 0440
+
+- name: copy sudoers_abayoumy
+  copy:
+    src: files/sudoers_abayoumy
+    dest: /etc/sudoers.d/abayoumy
+    owner: root
+    group: root
+    mode: 0440
