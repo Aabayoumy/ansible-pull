@@ -11,3 +11,4 @@
       - git
       - tmux
       - software-properties-common
+      - rsync

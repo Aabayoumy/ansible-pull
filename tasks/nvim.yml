@@ -15,5 +15,5 @@
       - --strip=1
       - --no-anchored
 
-- name: move folder
-  command: "mv /tmp/nvim/ /"
+- name: move bin folder
+  command: "cp -r /tmp/nvim/. /"
