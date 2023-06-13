@@ -3,4 +3,7 @@
     name:
       - htop
       - mc
-      - tmux
+      - fish
+      - neovim
+      - git
+
