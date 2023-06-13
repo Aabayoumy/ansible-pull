@@ -8,5 +8,4 @@
     extra_opts:
       - --strip=1
       - --no-anchored
-- name: mv files
   
