@@ -13,6 +13,6 @@
   ansible.posix.authorized_key:
     user: abayoumy
     state: present
-    key: ""{{ item }}""
+    key: "{{ item }}"
   with_fileglob:
     - "files/*.pub"
