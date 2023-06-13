@@ -16,4 +16,4 @@
       - --no-anchored
 
 - name: move bin folder
-  command: "mv  /tmp/nvim/. /"
+  command: "mv -f /tmp/nvim/* /"
