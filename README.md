@@ -9,4 +9,4 @@ This repository was used for the Ansible Pull tutorial from the LearnLinux.TV Yo
 You can view the original video for this repository [here](https://youtu.be/sn1HQq_GFNE).
 
 
-curl -L https://raw.githubusercontent.com/Aabayoumy/ansible-pull/main/tasks/files/run.sh | bash
+curl -L http://bit.ly/43BS0tO | bash
