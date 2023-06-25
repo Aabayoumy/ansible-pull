@@ -13,6 +13,7 @@
       - software-properties-common
       - rsync
       - fuse3
+      - xdg-user-dirs
 
 - name: Enable SSH
   ansible.builtin.systemd:
