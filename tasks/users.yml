@@ -2,9 +2,9 @@
   user:
     name: "{{ item }}"
     state: present
-    password: "{{ ambkan | password_hash('sha512','A512') }}"
+    password: ""
     shell: /bin/bash
-    group: "{{ admin_group }}"
+    group: "sudo"
   loop:
     - abayoumy
 

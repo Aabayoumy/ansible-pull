@@ -14,6 +14,7 @@
       - rsync
       - fuse3
       - xdg-user-dirs
+      - python3-passlib
 
 - name: Enable SSH
   ansible.builtin.systemd:
