@@ -1,7 +1,7 @@
 - name: install neovim
   unarchive:
     src: https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz
-    dest: /usr/local/bin
+    dest: /usr/local
     remote_src: yes
     mode: 0755
     owner: root
