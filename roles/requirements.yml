@@ -1,0 +1,5 @@
+---
+roles:
+  - name: ansible-role-neovim
+    src: https://github.com/kulla/ansible-role-neovim.git
+    scm: git

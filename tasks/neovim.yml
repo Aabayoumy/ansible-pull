@@ -1,0 +1,15 @@
+roles:
+  - neovim
+vars:
+  neovim_user_id: abayoumy
+
+  neovim_configuration: |
+    set number
+    set tabstop=4
+    set shiftwidth=4
+
+  neovim_plugins:
+    - HerringtonDarkholme/yats.vim
+    - name: mhartington/nvim-typescript
+      options:
+        do: ./install.sh

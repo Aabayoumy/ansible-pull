@@ -1,7 +1,3 @@
-# - name: Add neovim ppa
-#   ansible.builtin.apt_repository:
-#     repo: ppa:neovim-ppa/stable
-
 - name: Install packages
   apt:
     name:
@@ -14,7 +10,8 @@
       - rsync
       - fuse3
       - xdg-user-dirs
-      - python3-passlib
+      - byobu
+
 
 - name: Enable SSH
   ansible.builtin.systemd:
