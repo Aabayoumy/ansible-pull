@@ -1,3 +1,0 @@
-[submodule "roles/ansible-role-neovim"]
-	path = roles/ansible-role-neovim
-	url = https://github.com/kulla/ansible-role-neovim.git

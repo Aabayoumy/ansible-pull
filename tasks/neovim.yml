@@ -1,15 +1,8 @@
-roles:
-  - neovim
-vars:
-  neovim_user_id: abayoumy
-
-  neovim_configuration: |
-    set number
-    set tabstop=4
-    set shiftwidth=4
-
-  neovim_plugins:
-    - HerringtonDarkholme/yats.vim
-    - name: mhartington/nvim-typescript
-      options:
-        do: ./install.sh
+- name: install neovim
+  unarchive:
+    src: https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz
+    dest: /usr/local/bin
+    remote_src: yes
+    mode: 0755
+    owner: root
+    group: root
