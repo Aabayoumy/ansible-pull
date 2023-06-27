@@ -1,4 +1,4 @@
-- name: install neovim
+- name: install neovim 64
   unarchive:
     src: https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz
     dest: /usr/local
@@ -7,3 +7,4 @@
     owner: root
     group: root
     extra_opts: [--strip-components=1]
+  # when: ansible_architecture == "x86_64"
