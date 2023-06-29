@@ -22,3 +22,4 @@
     state: directory
     mode: 0755
     owner: abayoumy
+    group: abayoumy
