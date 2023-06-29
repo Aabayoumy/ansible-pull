@@ -3,10 +3,12 @@
     path: "{{ lookup('env', 'HOME') }}/.fonts"
     state: directory
 
-- name: Hack exists
-  shell: "ls {{ lookup('env', 'HOME') }}/.fonts/Hack*Nerd*Font*Complete*"
-  register: hack_exists
-  ignore_errors: yes
+# - name: Hack exists
+#   shell: "ls {{ lookup('env', 'HOME') }}/.fonts/Hack*Nerd*Font*Complete*"
+#   register: hack_exists
+#   ignore_errors: yes
+#   become: yes
+#   become_user: abayoumy
 
 - name: Download Hack
   when: hack_exists is failed
@@ -14,3 +16,5 @@
     src: https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/Hack.zip
     dest: "{{ lookup('env', 'HOME') }}/.fonts/"
     remote_src: yes
+  become: yes
+  become_user: abayoumy
