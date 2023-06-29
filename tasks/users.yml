@@ -4,7 +4,7 @@
     state: present
     password: ""
     shell: /bin/fish
-    group: "sudo"
+    group: "{{ item }}"
   loop:
     - abayoumy
 
