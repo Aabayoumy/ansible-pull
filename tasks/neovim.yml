@@ -18,7 +18,7 @@
     depth: 1
 - name: change perms
   file:
-  dest: /home/abayoumy/.config/nvim
-  state: directory
-  mode: 0755
-  owner: abayoumy
+    dest: /home/abayoumy/.config/nvim
+    state: directory
+    mode: 0755
+    owner: abayoumy
