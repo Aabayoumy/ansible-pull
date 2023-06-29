@@ -11,7 +11,6 @@
       - fuse3
       - xdg-user-dirs
       - byobu
-      - gtar
       - unzip
       - python3-neovim
 
