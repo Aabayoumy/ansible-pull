@@ -8,3 +8,13 @@
     group: root
     extra_opts: [--strip-components=1]
   # when: ansible_architecture == "x86_64"
+
+- name: Clone a NvChad repository
+  git:
+    repo: https://github.com/NvChad/NvChad
+    dest: /home/abayoumy/.config/nvim
+    clone: yes
+    update: yes
+    depth: 1
+    become: yes
+    become_user: abayoumy
