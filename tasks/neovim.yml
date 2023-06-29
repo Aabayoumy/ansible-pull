@@ -16,5 +16,9 @@
     clone: yes
     update: yes
     depth: 1
-    become: yes
-    become_user: abayoumy
+- name: change perms
+  file:
+  dest: /home/abayoumy/.config/nvim
+  state: directory
+  mode: 0755
+  owner: abayoumy
