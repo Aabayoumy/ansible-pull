@@ -1,9 +1,9 @@
-- name: check nvim exist
+- name: check pfetch
   stat:
     path: /usr/local/bin/pfetch
   register: pfetch
 
-- name: install neovim 64
+- name: install pfetch
   get_url:
     url: https://raw.githubusercontent.com/dylanaraps/pfetch/master/pfetch
     dest: /usr/local/bin/pfetch
