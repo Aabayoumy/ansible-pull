@@ -1,3 +1,8 @@
+- name: check nvim exist
+  stat:
+    path: /usr/local/bin/nvim
+  register: nvim
+
 - name: install neovim 64
   unarchive:
     src: https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz
@@ -7,22 +12,9 @@
     owner: root
     group: root
     extra_opts: [--strip-components=1]
-  # when: ansible_architecture == "x86_64"
+  when: not (nvim.stat.exists) and ansible_architecture == "x86_64"  
+
 - name: Creates config directory
   file:
     path: /home/abayoumy/.config/nvim
     state: directory
-
-- name: Download config
-  ansible.builtin.get_url:
-    url: https://raw.githubusercontent.com/nvim-lua/kickstart.nvim/master/init.lua
-    dest: /home/abayoumy/.config/nvim/init.lua
-    mode: '0775'
-
-- name: change perms
-  file:
-    dest: /home/abayoumy/.config/nvim
-    state: directory
-    mode: '0755'
-    owner: abayoumy
-    group: users
