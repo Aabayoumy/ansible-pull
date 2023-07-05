@@ -11,6 +11,6 @@ fi
 
 ansible-pull -U https://github.com/Aabayoumy/ansible-pull.git
 
-# clear
-source .bashrc
+clear 
+source ~/.bashrc
 
