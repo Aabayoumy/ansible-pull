@@ -14,8 +14,27 @@
       - bash-completion
       - aria2
       - wget
-    state: present
+    state: latest
   when: ansible_facts['os_family'] == "Debian"
+
+- name: Install packages
+  dnf:
+    name:
+      - bpytop
+      - mc
+      - git
+      - tmux
+      - software-properties-common
+      - rsync
+      - fuse3
+      - xdg-user-dirs
+      - unzip
+      - python3-neovim
+      - bash-completion
+      - aria2
+      - wget
+    state: latest
+  when: ansible_facts['os_family'] == "RedHat"
 
 - name: Enable SSH
   ansible.builtin.systemd:
