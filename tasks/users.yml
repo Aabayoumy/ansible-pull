@@ -5,6 +5,7 @@
     password: ""
     shell: /bin/bash
     append: true
+    groups: users
   loop:
     - abayoumy
 
