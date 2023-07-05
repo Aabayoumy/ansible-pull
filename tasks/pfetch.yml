@@ -7,6 +7,6 @@
   get_url:
     url: https://raw.githubusercontent.com/dylanaraps/pfetch/master/pfetch
     dest: /usr/local/bin/pfetch
-    mode: 0766
+    mode: a+x
   when: not (pfetch.stat.exists) 
 
