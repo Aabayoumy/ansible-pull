@@ -20,6 +20,7 @@
 - name: Install packages
   dnf:
     name:
+      - '@development-tools'
       - epel-release
       - mc
       - git
