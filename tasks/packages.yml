@@ -20,7 +20,7 @@
 - name: Install packages
   dnf:
     name:
-      - bpytop
+      - epel-release
       - mc
       - git
       - tmux
@@ -41,3 +41,4 @@
     state: restarted
     enabled: true
     name: sshd
+
