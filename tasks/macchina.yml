@@ -22,9 +22,16 @@
 
 - name: "installing macchina {{ macchina_latest.json.tag_name }}"
   loop: "{{ macchina_latest.json.assets }}"
-  when: "'macchina-linux-x86_64' in item.name"
+  when: ("ansible_architecture == 'x86_64'") and "'macchina-linux-x86_64' in item.name" 
   get_url:
     url: "{{ item.browser_download_url }}"
     dest: /usr/local/bin/macchina
     mode: a+x
 
+- name: "installing macchina {{ macchina_latest.json.tag_name }}"
+  loop: "{{ macchina_latest.json.assets }}"
+  when: ("ansible_architecture == 'aarch64'") and "'macchina-linux-aarch64' in item.name" 
+  get_url:
+    url: "{{ item.browser_download_url }}"
+    dest: /usr/local/bin/macchina
+    mode: a+x
