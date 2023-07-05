@@ -24,7 +24,6 @@
       - mc
       - git
       - tmux
-      - software-properties-common
       - rsync
       - fuse3
       - xdg-user-dirs
