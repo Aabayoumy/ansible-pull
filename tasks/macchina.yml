@@ -1,18 +1,30 @@
-- uri:                                                               
+# - uri:                                                               
+#     url: https://api.github.com/repos/Macchina-CLI/macchina/releases/latest
+#     return_content: true                                             
+#   register: json_reponse                                             
+
+# - name: install neovim macchina
+#   unarchive:
+#     src: "{{ json_reponse.json.tarball_url }}"
+#     dest: /tmp/
+#     remote_src: yes
+#     mode: a+x
+#     # owner: root
+#     # group: root
+#     extra_opts: [--strip-components=1]
+
+
+- name: check latest macchina
+  uri:
     url: https://api.github.com/repos/Macchina-CLI/macchina/releases/latest
-    return_content: true                                             
-  register: json_reponse                                             
+    return_content: true
+  register: macchina_latest
 
-- name: install neovim macchina
-  unarchive:
-    src: "{{ json_reponse.json.tarball_url }}"
-    dest: /tmp/
-    remote_src: yes
+- name: "installing macchina {{ macchina_latest.json.tag_name }}"
+  loop: "{{ macchina_latest.json.assets }}"
+  when: "'macchina-linux-x86_64' in item.name"
+  get_url:
+    url: "{{ item.browser_download_url }}"
+    dest: /usr/local/bin/macchina
     mode: a+x
-    # owner: root
-    # group: root
-    extra_opts: [--strip-components=1]
-
-
-
 
