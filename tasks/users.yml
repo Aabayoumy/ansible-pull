@@ -4,7 +4,6 @@
     state: present
     password: ""
     shell: /bin/bash
-    groups: "sudo"
     append: true
   loop:
     - abayoumy
