@@ -3,7 +3,7 @@
     name: "{{ item }}"
     state: present
     password: ""
-    shell: /bin/fish
+    shell: /bin/bash
     groups: "sudo"
     append: true
   loop:
