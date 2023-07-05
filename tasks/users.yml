@@ -24,3 +24,12 @@
     key: "{{ lookup('file', '{{ item }}') }}"
   with_fileglob:
     - "files/*.pub"
+
+- name: Copy dotfiles
+  ansible.builtin.copy:
+    src: files/dotfiles/
+    dest: /home/abayoumy/
+    owner: abayoumy
+    group: abayoumy
+    mode: '0755'
+

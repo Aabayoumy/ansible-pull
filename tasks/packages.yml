@@ -3,16 +3,18 @@
     name:
       - bpytop
       - mc
-      - fish
       - git
-      - byobu
+      - tmux
       - software-properties-common
       - rsync
       - fuse3
       - xdg-user-dirs
-      - byobu
       - unzip
       - python3-neovim
+      - bash-completion
+      - aria2
+      - wget
+    state: present
 
 - name: Enable SSH
   ansible.builtin.systemd:
