@@ -1,0 +1,3 @@
+fastestmirror=true
+max_parallel_downloads=20
+deltarpm=true

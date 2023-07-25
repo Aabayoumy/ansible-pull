@@ -1,18 +1,13 @@
 - name: Install packages
   apt:
     name:
-      - bpytop
-      - mc
       - git
       - tmux
       - software-properties-common
-      - rsync
       - fuse3
       - xdg-user-dirs
       - unzip
-      - python3-neovim
       - bash-completion
-      - aria2
       - wget
       - wmctrl
     state: latest
@@ -23,16 +18,12 @@
     name:
       - '@Development Tools'
       - epel-release
-      - mc
       - git
       - tmux
-      - rsync
       - fuse3
       - xdg-user-dirs
       - unzip
-      - python3-neovim
       - bash-completion
-      - aria2
       - wget
       - wmctrl
     state: latest
