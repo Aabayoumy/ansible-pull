@@ -116,7 +116,7 @@ function cd() {
     fi;
     builtin cd "${DIR}" && \
     # use your preferred ls command
-        eza -al --group-directories-first
+        eza -l --group-directories-first
 }
 
 
