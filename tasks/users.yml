@@ -37,19 +37,22 @@
 
 - name: Copy Bash files
   ansible.builtin.copy:
-    src: files/dotfiles/.bash*
+    src: "{{ item }}"
     dest: /home/abayoumy/
     owner: abayoumy
     group: abayoumy
     mode: '0755'
     force: force
-
+  with_fileglob:
+    - "files/dotfiles/.bash*"
 
 - name: Copy Bash files to root
   ansible.builtin.copy:
-    src: files/dotfiles/.bash*
+    src: "{{ item }}"
     dest: /root/
     owner: root
     group: root
     mode: '0755'
     force: force
+  with_fileglob:
+    - "files/dotfiles/.bash*"
