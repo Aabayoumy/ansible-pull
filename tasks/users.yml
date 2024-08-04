@@ -16,6 +16,7 @@
     owner: root
     group: root
     mode: 0440
+    force: no
 
 - name: Import all files/*.pub authorized key
   ansible.posix.authorized_key:
@@ -32,4 +33,5 @@
     owner: abayoumy
     group: abayoumy
     mode: '0755'
+    force: no
 
