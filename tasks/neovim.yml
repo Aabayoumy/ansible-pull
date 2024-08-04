@@ -16,5 +16,5 @@
 
 - name: Creates config directory
   file:
-    path: /home/abayoumy/.config/nvim
+    path: ~/.config/nvim
     state: directory
