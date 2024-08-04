@@ -10,7 +10,5 @@ if ! [ -x "$(command -v ansible-pull)" ]; then
 fi
 
 ansible-pull -U https://github.com/Aabayoumy/ansible-pull.git
-
-clear 
 source ~/.bashrc
 
