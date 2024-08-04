@@ -7,20 +7,29 @@
     append: true
     groups: users
   loop:
-    - abayoumy
+    - {{ user }}
 
-- name: copy sudoers_abayoumy
-  copy:
-    src: files/sudoers_abayoumy
-    dest: /etc/sudoers.d/abayoumy
-    owner: root
-    group: root
-    mode: 0440
-    force: no
+# - name: copy sudoers_abayoumy
+#   copy:
+#     src: files/sudoers_abayoumy
+#     dest: /etc/sudoers.d/abayoumy
+#     owner: root
+#     group: root
+#     mode: 0440
+#     force: no
+
+- name: Allow  user to run any commands without password
+  community.general.sudoers:
+    name: user-do-as-root
+    state: present
+    user: {{ user }}
+    runas: root
+    commands: ALL
+    nopassword: true
 
 - name: Import all files/*.pub authorized key
   ansible.posix.authorized_key:
-    user: abayoumy
+    user: {{ user }}
     state: present
     key: "{{ lookup('file', '{{ item }}') }}"
   with_fileglob:
@@ -29,18 +38,18 @@
 - name: Copy dotfiles
   ansible.builtin.copy:
     src: files/dotfiles/
-    dest: /home/abayoumy/
-    owner: abayoumy
-    group: abayoumy
+    dest: /home/{{ user }}/
+    owner: {{ user }}
+    group: {{ user }}
     mode: '0755'
     force: no
 
 - name: Copy Bash files
   ansible.builtin.copy:
     src: "{{ item }}"
-    dest: /home/abayoumy/
-    owner: abayoumy
-    group: abayoumy
+    dest: /home/{{ user }}/
+    owner: {{ user }}
+    group: {{ user }}
     mode: '0755'
     force: yes
   with_fileglob:
