@@ -1,18 +1,18 @@
 - hosts: localhost
   connection: local
   become: true
-  pre_tasks:
-    - name: update apt repositories
-      apt:
-        update_cache: yes
-      changed_when: False
-      when: ansible_facts['os_family'] == "Debian"
+  # pre_tasks:
+  #   - name: update apt repositories
+  #     apt:
+  #       update_cache: yes
+  #     changed_when: False
+  #     when: ansible_facts['os_family'] == "Debian"
 
-    - name: update dnf repositories
-      dnf:
-        update_cache: yes
-      changed_when: False
-      when: ansible_facts['os_family'] == "RedHat"
+  #   - name: update dnf repositories
+  #     dnf:
+  #       update_cache: yes
+  #     changed_when: False
+  #     when: ansible_facts['os_family'] == "RedHat"
   tasks:
     - include_tasks: tasks/users.yml
     - include_tasks: tasks/update.yml
