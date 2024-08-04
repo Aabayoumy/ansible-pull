@@ -8,6 +8,7 @@ if ! [ -x "$(command -v ansible-pull)" ]; then
     else echo "FAILED TO INSTALL PACKAGE: Package manager not found. You must manually install: $packagesNeeded">&2; 
     fi
 fi
+ansible-galaxy collection install ansible.posix
 
 ansible-pull -U https://github.com/Aabayoumy/ansible-pull.git
 source ~/.bashrc
