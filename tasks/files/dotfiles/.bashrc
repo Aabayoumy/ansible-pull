@@ -118,4 +118,4 @@ function cd() {
 }
 
 
-neofetch
+pfetch
