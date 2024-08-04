@@ -32,7 +32,9 @@
     src: /tmp/zellij.tgz
     remote_src: true
     dest: "{{ cmdr_bin_dir }}"
-    mode: 'u+rwx'
+    mode: '0755'
+    owner: root
+    group: root
     creates: " {{ cmdr_bin_dir }}/zellij"
 
 - name: Remove the archive
