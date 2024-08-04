@@ -1,9 +1,3 @@
-- name: Install ansible.posix collection
-  command: ansible-galaxy collection install ansible.posix
-  register: install_posix
-  changed_when: '"Nothing to do." not in install_posix.stdout'
-
-
 - name: Create Users Task
   user:
     name: "{{ item }}"
