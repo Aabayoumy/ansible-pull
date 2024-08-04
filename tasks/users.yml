@@ -42,7 +42,7 @@
     owner: abayoumy
     group: abayoumy
     mode: '0755'
-    force: force
+    force: yes
   with_fileglob:
     - "files/dotfiles/.bash*"
 
@@ -53,6 +53,6 @@
     owner: root
     group: root
     mode: '0755'
-    force: force
+    force: yes
   with_fileglob:
     - "files/dotfiles/.bash*"
