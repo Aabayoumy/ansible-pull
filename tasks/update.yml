@@ -8,7 +8,7 @@
   ansible.builtin.apt:
     name: "*"
     state: latest
-    
+  when: ansible_facts['os_family'] == "Debian"
 - name: Upgrade all packages
   ansible.builtin.dnf:
     name: "*"
