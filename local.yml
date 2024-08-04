@@ -21,3 +21,4 @@
 #    - include_tasks: tasks/neovim.yml
 #    - include_tasks: tasks/macchina.yml
     - include_tasks: tasks/pfetch.yml
+    - include_tasks: tasks/update.yml
