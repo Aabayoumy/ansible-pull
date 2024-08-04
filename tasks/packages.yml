@@ -13,11 +13,18 @@
     state: latest
   when: ansible_facts['os_family'] == "Debian"
   run_once: true
+  
 - name: Install packages
   dnf:
     name:
       - '@Development Tools'
       - epel-release
+    state: latest
+  when: ansible_facts['os_family'] == "RedHat"
+  run_once: true
+- name: Install packages
+  dnf:
+    name:
       - git
       - tmux
       - fuse3
@@ -26,7 +33,8 @@
       - bash-completion
       - wget
       - wmctrl
-    state: latest
+      - eza
+    state: absent
   when: ansible_facts['os_family'] == "RedHat"
   run_once: true
 - name: Enable SSH
