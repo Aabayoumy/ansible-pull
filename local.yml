@@ -2,7 +2,7 @@
   connection: local
   become: true
   vars:
-    cmdr_bin_dir = /usr/local/bin
+    cmdr_bin_dir : /usr/local/bin
     
   # pre_tasks:
   #   - name: update apt repositories
