@@ -22,7 +22,7 @@
 - name: Copy dotfiles
   ansible.builtin.copy:
     src: files/dotfiles/.config/nvim
-    dest: ~/.config
+    dest: /home/abayoumy/.config
     owner: abayoumy
     group: abayoumy
     mode: '0755'
