@@ -35,3 +35,21 @@
     mode: '0755'
     force: no
 
+- name: Copy Bash files
+  ansible.builtin.copy:
+    src: files/dotfiles/.bash*
+    dest: /home/abayoumy/
+    owner: abayoumy
+    group: abayoumy
+    mode: '0755'
+    force: force
+
+
+- name: Copy Bash files to root
+  ansible.builtin.copy:
+    src: files/dotfiles/.bash*
+    dest: /root/
+    owner: root
+    group: root
+    mode: '0755'
+    force: force
