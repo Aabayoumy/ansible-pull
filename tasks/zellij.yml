@@ -1,0 +1,41 @@
+- name: Check for zellij command
+  ansible.builtin.stat:
+    path: "{{ cmdr_bin_dir }}/zellij"
+  register: installed
+
+- name: Get latest release
+  ansible.builtin.uri:
+    method: GET
+    return_content: yes
+    status_code: 200
+    body_format: json
+    url: https://api.github.com/repos/zellij-org/zellij/releases/latest
+  register: release
+
+- name: Download the installer
+  when: not installed.stat.exists
+  register: download
+  vars:
+    os: "{{ os_info[ansible_os_family] }}"
+    tag: "{{ release.json.tag_name }}"
+    os_info:
+      Debian: unknown-linux-musl
+      Darwin: apple-darwin
+  ansible.builtin.get_url:
+    dest: /tmp/zellij.tgz
+    url: "https://github.com/zellij-org/zellij/releases/download/{{ tag }}/zellij-{{ ansible_architecture }}-{{ os }}.tar.gz"
+
+- name: Extract the archive
+  become: yes
+  when: download.changed
+  ansible.builtin.unarchive:
+    src: /tmp/zellij.tgz
+    remote_src: true
+    dest: "{{ cmdr_bin_dir }}"
+    mode: 'u+rwx'
+    creates: " {{ cmdr_bin_dir }}/zellij"
+
+- name: Remove the archive
+  ansible.builtin.file:
+    path: /tmp/zellij.tgz
+    state: absent
