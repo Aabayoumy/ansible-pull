@@ -9,7 +9,7 @@ if ! [ -x "$(command -v ansible-pull)" ]; then
     fi
 fi
 ansible-galaxy collection install ansible.posix
-
+ansible-galaxy collection install community.general
 ansible-pull -U https://github.com/Aabayoumy/ansible-pull.git
 source ~/.bashrc
 
