@@ -26,7 +26,6 @@
   dnf:
     name:
       - git
-      - tmux
       - fuse3
       - xdg-user-dirs
       - unzip
