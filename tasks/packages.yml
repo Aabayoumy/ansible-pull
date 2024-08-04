@@ -12,7 +12,7 @@
       - wmctrl
     state: latest
   when: ansible_facts['os_family'] == "Debian"
-
+  run_once: true
 - name: Install packages
   dnf:
     name:
@@ -28,10 +28,10 @@
       - wmctrl
     state: latest
   when: ansible_facts['os_family'] == "RedHat"
-
+  run_once: true
 - name: Enable SSH
   ansible.builtin.systemd:
     state: restarted
     enabled: true
     name: sshd
-
+  run_once: true
