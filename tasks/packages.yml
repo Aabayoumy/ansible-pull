@@ -2,7 +2,6 @@
   apt:
     name:
       - git
-      - tmux
       - software-properties-common
       - fuse3
       - xdg-user-dirs
@@ -10,6 +9,7 @@
       - bash-completion
       - wget
       - wmctrl
+      - eza
     state: latest
   when: ansible_facts['os_family'] == "Debian"
   run_once: true
