@@ -3,6 +3,11 @@
     path: /usr/local/bin/pfetch
   register: pfetch
 
+- name: check pfetch link
+  stat:
+    path: /usr/local/bin/pfetch
+  register: pfetch_link
+
 - name: install pfetch
   get_url:
     url: https://raw.githubusercontent.com/dylanaraps/pfetch/master/pfetch
@@ -10,3 +15,12 @@
     mode: a+x
   when: not (pfetch.stat.exists) 
 
+
+- name: Create a symbolic link
+  ansible.builtin.file:
+    src: /usr/local/bin/pfetch
+    dest: /usr/bin/pfetch
+    owner: root
+    group: root
+    state: link
+  when: not (pfetch_link.stat.exists) 
