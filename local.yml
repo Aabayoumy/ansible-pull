@@ -19,7 +19,7 @@
   - name: dnf conf
     ansible.builtin.lineinfile:
       path: /etc/dnf/dnf.conf
-      line: "{{ item.line }}"
+      line: "{{ item }}"
     loop:
       - max_parallel_downloads=20
       - fastestmirror=true
