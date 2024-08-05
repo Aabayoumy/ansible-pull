@@ -16,13 +16,15 @@
       state: latest
     when: ansible_facts['os_family'] == "Debian"
     
-  - name: Copy dnfconf
-    ansible.builtin.copy:
-      src: files/dnf
-      dest: /etc/dnf/dnf.conf
-      owner: root
-      group: root
-      mode: '0644'
+  - name: dnf conf
+    ansible.builtin.lineinfile:
+      path: /etc/dnf/dnf.conf
+      line: "{{ item.line }}"
+    loop:
+      - max_parallel_downloads=20
+      - fastestmirror=true
+      - deltarpm=true
+      
     run_once: true
     when: ansible_facts['os_family'] == "RedHat"
   - name: Upgrade all packages
