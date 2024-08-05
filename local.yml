@@ -4,7 +4,16 @@
   vars:
     cmdr_bin_dir : /usr/local/bin
     user : abayoumy
-  # pre_tasks:
+  pre_tasks:
+  - name: Copy dotfiles
+    ansible.builtin.copy:
+      src: files/dnf.conf
+      dest: /etc/dnf/dnf.conf
+      owner: root
+      group: root
+      mode: '0644'
+    run_once: true
+    when: ansible_facts['os_family'] == "RedHat"
   #   - name: update apt repositories
   #     apt:
   #       update_cache: yes
