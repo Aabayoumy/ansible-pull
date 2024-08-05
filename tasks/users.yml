@@ -10,15 +10,6 @@
     - "{{ user }}"
   run_once: false
 
-# - name: copy sudoers_abayoumy
-#   copy:
-#     src: files/sudoers_abayoumy
-#     dest: /etc/sudoers.d/abayoumy
-#     owner: root
-#     group: root
-#     mode: 0440
-#     force: no
-
 - name: Allow  user to run any commands without password
   community.general.sudoers:
     name: user-do-as-root
@@ -43,7 +34,7 @@
     owner: "{{ user }}"
     group: "{{ user }}"
     mode: '0755'
-    force: no
+    force: yes
 
 - name: Copy Bash files
   ansible.builtin.copy:
