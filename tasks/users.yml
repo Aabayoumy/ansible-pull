@@ -6,6 +6,7 @@
     append: true
     groups: users
     state: present
+    update_password: on_create
   loop:
     - "{{ user }}"
   run_once: true
