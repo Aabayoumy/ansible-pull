@@ -1,7 +1,6 @@
 - name: Create Users Task
   user:
     name: "{{ item }}"
-    state: present
     password: ""
     shell: /bin/bash
     append: true
