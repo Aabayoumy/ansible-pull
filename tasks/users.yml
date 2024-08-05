@@ -6,8 +6,10 @@
     shell: /bin/bash
     append: true
     groups: users
+    state: present
   loop:
     - "{{ user }}"
+  run_once: false
 
 # - name: copy sudoers_abayoumy
 #   copy:
