@@ -8,7 +8,7 @@
     state: present
   loop:
     - "{{ user }}"
-  run_once: false
+  run_once: true
 
 - name: Allow  user to run any commands without password
   community.general.sudoers:
