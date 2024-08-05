@@ -4,30 +4,40 @@
   vars:
     cmdr_bin_dir : /usr/local/bin
     user : abayoumy
-  pre_tasks:
-  - name: Copy dotfiles
+  pre_tasks:    
+  - name: Only run "update_cache=yes" if the last one is more than 3600 seconds ago
+    ansible.builtin.apt:
+      update_cache: yes
+      cache_valid_time: 3600
+    when: ansible_facts['os_family'] == "Debian"
+  - name: Update all packages to their latest version
+    ansible.builtin.apt:
+      name: "*"
+      state: latest
+    when: ansible_facts['os_family'] == "Debian"
+    
+  - name: Copy dnfconf
     ansible.builtin.copy:
-      src: files/dnf.conf
+      src: files/dnf
       dest: /etc/dnf/dnf.conf
       owner: root
       group: root
       mode: '0644'
     run_once: true
     when: ansible_facts['os_family'] == "RedHat"
-  #   - name: update apt repositories
-  #     apt:
-  #       update_cache: yes
-  #     changed_when: False
-  #     when: ansible_facts['os_family'] == "Debian"
-
-  #   - name: update dnf repositories
-  #     dnf:
-  #       update_cache: yes
-  #     changed_when: False
-  #     when: ansible_facts['os_family'] == "RedHat"
+  - name: Upgrade all packages
+    ansible.builtin.dnf:
+      name: "*"
+      state: latest
+    when: ansible_facts['os_family'] == "RedHat"
+  
+  - name: Autoremove unneeded packages installed as dependencies
+    ansible.builtin.dnf:
+      autoremove: yes
+    when: ansible_facts['os_family'] == "RedHat"
+    
   tasks:
     - include_tasks: tasks/users.yml
-    - include_tasks: tasks/update.yml
     - include_tasks: tasks/packages.yml
     - include_tasks: tasks/neovim.yml
     - include_tasks: tasks/pfetch.yml
