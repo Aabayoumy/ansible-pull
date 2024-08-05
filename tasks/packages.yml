@@ -33,6 +33,7 @@
       - wget
       - wmctrl
       - eza
+      - openssh-server  
     state: present
   when: ansible_facts['os_family'] == "RedHat"
   run_once: false
