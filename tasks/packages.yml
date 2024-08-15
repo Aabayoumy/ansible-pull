@@ -10,6 +10,8 @@
       - wget
       - wmctrl
       - eza
+      - fish
+      - btop
     state: present
   when: ansible_facts['os_family'] == "Debian"
   run_once: false
@@ -33,7 +35,9 @@
       - wget
       - wmctrl
       - eza
-      - openssh-server  
+      - openssh-server
+      - fish
+      - btop
     state: present
   when: ansible_facts['os_family'] == "RedHat"
   run_once: false
