@@ -1,0 +1,17 @@
+---
+- name: Rust | Install packages
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: true
+  become: true
+  loop:
+    - rustc
+    - cargo
+
+# - name: Rust | Install LSD
+#   ansible.builtin.command: "cargo install lsd --locked"
+#   args:
+#     creates: "{{ ansible_env.HOME }}/.cargo/bin/lsd"
+
+
