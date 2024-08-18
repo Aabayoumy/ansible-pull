@@ -181,6 +181,6 @@ if ! [ -x "$(command -v ansible-pull)" ]; then
     fi
 fi
 # ansible-galaxy install -r requirements.yml
-# ansible-pull -U https://github.com/Aabayoumy/ansible-pull.git
+ansible-pull -U https://github.com/Aabayoumy/ansible-pull.git
 # source ~/.bashrc
 
