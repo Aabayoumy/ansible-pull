@@ -55,6 +55,7 @@
       - wget
       - wmctrl
       - eza
+      - openssh
       - fish
       - btop
       - byobu
