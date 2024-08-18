@@ -38,9 +38,9 @@
     when: ansible_facts['os_family'] == "RedHat"
     
   tasks:
+    - include_tasks: tasks/info.yml
     - include_tasks: tasks/users.yml
     - include_tasks: tasks/packages.yml
     - include_tasks: tasks/neovim.yml
     - include_tasks: tasks/pfetch.yml
-    - include_tasks: tasks/zellij.yml
     - include_tasks: tasks/cron.yml

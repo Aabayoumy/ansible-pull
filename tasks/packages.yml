@@ -12,6 +12,7 @@
       - eza
       - fish
       - btop
+      - byobu
     state: present
   when: ansible_facts['os_family'] == "Debian"
   run_once: false
@@ -38,6 +39,7 @@
       - openssh-server
       - fish
       - btop
+      - byobu
     state: present
   when: ansible_facts['os_family'] == "RedHat"
   run_once: false
