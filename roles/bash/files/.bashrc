@@ -76,15 +76,8 @@ completions=(
   docker
   git
   gh
-  go
-  helm
-  kubectl
   ssh
   system
-  terraform
-  kubectl
-  tmux
-  vault
 )
 
 # Which aliases would you like to load? (aliases can be found in ~/.oh-my-bash/aliases/*)
@@ -96,7 +89,6 @@ aliases=(
   general
   ls
   misc
-  terraform
 )
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-bash/plugins/*)
@@ -107,9 +99,6 @@ plugins=(
   ansible
   bashmarks
   git
-  goenv
-  golang
-  kubectl
   progress
   xterm
   zoxide
