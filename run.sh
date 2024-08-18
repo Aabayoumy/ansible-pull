@@ -40,7 +40,7 @@ set -e
 # Paths
 CONFIG_DIR="$HOME/.config/dotfiles"
 VAULT_SECRET="$HOME/.ansible-vault/vault.secret"
-DOTFILES_DIR="$HOME/.ansible"
+DOTFILES_DIR="$HOME/.ansible_dotfiles"
 SSH_DIR="$HOME/.ssh"
 IS_FIRST_RUN="$HOME/.dotfiles_run"
 
@@ -154,14 +154,16 @@ update_ansible_galaxy() {
   _cmd "ansible-galaxy install -r $DOTFILES_DIR/requirements/common.yml $os_requirements"
 }
 
-pushd "$DOTFILES_DIR" 2>&1 > /dev/null
+
 if ! [[ -d "$DOTFILES_DIR" ]]; then
   __task "Cloning repository"
-  _cmd "git clone --quiet https://github.com/Aabayoumy/ansible-pull $DOTFILES_DIR"
+  _cmd "git clone --quiet https://github.com/Aabayoumy/ansible-pull.git $DOTFILES_DIR"
 else
   __task "Updating repository"
   _cmd "git -C $DOTFILES_DIR pull --quiet"
 fi
+
+pushd "$DOTFILES_DIR" 2>&1 > /dev/null
 
 source /etc/os-release
 __task "Loading Setup for detected OS: $ID"
