@@ -40,7 +40,7 @@ set -e
 # Paths
 CONFIG_DIR="$HOME/.config/dotfiles"
 VAULT_SECRET="$HOME/.ansible-vault/vault.secret"
-DOTFILES_DIR="$HOME/.dotfiles"
+DOTFILES_DIR="$HOME/.ansible"
 SSH_DIR="$HOME/.ssh"
 IS_FIRST_RUN="$HOME/.dotfiles_run"
 
@@ -147,12 +147,21 @@ update_ansible_galaxy() {
   local os=$1
   local os_requirements=""
   __task "Updating Ansible Galaxy"
-  if [ -f "requirements/$os.yml" ]; then
+  if [ -f "$DOTFILES_DIR/requirements/$os.yml" ]; then
     __task "${OVERWRITE}Updating Ansible Galaxy with OS Config: $os"
-    os_requirements="requirements/$os.yml"
+    os_requirements="$DOTFILES_DIR/requirements/$os.yml"
   fi
-  _cmd "ansible-galaxy install -r requirements/common.yml $os_requirements"
+  _cmd "ansible-galaxy install -r $DOTFILES_DIR/requirements/common.yml $os_requirements"
 }
+
+pushd "$DOTFILES_DIR" 2>&1 > /dev/null
+if ! [[ -d "$DOTFILES_DIR" ]]; then
+  __task "Cloning repository"
+  _cmd "git clone --quiet https://github.com/Aabayoumy/ansible-pull $DOTFILES_DIR"
+else
+  __task "Updating repository"
+  _cmd "git -C $DOTFILES_DIR pull --quiet"
+fi
 
 source /etc/os-release
 __task "Loading Setup for detected OS: $ID"
@@ -171,16 +180,18 @@ esac
 
 update_ansible_galaxy $ID
 
-if ! [ -x "$(command -v ansible-pull)" ]; then 
-    packagesNeeded='ansible-core git'
-    if [ -x "$(command -v apt)" ]; then sudo apt update && sudo apt upgrade -y && sudo apt install $packagesNeeded -y
-    elif [ -x "$(command -v dnf)" ]; then sudo dnf update -y && sudo dnf install -y epel-release && sudo dnf install $packagesNeeded -y
-    elif [ -x "$(command -v zypper)" ];  then sudo zypper install $packagesNeeded
-    elif [ -x "$(command -v pacman)" ];  then sudo pacman -Sy $packagesNeeded  --noconfirm
-    else echo "FAILED TO INSTALL PACKAGE: Package manager not found. You must manually install: $packagesNeeded">&2; 
-    fi
-fi
+# if ! [ -x "$(command -v ansible-pull)" ]; then 
+#     packagesNeeded='ansible-core git'
+#     if [ -x "$(command -v apt)" ]; then sudo apt update && sudo apt upgrade -y && sudo apt install $packagesNeeded -y
+#     elif [ -x "$(command -v dnf)" ]; then sudo dnf update -y && sudo dnf install -y epel-release && sudo dnf install $packagesNeeded -y
+#     elif [ -x "$(command -v zypper)" ];  then sudo zypper install $packagesNeeded
+#     elif [ -x "$(command -v pacman)" ];  then sudo pacman -Sy $packagesNeeded  --noconfirm
+#     else echo "FAILED TO INSTALL PACKAGE: Package manager not found. You must manually install: $packagesNeeded">&2; 
+#     fi
+# fi
 # ansible-galaxy install -r requirements.yml
-ansible-pull -U https://github.com/Aabayoumy/ansible-pull.git
+# ansible-pull -U https://github.com/Aabayoumy/ansible-pull.git
 # source ~/.bashrc
+
+
 
