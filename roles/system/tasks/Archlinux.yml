@@ -11,5 +11,15 @@
     name:
       - jq
       - open-iscsi
+      - git
+      - fuse3
+      - xdg-user-dirs
+      - unzip
+      - wget
+      - wmctrl
+      - eza
+      - openssh
+      - btop
+      - byobu
     state: present
   become: true

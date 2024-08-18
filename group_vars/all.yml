@@ -1,5 +1,5 @@
 default_roles:
-  # - system
+  - system
   # - 1password
   # - alacritty
   # - asciiquarium
@@ -20,7 +20,7 @@ default_roles:
   # - lua
   # - nala
   # - neofetch
-  # - neovim
+  - neovim
   # - npm
   # - nvm
   # - obsidian
