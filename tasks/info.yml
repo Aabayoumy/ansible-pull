@@ -1,3 +1,5 @@
+- name: OS Family
+  debug: msg="{{ ansible_os_family }}"
 - name: Distribution
   debug: msg="{{ ansible_distribution }}"
 - name: Distribution version
