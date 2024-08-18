@@ -1,0 +1,29 @@
+- name: "System | {{ ansible_distribution }} | Upgrade all packages"
+  ansible.builtin.dnf:
+    name: "*"
+    state: latest
+    become: true
+- name: "System | {{ ansible_distribution }} | Install 1/2"
+  dnf:
+    name:
+      - '@Development Tools'
+      - epel-release
+    state: latest
+  become: true
+- name: "System | {{ ansible_distribution }} | Install 2/2"
+  dnf:
+    name:
+      - git
+      - fuse3
+      - xdg-user-dirs
+      - unzip
+      - bash-completion
+      - wget
+      - wmctrl
+      - eza
+      - openssh-server
+      - fish
+      - btop
+      - byobu
+    state: latest
+  become: true
