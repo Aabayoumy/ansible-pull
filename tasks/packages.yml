@@ -43,6 +43,27 @@
     state: present
   when: ansible_facts['os_family'] == "RedHat"
   run_once: false
+
+- name: Install packages
+  pacman:
+    name:
+      - git
+      - fuse3
+      - xdg-user-dirs
+      - unzip
+      - bash-completion
+      - wget
+      - wmctrl
+      - eza
+      - openssh-server
+      - fish
+      - btop
+      - byobu
+    state: latest
+    update_cache: true
+  when: ansible_facts['os_family'] == "Archlinux"
+  run_once: false
+
 - name: Enable SSH
   ansible.builtin.systemd:
     state: restarted
