@@ -101,7 +101,7 @@ function ubuntu_setup() {
   fi
   if ! dpkg -s python3 >/dev/null 2>&1; then
     __task "Installing Python3"
-    _cmd "sudo apt-get install -y python3"
+    _cmd "sudo apt-get install -y python3 git"
   fi
   if ! dpkg -s python3-pip >/dev/null 2>&1; then
     __task "Installing Python3 Pip"
@@ -123,7 +123,7 @@ function arch_setup() {
   fi
   if ! pacman -Q python3 >/dev/null 2>&1; then
     __task "Installing Python3"
-    _cmd "sudo pacman -S --noconfirm python3"
+    _cmd "sudo pacman -S --noconfirm python3 git"
   fi
   if ! pacman -Q python-pip >/dev/null 2>&1; then
     __task "Installing Python3 Pip"
@@ -181,6 +181,16 @@ case $ID in
 esac
 
 update_ansible_galaxy $ID
+
+__task "Running playbook"; _task_done
+if [[ -f $VAULT_SECRET ]]; then
+  ansible-playbook --vault-password-file $VAULT_SECRET "$DOTFILES_DIR/main.yml" "$@"
+else
+  ansible-playbook "$DOTFILES_DIR/main.yml" "$@"
+fi
+
+popd 2>&1 > /dev/null
+
 
 # if ! [ -x "$(command -v ansible-pull)" ]; then 
 #     packagesNeeded='ansible-core git'
