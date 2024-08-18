@@ -2,7 +2,7 @@
   ansible.builtin.dnf:
     name: "*"
     state: latest
-    become: true
+  become: true
 - name: "System | {{ ansible_distribution }} | Install 1/2"
   dnf:
     name:
