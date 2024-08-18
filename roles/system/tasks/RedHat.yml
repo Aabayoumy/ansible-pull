@@ -17,12 +17,9 @@
       - fuse3
       - xdg-user-dirs
       - unzip
-      - bash-completion
       - wget
       - wmctrl
-      - eza
       - openssh-server
-      - fish
       - btop
       - byobu
     state: latest
