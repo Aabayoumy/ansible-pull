@@ -1,0 +1,256 @@
+---
+# tasks file for oh_my_zsh
+- name: Install Git
+  become: true
+  ansible.builtin.package:
+    state: present
+    name: git
+
+- name: Install ZSH
+  become: true
+  ansible.builtin.package:
+    name: zsh
+    state: present
+
+- name: Override powerline fonts package name for Debian.
+  ansible.builtin.set_fact:
+    powerlinefonts: fonts-powerline
+  when: ansible_os_family == 'Debian'
+
+- name: Override fd-find package name for Archlinux.
+  ansible.builtin.set_fact:
+    fdfind: fd
+  when: ansible_os_family == 'Archlinux'
+
+- name: Install Powerline fonts
+  become: true
+  ansible.builtin.package:
+    state: present
+    name: "{{ powerlinefonts }}"
+
+- name: Install ripgrep
+  become: true
+  ansible.builtin.package:
+    state: present
+    name: ripgrep
+
+- name: Install procs in Arch/Fedora
+  become: true
+  ansible.builtin.package:
+    state: present
+    name: procs
+  when: ansible_os_family != 'Debian'
+
+# unzip is useful for extracting zips
+- name: Install unzip
+  become: true
+  ansible.builtin.package:
+    state: present
+    name: unzip
+
+- name: Install procs in Ubuntu
+  become: true
+  ansible.builtin.unarchive:
+    src: "https://github.com/dalance/procs/releases/download/{{ procsversion }}/procs-{{ procsversion }}-x86_64-linux.zip"
+    dest: /usr/local/bin
+    remote_src: true
+  when: ansible_os_family == 'Debian'
+
+- name: Install dust on Arch
+  become: true
+  ansible.builtin.package:
+    state: present
+    name: dust
+  when: ansible_os_family == 'Archlinux'
+
+# We soon hit the "API rate limit exceeded" error on GitHub Actions
+# so we cannot use {{ dustdata.json.tag_name }} in the next task's URL
+# https://github.com/bootandy/dust/releases/latest/download/dust-{{ dustdata.json.tag_name }}-x86_64-unknown-linux-gnu.tar.gz
+# we'll have to stick with a fixed version
+
+# - name: Get latest version of dust on Ubuntu/Fedora
+#   ansible.builtin.uri:
+#     url: https://api.github.com/repos/bootandy/dust/releases/latest
+#     method: GET
+#     return_content: true
+#     body_format: json
+#   register: dustdata
+#   when: ansible_os_family != 'Archlinux'
+
+# In Ubuntu/Fedora we have to install it from archive
+# so it's better to check if it's already installed
+- name: Check if dust is already installed on Ubuntu/Fedora
+  ansible.builtin.shell: >
+    dust --version
+  register: dust_rc
+  failed_when: false
+  changed_when: false
+  when: ansible_os_family != 'Archlinux'
+
+- name: Install dust on Ubuntu/Fedora
+  become: true
+  ansible.builtin.unarchive:
+    src: "https://github.com/bootandy/dust/releases/download/{{ dustversion }}/dust-{{ dustversion }}-x86_64-unknown-linux-gnu.tar.gz"
+    dest: /usr/local/bin
+    extra_opts:
+    - --strip=1
+    - --wildcards
+    - '*/dust'
+    remote_src: true
+  when: ansible_os_family != 'Archlinux' and dust_rc.rc != 0
+
+- name: Install Google Noto emoji fonts
+  become: true
+  ansible.builtin.package:
+    state: present
+    name: noto-fonts-emoji
+  when: ansible_os_family == 'Archlinux'
+
+# To get "icons" in ezaoutput
+- name: Install Patched font Arimo from nerd-fonts (Arch)
+  become: true
+  ansible.builtin.package:
+    state: present
+    name: ttf-arimo-nerd
+  when: ansible_os_family == 'Archlinux'
+
+# Required for the Ubuntu repository (see below)
+- name: Install GPG and Wget in Ubuntu
+  become: true
+  ansible.builtin.package:
+    state: present
+    name:
+    - gpg
+    - wget
+  when: ansible_os_family == 'Debian'
+
+# In Ubuntu we have to install it from another repository
+# so it's better to check if it's already installed
+- name: Check if eza is already installed on Ubuntu
+  ansible.builtin.shell: >
+    eza --version
+  register: eza_rc
+  failed_when: false
+  changed_when: false
+  when: ansible_os_family == 'Debian'
+
+- name: Repository for eza on Ubuntu
+  become: true
+  ansible.builtin.shell: |
+    mkdir -p /etc/apt/keyrings
+    wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc | gpg --dearmor -o /etc/apt/keyrings/gierens.gpg
+    echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" | tee /etc/apt/sources.list.d/gierens.list
+    chmod 644 /etc/apt/keyrings/gierens.gpg /etc/apt/sources.list.d/gierens.list
+    apt update
+  when: ansible_os_family == 'Debian' and eza_rc.rc != 0
+
+- name: Install eza through package manager
+  become: true
+  ansible.builtin.package:
+    state: present
+    name: eza
+
+- name: Install fd-find
+  become: true
+  ansible.builtin.package:
+    state: present
+    name: "{{ fdfind }}"
+
+- name: Create link fd to fdfind in Debian
+  become: true
+  ansible.builtin.file:
+    src: '/usr/bin/fdfind'
+    dest: '/usr/bin/fd'
+    state: link
+  when: ansible_os_family == 'Debian'
+
+- name: Install bat
+  become: true
+  ansible.builtin.package:
+    state: present
+    name: bat
+
+- name: Create link bat to batcat in Debian
+  become: true
+  ansible.builtin.file:
+    src: '/usr/bin/batcat'
+    dest: '/usr/bin/bat'
+    state: link
+  when: ansible_os_family == 'Debian'
+  # and ansible_distribution_version is version('23.04', '<')
+
+# In Ubuntu Focal we have to install it from archive
+# so it's better to check if it's already installed
+- name: Check if zoxide is already installed on Ubuntu Focal
+  ansible.builtin.shell: >
+    zoxide --version
+  register: zoxide_rc
+  failed_when: false
+  changed_when: false
+  when: ansible_os_family == 'Debian' and ansible_distribution_version is version('20.10', '<')
+
+- name: Install zoxide on Ubuntu Focal
+  become: true
+  ansible.builtin.unarchive:
+    src: "https://github.com/ajeetdsouza/zoxide/releases/download/v{{ zoxideversion }}/zoxide-{{ zoxideversion }}-x86_64-unknown-linux-musl.tar.gz"
+    dest: /usr/local/bin
+    remote_src: true
+  when: ansible_os_family == 'Debian' and ansible_distribution_version is version('20.10', '<') and zoxide_rc.rc != 0
+
+- name: Install zoxide through package manager
+  become: true
+  ansible.builtin.package:
+    state: present
+    name: zoxide
+  when: ansible_os_family != 'Debian' or ansible_distribution_version is version('20.10', '>=')
+
+# required by the OMZ plugin zsh-interactive-cd
+- name: Install fzf (command-line fuzzy finder)
+  become: true
+  ansible.builtin.package:
+    state: present
+    name: fzf
+
+- name: Install Oh My Zsh # noqa: latest
+  ansible.builtin.git:
+    repo: https://github.com/ohmyzsh/ohmyzsh.git
+    dest: ~/.oh-my-zsh
+    depth: 1
+
+- name: Install zsh-autosuggestions plugin # noqa: latest
+  ansible.builtin.git:
+    repo: https://github.com/zsh-users/zsh-autosuggestions
+    dest: ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+    depth: 1
+
+- name: Install zsh-completions plugin # noqa: latest
+  ansible.builtin.git:
+    repo: https://github.com/zsh-users/zsh-completions
+    dest: ~/.oh-my-zsh/custom/plugins/zsh-completions
+    depth: 1
+
+- name: Install zsh-syntax-highlighting plugin # noqa: latest
+  ansible.builtin.git:
+    repo: https://github.com/zsh-users/zsh-syntax-highlighting.git
+    dest: ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+    depth: 1
+
+- name: Install autoupdate-zsh-plugin # noqa: latest
+  ansible.builtin.git:
+    repo: https://github.com/TamCore/autoupdate-oh-my-zsh-plugins
+    dest: ~/.oh-my-zsh/custom/plugins/autoupdate
+    depth: 1
+
+- name: Change user shell to zsh 
+  become: true
+  ansible.builtin.user:
+    name: "{{ ansible_user_id }}"
+    shell: /bin/zsh
+
+- name: Tasks for starship
+  ansible.builtin.include_tasks: starship.yml
+  when: with_starship
+
+- name: Tasks for p10k
+  ansible.builtin.include_tasks: p10k.yml
+  when: not with_starship
