@@ -143,6 +143,31 @@ function arch_setup() {
   _cmd "sudo localectl set-locale LANG=en_US.UTF-8"
 }
 
+function rocky_setup() {
+  if ! [ -x "$(command -v ansible)" ]; then
+    __task "Installing Ansible"
+    _cmd "sudo dnf update -y"
+    _cmd "sudo dnf install ansible -y"
+    _cmd "sudo dnf install python-argcomplete -y"
+    # _cmd "sudo activate-global-python-argcomplete3"
+  fi
+  if ! [ -x "$(command -v python3)" ]; then
+    __task "Installing Python3"
+    _cmd "sudo dnf install  python3 git -y"
+  fi
+  if ! [ -x "$(command -v python-pip)" ]; then
+    __task "Installing Python3 Pip"
+    _cmd "sudo dnf install python-pip -y"
+  fi
+  if ! pip3 list | grep watchdog >/dev/null 2>&1; then
+    __task "Installing Python3 Watchdog"
+    _cmd "pip install watchdog"
+  fi
+
+  __task "Setting Locale"
+  _cmd "sudo localectl set-locale LANG=en_US.UTF-8"
+}
+
 update_ansible_galaxy() {
   local os=$1
   local os_requirements=""
@@ -168,11 +193,14 @@ pushd "$DOTFILES_DIR" 2>&1 > /dev/null
 source /etc/os-release
 __task "Loading Setup for detected OS: $ID"
 case $ID in
-  ubuntu)
+  ubuntu|debian)
     ubuntu_setup
     ;;
   arch)
     arch_setup
+    ;;
+  rocky)
+    rocky_setup
     ;;
   *)
     __task "Unsupported OS"
@@ -180,30 +208,32 @@ case $ID in
     ;;
 esac
 
-update_ansible_galaxy $ID
-
-__task "Running playbook"; _task_done
-if [[ -f $VAULT_SECRET ]]; then
-  ansible-playbook --vault-password-file $VAULT_SECRET "$DOTFILES_DIR/main.yml" "$@"
-else
-  ansible-playbook "$DOTFILES_DIR/main.yml" "$@"
+if ! [ -x "$(command -v ansible)" ]; then 
+    packagesNeeded='ansible python3 python-pip git'
+    if [ -x "$(command -v apt)" ]; then sudo apt update && sudo apt upgrade -y && sudo apt install $packagesNeeded -y
+    elif [ -x "$(command -v dnf)" ]; then sudo dnf update -y && sudo dnf install -y epel-release && sudo dnf install $packagesNeeded -y
+    elif [ -x "$(command -v zypper)" ];  then sudo zypper install $packagesNeeded
+    elif [ -x "$(command -v pacman)" ];  then sudo pacman -Sy $packagesNeeded  --noconfirm
+    else echo "FAILED TO INSTALL PACKAGE: Package manager not found. You must manually install: $packagesNeeded">&2; 
+    fi
 fi
 
-popd 2>&1 > /dev/null
+update_ansible_galaxy $ID
 
+ansible-galaxy install -r requirements.yml
 
-# if ! [ -x "$(command -v ansible-pull)" ]; then 
-#     packagesNeeded='ansible-core git'
-#     if [ -x "$(command -v apt)" ]; then sudo apt update && sudo apt upgrade -y && sudo apt install $packagesNeeded -y
-#     elif [ -x "$(command -v dnf)" ]; then sudo dnf update -y && sudo dnf install -y epel-release && sudo dnf install $packagesNeeded -y
-#     elif [ -x "$(command -v zypper)" ];  then sudo zypper install $packagesNeeded
-#     elif [ -x "$(command -v pacman)" ];  then sudo pacman -Sy $packagesNeeded  --noconfirm
-#     else echo "FAILED TO INSTALL PACKAGE: Package manager not found. You must manually install: $packagesNeeded">&2; 
-#     fi
-# fi
-# ansible-galaxy install -r requirements.yml
+if id "abayoumy" >/dev/null 2>&1; then
+  __task "Running local playbook"; _task_done
+  ansible-playbook "$DOTFILES_DIR/local.yml" "$@"
+fi
 # ansible-pull -U https://github.com/Aabayoumy/ansible-pull.git
 # source ~/.bashrc
 
+__task "Running main playbook"; _task_done
+# if [[ -f $VAULT_SECRET ]]; then
+#   ansible-playbook --vault-password-file $VAULT_SECRET "$DOTFILES_DIR/main.yml" "$@"
+# else
+ sudo -H -u abayoumy bash -c 'ansible-playbook "$DOTFILES_DIR/main.yml" "$@"'
+# fi
 
-
+popd 2>&1 > /dev/null
