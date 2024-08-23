@@ -3,7 +3,7 @@ default_roles:
   # - 1password
   # - alacritty
   # - asciiquarium
-  - bash
+  # - bash
   # - bat
   # - btop
   # - docker
@@ -21,6 +21,7 @@ default_roles:
   # - nala
   # - neofetch
   - neovim
+  - zsh
   # - npm
   # - nvm
   # - obsidian
@@ -28,7 +29,7 @@ default_roles:
   # - python
   # - ruby
   # - rust
-  # - ssh
+  - ssh
   # - sshfs
   # - taskfile
   # - terraform
