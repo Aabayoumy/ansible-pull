@@ -12,12 +12,13 @@
 - name: "installing pfetch-rs"
   unarchive:
     src: https://github.com/Gobidev/pfetch-rs/releases/download/v2.11.0/pfetch-linux-gnu-x86_64.tar.gz
-    dest: /usr/local
+    dest: /usr/local/bin
     remote_src: yes
     mode: '0755'
     owner: root
     group: root
     extra_opts: [--strip-components=1]
+  become: true
   when: not (pfetch.stat.exists) 
 
 - name: Create a symbolic link
@@ -27,6 +28,7 @@
     owner: root
     group: root
     state: link
+  become: true
   when: not (pfetch_link.stat.exists) 
 
 
