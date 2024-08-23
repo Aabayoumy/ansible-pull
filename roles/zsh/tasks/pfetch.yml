@@ -1,3 +1,4 @@
+---
 - name: check pfetch
   stat:
     path: /usr/local/bin/pfetch

@@ -254,3 +254,6 @@
 - name: Tasks for p10k
   ansible.builtin.include_tasks: p10k.yml
   when: not with_starship
+
+- name: Tasks for p10k
+  ansible.builtin.include_tasks: pfetch.yml
