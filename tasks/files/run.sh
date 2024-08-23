@@ -223,7 +223,8 @@ __task "Running main playbook"; _task_done
 # if [[ -f $VAULT_SECRET ]]; then
 #   ansible-playbook --vault-password-file $VAULT_SECRET "$DOTFILES_DIR/main.yml" "$@"
 # else
-sudo su - abayoumy  -c 'ansible-playbook "$DOTFILES_DIR/main.yml" "$@"'
+
+su -c 'ansible-playbook "$DOTFILES_DIR/main.yml" "$@"' -s /bin/sh abayoumy
 # fi
 
 popd 2>&1 > /dev/null
