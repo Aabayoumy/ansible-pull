@@ -213,18 +213,9 @@ update_ansible_galaxy $ID
 # ansible-galaxy install -r requirements.yml
 
 if ! id "abayoumy" >/dev/null 2>&1; then
-  __task "Running local playbook"; _task_done
+  __task "Running playbook"; _task_done
   ansible-playbook "$DOTFILES_DIR/local.yml" "$@"
+else
+  ansible-playbook "$DOTFILES_DIR/main.yml" "$@"
 fi
-# ansible-pull -U https://github.com/Aabayoumy/ansible-pull.git
-# source ~/.bashrc
-
-__task "Running main playbook"; _task_done
-# if [[ -f $VAULT_SECRET ]]; then
-#   ansible-playbook --vault-password-file $VAULT_SECRET "$DOTFILES_DIR/main.yml" "$@"
-# else
-
-su -c 'ansible-playbook "$DOTFILES_DIR/main.yml" "$@"' -s /bin/sh abayoumy
-# fi
-
 popd 2>&1 > /dev/null
