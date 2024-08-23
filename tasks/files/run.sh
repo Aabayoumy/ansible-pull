@@ -212,7 +212,7 @@ update_ansible_galaxy $ID
 
 # ansible-galaxy install -r requirements.yml
 
-if id "abayoumy" >/dev/null 2>&1; then
+if ! id "abayoumy" >/dev/null 2>&1; then
   __task "Running local playbook"; _task_done
   ansible-playbook "$DOTFILES_DIR/local.yml" "$@"
 fi
