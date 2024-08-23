@@ -20,7 +20,7 @@ default_roles:
   # - lua
   # - nala
   # - neofetch
-  - neovim
+  # - neovim
   - zsh
   # - npm
   # - nvm

@@ -38,3 +38,10 @@
     dest: ~/.zshrc
     mode: 0644
   when: copy_dot_files
+
+- name: Copy starshipfile
+  ansible.builtin.copy:
+    src: starship.toml
+    dest: ~/.config/starship.toml
+    mode: 0644
+  when: copy_dot_files
