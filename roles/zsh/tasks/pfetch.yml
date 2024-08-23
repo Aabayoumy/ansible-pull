@@ -9,16 +9,9 @@
     path: /usr/local/bin/pfetch
   register: pfetch_link
 
-
-- name: check latest pfetch-rs
-  uri:
-    url: https://github.com/Gobidev/pfetch-rs/releases/latest
-    return_content: true
-  register: pfetch_latest
-
-- name: "installing pfetch-rs {{ pfetch_latest.json.tag_name }}"
+- name: "installing pfetch-rs"
   unarchive:
-    src: https://github.com/Gobidev/pfetch-rs/releases/download/{{ pfetch_latest.json.tag_name }}/pfetch-linux-gnu-x86_64.tar.gz
+    src: https://github.com/Gobidev/pfetch-rs/releases/download/v2.11.0/pfetch-linux-gnu-x86_64.tar.gz
     dest: /usr/local
     remote_src: yes
     mode: '0755'
