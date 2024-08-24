@@ -213,10 +213,12 @@ update_ansible_galaxy $ID
 # ansible-galaxy install -r requirements.yml
 
 if ! id "abayoumy" >/dev/null 2>&1; then
-  __task "Running playbook"; _task_done
+  __task "Running playbook"; 
   ansible-playbook "$DOTFILES_DIR/local.yml" "$@"
+  _task_done
 else
-  __task "Running playbook"; _task_done
+  __task "Running playbook";
   ansible-playbook "$DOTFILES_DIR/main.yml" "$@"
+  _task_done
 fi
 popd 2>&1 > /dev/null
