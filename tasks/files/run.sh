@@ -216,6 +216,7 @@ if ! id "abayoumy" >/dev/null 2>&1; then
   __task "Running playbook"; _task_done
   ansible-playbook "$DOTFILES_DIR/local.yml" "$@"
 else
+  __task "Running playbook"; _task_done
   ansible-playbook "$DOTFILES_DIR/main.yml" "$@"
 fi
 popd 2>&1 > /dev/null
