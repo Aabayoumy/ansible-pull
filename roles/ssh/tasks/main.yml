@@ -10,7 +10,7 @@
   with_items: "{{ ssh_key | default({}) | dict2items }}"
 
 - name: Copy config
-  ansible.builtin.template:
+  ansible.builtin.copy:
     dest: "{{ ansible_user_dir }}/.ssh/config"
     src: "config"
 
