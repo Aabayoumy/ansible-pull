@@ -5,7 +5,7 @@ default_roles:
   # - asciiquarium
   # - bash
   # - bat
-  # - btop
+  - btop
   # - docker
   # - flatpak
   # - fonts
@@ -30,6 +30,7 @@ default_roles:
   # - ruby
   # - rust
   - ssh
+  - byobu
   # - sshfs
   # - taskfile
   # - terraform
@@ -39,3 +40,7 @@ default_roles:
   # - zellij
   # - spotify
   # - zoxide
+
+vars:
+  cmdr_bin_dir : /usr/local/bin
+  user : abayoumy
