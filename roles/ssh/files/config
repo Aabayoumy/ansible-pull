@@ -1,0 +1,33 @@
+Host mediasrv01
+  HostName 10.0.0.10
+  User abayoumy
+
+Host docker01
+  HostName 10.0.0.18
+  User abayoumy
+
+Host pve2
+  HostName 10.0.0.202
+  User  root
+  IdentityFile ~\.ssh\id_ed25519
+
+Host pve1
+  HostName 10.0.0.200
+  User  root
+  IdentityFile ~\.ssh\id_ed25519
+
+Host zabbix
+  HostName 10.0.0.20
+  User  abayoumy
+  IdentityFile ~\.ssh\id_ed25519
+  
+Host kali
+  HostName 192.168.1.2
+  User  abayoumy
+  IdentityFile ~\.ssh\id_ed25519
+
+Host  archlinux
+  HostName 10.0.0.230
+  user abayoumy
+  IdentityFile ~\.ssh\id_ed25519
+

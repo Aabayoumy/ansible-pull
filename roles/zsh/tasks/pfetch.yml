@@ -17,7 +17,6 @@
     mode: '0755'
     owner: root
     group: root
-    # extra_opts: [--strip-components=1]
   become: true
   when: not (pfetch.stat.exists) 
 
@@ -31,4 +30,6 @@
   become: true
   when: not (pfetch_link.stat.exists) 
 
+https://api.github.com/repos/Gobidev/pfetch-rs/releases/latest
 
+html_url	"https://github.com/Gobidev/pfetch-rs/releases/tag/v2.11.0"

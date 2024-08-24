@@ -2,10 +2,6 @@
   connection: local
   gather_facts: yes
   become: true
-  vars:
-    cmdr_bin_dir : /usr/local/bin
-    user : abayoumy
-  pre_tasks:    
   - name: Only run "update_cache=yes" if the last one is more than 3600 seconds ago
     ansible.builtin.apt:
       update_cache: yes
