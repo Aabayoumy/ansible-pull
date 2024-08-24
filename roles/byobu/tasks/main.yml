@@ -4,7 +4,6 @@
     state: present
   become: true
 
-
 - name: "byobu | Copy byobu config"
   ansible.builtin.copy:
     src: files/

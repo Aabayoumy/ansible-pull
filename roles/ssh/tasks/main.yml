@@ -14,7 +14,7 @@
     dest: "{{ ansible_user_dir }}/.ssh/config"
     src: "config"
 
-- name: add  ssh keys
+- name: add  ssh keys for abayoumy
   authorized_key:
     user: abayoumy
     state: present
@@ -22,8 +22,9 @@
   with_fileglob:
     - "files/*.pub"
     
-- name: add  ssh keys
+- name: add ssh keys for ansible
   authorized_key:
     user: ansible
     state: present
     key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKG7DNrs2hcOmEG4gXRVyvAgrvoiE2iIBSFoPtRYPHl9 ansible"
+  become: true
