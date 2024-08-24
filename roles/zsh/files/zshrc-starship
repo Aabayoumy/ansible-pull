@@ -136,10 +136,6 @@ export INFOPATH="/home/linuxbrew/.linuxbrew/share/info:${INFOPATH:-}";
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-if (( $+commands[byobu] )); then 
-    byobu
-fi
-
 if (( $+commands[pfetch] )); then 
     pfetch
 fi

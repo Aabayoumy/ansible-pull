@@ -1,0 +1,15 @@
+- name: "byobu | Install"
+  ansible.builtin.package:
+    name: byobu
+    state: present
+  become: true
+
+
+- name: "byobu | Copy byobu config"
+  ansible.builtin.copy:
+    src: files/
+    dest: ~/
+    mode: "0644"
+
+- name: Enable byobu
+  ansible.builtin.command: byobu-enable
