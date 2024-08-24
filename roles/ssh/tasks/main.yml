@@ -14,14 +14,14 @@
     dest: "{{ ansible_user_dir }}/.ssh/config"
     src: "config"
 
-  - name: add  ssh keys
-    authorized_key:
-      user: abayoumy
-      key: "{{ lookup('pipe','cat *.pub') }}"
-      state: present
-      
-  - name: add  ssh keys
-    authorized_key:
-      user: ansible
-      state: present
-      key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKG7DNrs2hcOmEG4gXRVyvAgrvoiE2iIBSFoPtRYPHl9 ansible"
+- name: add  ssh keys
+  authorized_key:
+    user: abayoumy
+    key: "{{ lookup('pipe','cat *.pub') }}"
+    state: present
+    
+- name: add  ssh keys
+  authorized_key:
+    user: ansible
+    state: present
+    key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKG7DNrs2hcOmEG4gXRVyvAgrvoiE2iIBSFoPtRYPHl9 ansible"
