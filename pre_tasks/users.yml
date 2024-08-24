@@ -16,10 +16,13 @@
   community.general.sudoers:
     name: user-do-as-root
     state: present
-    user: "{{ user }}"
+    user: "{{ item }}"
     runas: root
     commands: ALL
     nopassword: true
+  loop:
+    - "{{ user }}"
+    - ansible
 
 - name: Copy dotfiles
   ansible.builtin.copy:
