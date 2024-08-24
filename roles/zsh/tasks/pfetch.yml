@@ -30,6 +30,6 @@
   become: true
   when: not (pfetch_link.stat.exists) 
 
-https://api.github.com/repos/Gobidev/pfetch-rs/releases/latest
+# https://api.github.com/repos/Gobidev/pfetch-rs/releases/latest
 
-html_url	"https://github.com/Gobidev/pfetch-rs/releases/tag/v2.11.0"
+# html_url	"https://github.com/Gobidev/pfetch-rs/releases/tag/v2.11.0"
