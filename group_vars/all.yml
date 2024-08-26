@@ -9,8 +9,8 @@ default_roles:
   # - docker
   # - flatpak
   # - fonts
-  - fzf
-  # - git
+  # - fzf
+  - git
   # - go
   # - helm
   # - k8s
@@ -20,7 +20,7 @@ default_roles:
   # - lua
   # - nala
   # - neofetch
-  - neovim
+  # - neovim
   - zsh
   # - npm
   # - nvm
@@ -44,4 +44,5 @@ default_roles:
 vars:
   cmdr_bin_dir : /usr/local/bin
   user : abayoumy
-gather_facts: true
+  git_user_name: abayoumy
+  git_user_email: abayoumy@outlook.com
