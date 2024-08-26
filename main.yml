@@ -2,7 +2,8 @@
 - name: DotFiles Config
   hosts: localhost
   connection: local
-
+  gather_facts: yes
+  
   pre_tasks:
     - name: Detect WSL
       ansible.builtin.import_tasks: pre_tasks/detect_wsl.yml
