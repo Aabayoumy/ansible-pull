@@ -3,7 +3,7 @@
     path: /usr/local/bin/nvim
   register: nvim
 
-- name: "Neovim | {{ os_family }} | Dependencies"
+- name: "Neovim | {{ ansible_distribution }} | Dependencies"
   ansible.builtin.package:
     name:
       - cmake
@@ -15,19 +15,19 @@
       - ripgrep
     state: present
   become: true
-  when: not (ansible_facts['os_family'] == "Archlinux")
+  when: not (ansible_facts['ansible_distribution'] == "Archlinux")
 
-- name: "Neovim | Checking for Distribution Config: {{ os_family }}"
+- name: "Neovim | Checking for Distribution Config: {{ ansible_distribution }}"
   ansible.builtin.stat:
-    path: "{{ role_path }}/tasks/{{ os_family }}.yml"
+    path: "{{ role_path }}/tasks/{{ ansible_distribution }}.yml"
   register: neovim_distribution_config
 
-- name: "Neovim | Run Tasks: {{ os_family }}"
-  ansible.builtin.include_tasks: "{{ os_family }}.yml"
+- name: "Neovim | Run Tasks: {{ ansible_distribution }}"
+  ansible.builtin.include_tasks: "{{ ansible_distribution }}.yml"
   when: neovim_distribution_config.stat.exists
 
 
-- name: Neovim | {{ os_family }} | Install Neovim
+- name: Neovim | {{ ansible_distribution }} | Install Neovim
   unarchive:
     src: https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz
     dest: /usr/local
@@ -36,7 +36,7 @@
     owner: root
     group: root
     extra_opts: [--strip-components=1]
-  when: not (nvim.stat.exists) and ansible_architecture == "x86_64"  and not (ansible_facts['os_family'] == "Archlinux")
+  when: not (nvim.stat.exists) and ansible_architecture == "x86_64"  and not (ansible_facts['ansible_distribution'] == "Archlinux")
   run_once: true
 
 
