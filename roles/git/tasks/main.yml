@@ -1,6 +1,6 @@
 ---
-- name: "Git | Run Tasks: {{ os_family }}"
-  ansible.builtin.include_tasks: "{{ os_family }}.yml"
+- name: "Git | Run Tasks: {{ ansible_os_family }}"
+  ansible.builtin.include_tasks: "{{ ansible_os_family }}.yml"
 
 - name: "Git | Set diff.colorMoved"
   community.general.git_config:
