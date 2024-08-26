@@ -15,7 +15,7 @@
       - ripgrep
     state: present
   become: true
-  when: ansible_facts['ansible_os_family'] != "Archlinux"
+  when: ansible_os_family != "Archlinux"
 
 - name: "Neovim | Checking for Distribution Config"
   ansible.builtin.stat:
@@ -36,7 +36,7 @@
     owner: root
     group: root
     extra_opts: [--strip-components=1]
-  when: not (nvim.stat.exists) and ansible_architecture == "x86_64"  and  ansible_facts['ansible_os_family'] != "Archlinux"
+  when: not (nvim.stat.exists) and ansible_architecture == "x86_64"  and  ansible_os_family != "Archlinux"
   run_once: true
 
 
