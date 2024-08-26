@@ -17,7 +17,7 @@
   become: true
   when: ansible_facts['os_family'] != "Archlinux"
 
-- name: "Neovim | Checking for Distribution Config: {{ ansible_facts['os_family'] }}"
+- name: "Neovim | Checking for Distribution Config"
   ansible.builtin.stat:
     path: "{{ role_path }}/tasks/{{ os_family }}.yml"
   register: neovim_distribution_config
