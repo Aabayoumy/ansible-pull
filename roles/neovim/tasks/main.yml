@@ -17,11 +17,15 @@
   become: true
   when: not (ansible_facts['os_family'] == "Archlinux")
 
-- name: "Neovim | {{ os_family }} | Install Neovim"
-  kewlfft.aur.aur:
-    name: neovim-git
-    state: present
-  when: ansible_facts['os_family'] == "Archlinux"
+- name: "Neovim | Checking for Distribution Config: {{ os_family }}"
+  ansible.builtin.stat:
+    path: "{{ role_path }}/tasks/{{ os_family }}.yml"
+  register: neovim_distribution_config
+
+- name: "Neovim | Run Tasks: {{ os_family }}"
+  ansible.builtin.include_tasks: "{{ os_family }}.yml"
+  when: neovim_distribution_config.stat.exists
+
 
 - name: Neovim | {{ os_family }} | Install Neovim
   unarchive:
@@ -34,7 +38,8 @@
     extra_opts: [--strip-components=1]
   when: not (nvim.stat.exists) and ansible_architecture == "x86_64"  and not (ansible_facts['os_family'] == "Archlinux")
   run_once: true
-  
+
+
 - name: "Neovim | Copy init.lua"
   ansible.builtin.copy:
     dest: "{{ ansible_user_dir }}/.config/nvim/init.lua"
