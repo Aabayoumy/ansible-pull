@@ -76,23 +76,23 @@
     scope: global
     value: true
 
-- name: "Git | Ensure ~/.config/git/allowed_signers exists"
-  ansible.builtin.file:
-    path: "{{ ansible_user_dir }}/.config/git"
-    state: directory
-    mode: "0755"
+# - name: "Git | Ensure ~/.config/git/allowed_signers exists"
+#   ansible.builtin.file:
+#     path: "{{ ansible_user_dir }}/.config/git"
+#     state: directory
+#     mode: "0755"
 
-- name: "Git | Configure ~/.config/git/allowed_signers"
-  ansible.builtin.copy:
-    src: allowed_signers
-    dest: "{{ ansible_user_dir }}/.config/git/allowed_signers"
-    mode: "0600"
+# - name: "Git | Configure ~/.config/git/allowed_signers"
+#   ansible.builtin.copy:
+#     src: allowed_signers
+#     dest: "{{ ansible_user_dir }}/.config/git/allowed_signers"
+#     mode: "0600"
 
-- name: "Git | Set gpg.ssh.allowedSignersFile"
-  community.general.git_config:
-    name: gpg.ssh.allowedSignersFile
-    scope: global
-    value: "{{ ansible_user_dir }}/.config/git/allowed_signers"
+# - name: "Git | Set gpg.ssh.allowedSignersFile"
+#   community.general.git_config:
+#     name: gpg.ssh.allowedSignersFile
+#     scope: global
+#     value: "{{ ansible_user_dir }}/.config/git/allowed_signers"
 
 - name: "Git | Set undo alias"
   community.general.git_config:
