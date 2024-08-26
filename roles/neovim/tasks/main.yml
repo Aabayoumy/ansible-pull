@@ -37,7 +37,6 @@
     group: root
     extra_opts: [--strip-components=1]
   when: not (nvim.stat.exists) and ansible_architecture == "x86_64"  and  ansible_os_family != "Archlinux"
-  # run_once: true
   become: true
 
 
