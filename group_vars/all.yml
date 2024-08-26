@@ -44,5 +44,5 @@ default_roles:
 vars:
   cmdr_bin_dir : /usr/local/bin
   user : abayoumy
-  git_user_name: abayoumy
-  git_user_email: abayoumy@outlook.com
+git_user_name: abayoumy
+git_user_email: abayoumy@outlook.com
