@@ -9,7 +9,7 @@ default_roles:
   # - docker
   # - flatpak
   # - fonts
-  # - fzf
+  - fzf
   # - git
   # - go
   # - helm
@@ -20,7 +20,7 @@ default_roles:
   # - lua
   # - nala
   # - neofetch
-  # - neovim
+  - neovim
   - zsh
   # - npm
   # - nvm
