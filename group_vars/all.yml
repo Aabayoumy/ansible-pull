@@ -44,3 +44,4 @@ default_roles:
 vars:
   cmdr_bin_dir : /usr/local/bin
   user : abayoumy
+gather_facts: true

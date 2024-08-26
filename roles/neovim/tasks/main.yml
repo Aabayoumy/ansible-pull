@@ -1,4 +1,3 @@
-gather_facts: true
 - name: check nvim exist
   stat:
     path: /usr/local/bin/nvim
