@@ -1,16 +1,16 @@
 default_roles:
-  # - system
+  - system
   # - 1password
   # - alacritty
   # - asciiquarium
   # - bash
-  # - bat
-  # - btop
+  - bat
+  - btop
   # - docker
   # - flatpak
   # - fonts
   # - fzf
-  # - git
+  - git
   # - go
   # - helm
   # - k8s
@@ -29,8 +29,8 @@ default_roles:
   # - python
   # - ruby
   # - rust
-  # - ssh
-  # - byobu
+  - ssh
+  - byobu
   # - sshfs
   # - taskfile
   # - terraform
