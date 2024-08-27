@@ -9,7 +9,6 @@
       ansible.builtin.import_tasks: pre_tasks/detect_wsl.yml
       tags:
         - always
-
     - name: Detect wsl
       ansible.builtin.debug:
         var: ansible_host_environment_is_wsl
@@ -33,7 +32,15 @@
       tags:
         - always
 
+    - name: Create users
+      ansible.builtin.import_tasks: pre_tasks/users
+      when: {{ host_user == 'root' }} 
+      tags:
+        - always
+        
+
   tasks:
+    - include_tasks: tasks/update.yml
     - name: Set roles
       ansible.builtin.set_fact:
         run_roles: "{{ ansible_run_tags != ['all'] and ansible_run_tags or default_roles | difference(exclude_roles | default([])) }}"
