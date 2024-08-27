@@ -21,7 +21,7 @@ default_roles:
   # - nala
   # - neofetch
   - neovim
-  # - zsh
+  - zsh
   # - npm
   # - nvm
   # - obsidian
@@ -40,6 +40,7 @@ default_roles:
   # - zellij
   # - spotify
   # - zoxide
+
 cmdr_bin_dir : /usr/local/bin
 user : abayoumy
 git_user_name: abayoumy
