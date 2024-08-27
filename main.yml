@@ -34,7 +34,7 @@
 
     - name: Create users
       ansible.builtin.import_tasks: pre_tasks/users
-      when: {{ host_user == 'root' }} 
+      when: {{ ansible_user_id }} == 'root'
       tags:
         - always
         
