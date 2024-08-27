@@ -2,10 +2,12 @@
   ansible.builtin.apt:
     update_cache: yes
     cache_valid_time: 3600
+  become: true
   when: ansible_facts['os_family'] == "Debian"
-  
+
 - name: Update all packages to their latest version
   ansible.builtin.apt:
     name: "*"
     state: latest
+  become: true
   when: ansible_facts['os_family'] == "Debian"

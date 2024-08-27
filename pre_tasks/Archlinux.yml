@@ -2,4 +2,5 @@
   community.general.pacman:
     update_cache: true
     upgrade: true
+  become: true
   when: ansible_facts['os_family'] == "Archlinux"
