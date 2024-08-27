@@ -17,6 +17,7 @@
 
 - name: Autoremove unneeded packages installed as dependencies
   ansible.builtin.dnf:
+    use_backend: dnf
     autoremove: yes
   when: ansible_facts['os_family'] == "RedHat"
 
