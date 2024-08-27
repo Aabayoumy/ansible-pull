@@ -11,6 +11,7 @@
     - "{{ user }}"
     - ansible
   run_once: true
+  become: true
 
 - name: Allow  user to run any commands without password
   community.general.sudoers:
@@ -20,10 +21,10 @@
     runas: root
     commands: ALL
     nopassword: true
-    become: true
   loop:
     - "{{ user }}"
     - ansible
+  become: true
 
 - name: Copy Bash files
   ansible.builtin.copy:
@@ -36,13 +37,3 @@
   with_fileglob:
     - "files/bash/.bash*"
 
-- name: Copy Bash files to root
-  ansible.builtin.copy:
-    src: "{{ item }}"
-    dest: /root/
-    owner: root
-    group: root
-    mode: '0755'
-    force: yes
-  with_fileglob:
-    - "files/bash/.bash*"
