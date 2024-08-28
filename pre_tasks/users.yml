@@ -13,17 +13,24 @@
   run_once: true
   become: true
 
-- name: Allow  user to run any commands without password
+- name: Allow  abayoumy to run any commands without password
   community.general.sudoers:
-    name: user-do-as-root
+    name: abayoumy
     state: present
-    user: "{{ item }}"
+    user: abayoumy
     runas: root
     commands: ALL
     nopassword: true
-  loop:
-    - abayoumy
-    - ansible
+  become: true
+
+- name: Allow  ansible to run any commands without password
+  community.general.sudoers:
+    name: ansible
+    state: present
+    user: ansible
+    runas: root
+    commands: ALL
+    nopassword: true
   become: true
 
 - name: Copy Bash files
