@@ -146,6 +146,7 @@ function arch_setup() {
 function rocky_setup() {
   if ! [ -x "$(command -v ansible)" ]; then
     __task "Installing Ansible"
+    _cmd "sudo dnf install epel-release -y"
     _cmd "sudo dnf update -y"
     _cmd "sudo dnf install ansible -y"
     _cmd "sudo dnf install python-argcomplete -y"
