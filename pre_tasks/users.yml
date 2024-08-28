@@ -22,7 +22,7 @@
     commands: ALL
     nopassword: true
   loop:
-    - "{{ user }}"
+    - abayoumy
     - ansible
   become: true
 
