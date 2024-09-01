@@ -181,14 +181,6 @@ update_ansible_galaxy() {
 }
 
 
-if ! [[ -d "$DOTFILES_DIR" ]]; then
-  __task "Cloning repository"
-  _cmd "git clone --quiet https://github.com/Aabayoumy/ansible-pull.git $DOTFILES_DIR"
-else
-  __task "Updating repository"
-  _cmd "git -C $DOTFILES_DIR pull --quiet"
-fi
-
 pushd "$DOTFILES_DIR" 2>&1 > /dev/null
 
 source /etc/os-release
@@ -210,6 +202,15 @@ case $ID in
 esac
 
 update_ansible_galaxy $ID
+
+
+if ! [[ -d "$DOTFILES_DIR" ]]; then
+  __task "Cloning repository"
+  _cmd "git clone --quiet https://github.com/Aabayoumy/ansible-pull.git $DOTFILES_DIR"
+else
+  __task "Updating repository"
+  _cmd "git -C $DOTFILES_DIR pull --quiet"
+fi
 
 # ansible-galaxy install -r requirements.yml
 
