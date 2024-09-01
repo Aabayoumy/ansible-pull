@@ -2,37 +2,38 @@
   connection: local
   gather_facts: yes
   become: true
-  - name: Only run "update_cache=yes" if the last one is more than 3600 seconds ago
-    ansible.builtin.apt:
-      update_cache: yes
-      cache_valid_time: 3600
-    when: ansible_facts['os_family'] == "Debian"
-  - name: Update all packages to their latest version
-    ansible.builtin.apt:
-      name: "*"
-      state: latest
-    when: ansible_facts['os_family'] == "Debian"
+  pre_tasks:
+    - name: Only run "update_cache=yes" if the last one is more than 3600 seconds ago
+      ansible.builtin.apt:
+        update_cache: yes
+        cache_valid_time: 3600
+      when: ansible_facts['os_family'] == "Debian"
+    - name: Update all packages to their latest version
+      ansible.builtin.apt:
+        name: "*"
+        state: latest
+      when: ansible_facts['os_family'] == "Debian"
+      
+    - name: dnf conf
+      ansible.builtin.lineinfile:
+        path: /etc/dnf/dnf.conf
+        line: "{{ item }}"
+      loop:
+        - max_parallel_downloads=20
+        - fastestmirror=true
+        - deltarpm=true
+      run_once: true
+      when: ansible_facts['os_family'] == "RedHat"
+    - name: Upgrade all packages
+      ansible.builtin.dnf:
+        name: "*"
+        state: latest
+      when: ansible_facts['os_family'] == "RedHat"
     
-  - name: dnf conf
-    ansible.builtin.lineinfile:
-      path: /etc/dnf/dnf.conf
-      line: "{{ item }}"
-    loop:
-      - max_parallel_downloads=20
-      - fastestmirror=true
-      - deltarpm=true
-    run_once: true
-    when: ansible_facts['os_family'] == "RedHat"
-  - name: Upgrade all packages
-    ansible.builtin.dnf:
-      name: "*"
-      state: latest
-    when: ansible_facts['os_family'] == "RedHat"
-  
-  - name: Autoremove unneeded packages installed as dependencies
-    ansible.builtin.dnf:
-      autoremove: yes
-    when: ansible_facts['os_family'] == "RedHat"
+    - name: Autoremove unneeded packages installed as dependencies
+      ansible.builtin.dnf:
+        autoremove: yes
+      when: ansible_facts['os_family'] == "RedHat"
     
   tasks:
     # - include_tasks: tasks/info.yml
