@@ -11,7 +11,7 @@
       - pkg-config
       - libtool
       - unzip
-      - ansible-lint
+      - python3-ansible-lint
       - ripgrep
     state: present
   become: true
