@@ -172,11 +172,11 @@ update_ansible_galaxy() {
   local os=$1
   local os_requirements=""
   __task "Updating Ansible Galaxy"
-  if [ -f "$DOTFILES_DIR/requirements/$os.yml" ]; then
+  if [ -f "./requirements/$os.yml" ]; then
     __task "${OVERWRITE}Updating Ansible Galaxy with OS Config: $os"
-    os_requirements="$DOTFILES_DIR/requirements/$os.yml"
+    os_requirements="./requirements/$os.yml"
   fi
-  _cmd "ansible-galaxy install -r $DOTFILES_DIR/requirements/common.yml $os_requirements"
+  _cmd "ansible-galaxy install -r ./requirements/common.yml $os_requirements"
 }
 
 
@@ -207,13 +207,13 @@ case $ID in
     ;;
 esac
 
-if ! [[ -d "$DOTFILES_DIR" ]]; then
-  __task "Cloning repository"
-  _cmd "git clone -b Pull-Test --quiet https://github.com/Aabayoumy/ansible-pull.git $DOTFILES_DIR"
-else
-  __task "Updating repository"
-  _cmd "git -C $DOTFILES_DIR pull --quiet"
-fi
+# if ! [[ -d "$DOTFILES_DIR" ]]; then
+#   __task "Cloning repository"
+#   _cmd "git clone -b Pull-Test --quiet https://github.com/Aabayoumy/ansible-pull.git $DOTFILES_DIR"
+# else
+#   __task "Updating repository"
+#   _cmd "git -C $DOTFILES_DIR pull --quiet"
+# fi
 
 update_ansible_galaxy $ID
 
