@@ -190,25 +190,25 @@ update_ansible_galaxy() {
 }
 
 
-pushd "$DOTFILES_DIR" 2>&1 > /dev/null
+# pushd "$DOTFILES_DIR" 2>&1 > /dev/null
 
-source /etc/os-release
-__task "Loading Setup for detected OS: $ID"
-case $ID in
-  ubuntu|debian)
-    ubuntu_setup
-    ;;
-  arch)
-    arch_setup
-    ;;
-  rocky)
-    rocky_setup
-    ;;
-  *)
-    __task "Unsupported OS"
-    _cmd "echo 'Unsupported OS'"
-    ;;
-esac
+# source /etc/os-release
+# __task "Loading Setup for detected OS: $ID"
+# case $ID in
+#   ubuntu|debian)
+#     ubuntu_setup
+#     ;;
+#   arch)
+#     arch_setup
+#     ;;
+#   rocky)
+#     rocky_setup
+#     ;;
+#   *)
+#     __task "Unsupported OS"
+#     _cmd "echo 'Unsupported OS'"
+#     ;;
+# esac
 
 update_ansible_galaxy $ID
 
