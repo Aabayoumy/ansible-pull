@@ -198,7 +198,7 @@ else
   _cmd "git -C $DOTFILES_DIR pull --quiet"
 fi
 
-pushd "$DOTFILES_DIR" 2>&1 > /dev/null
+# pushd "$DOTFILES_DIR" 2>&1 > /dev/null
 
 # source /etc/os-release
 # __task "Loading Setup for detected OS: $ID"
