@@ -116,7 +116,7 @@ function arch_setup() {
   if ! [ -x "$(command -v ansible)" ]; then
     __task "Installing Ansible"
     _cmd "sudo pacman -Sy --noconfirm"
-    _cmd "sudo pacman -S --noconfirm ansible"
+    _cmd "sudo pacman -S --noconfirm ansible-core git"
     _cmd "sudo pacman -S --noconfirm python-argcomplete"
     # _cmd "sudo activate-global-python-argcomplete3"
   fi
@@ -147,7 +147,7 @@ function rocky_setup() {
     __task "Installing Ansible"
     _cmd "sudo dnf install epel-release -y"
     _cmd "sudo dnf update -y"
-    _cmd "sudo dnf install ansible -y"
+    _cmd "sudo dnf install ansible-core git -y"
     _cmd "sudo dnf install python-argcomplete -y"
     # _cmd "sudo activate-global-python-argcomplete3"
   fi
