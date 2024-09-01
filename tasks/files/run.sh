@@ -45,15 +45,6 @@ SSH_DIR="$HOME/.ssh"
 IS_FIRST_RUN="$HOME/.dotfiles_run"
 
 
-if ! [ -x "$(command -v ansible-pull)" ]; then 
-    packagesNeeded='ansible-core git sudo'
-    if [ -x "$(command -v apt)" ]; then sudo apt update && sudo apt upgrade -y && sudo apt install $packagesNeeded -y
-    elif [ -x "$(command -v dnf)" ];     then sudo dnf update -y && sudo dnf install $packagesNeeded -y
-    elif [ -x "$(command -v zypper)" ];  then sudo zypper install $packagesNeeded
-    else echo "FAILED TO INSTALL PACKAGE: Package manager not found. You must manually install: $packagesNeeded">&2; 
-    fi
-fi
-
 function __task {
   # if _task is called while a task was set, complete the previous
   if [[ $TASK != "" ]]; then
@@ -198,25 +189,25 @@ else
   _cmd "git -C $DOTFILES_DIR pull --quiet"
 fi
 
-# pushd "$DOTFILES_DIR" 2>&1 > /dev/null
+pushd "$DOTFILES_DIR" 2>&1 > /dev/null
 
-# source /etc/os-release
-# __task "Loading Setup for detected OS: $ID"
-# case $ID in
-#   ubuntu|debian)
-#     ubuntu_setup
-#     ;;
-#   arch)
-#     arch_setup
-#     ;;
-#   rocky)
-#     rocky_setup
-#     ;;
-#   *)
-#     __task "Unsupported OS"
-#     _cmd "echo 'Unsupported OS'"
-#     ;;
-# esac
+source /etc/os-release
+__task "Loading Setup for detected OS: $ID"
+case $ID in
+  ubuntu|debian)
+    ubuntu_setup
+    ;;
+  arch)
+    arch_setup
+    ;;
+  rocky)
+    rocky_setup
+    ;;
+  *)
+    __task "Unsupported OS"
+    _cmd "echo 'Unsupported OS'"
+    ;;
+esac
 
 update_ansible_galaxy $ID
 
