@@ -247,10 +247,11 @@ __task "Running playbook ($USER)";
 _cmd "ansible-pull -U https://github.com/Aabayoumy/ansible-pull.git -C Pull-Test"
 _task_done
 
+
 if [ $USER == "root" ]; then
-  __task "Running playbook"; 
-  reboot
+  __task "Reboot"; 
   _task_done
+  reboot
 fi
 # popd 2>&1 > /dev/null
 
