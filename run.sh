@@ -155,7 +155,7 @@ function rocky_setup() {
     __task "Installing Python3"
     _cmd "sudo dnf install  python3 git -y"
   fi
-  if ! [ -x "$(command -v python-pip)" ]; then
+  if ! [ -x "$(command -v pip)" ]; then
     __task "Installing Python3 Pip"
     _cmd "sudo dnf install python-pip -y"
   fi
