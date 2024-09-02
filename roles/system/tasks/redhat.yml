@@ -25,3 +25,14 @@
       - byobu
     state: latest
   become: true
+
+- name: Enable ssh service
+  ansible.builtin.systemd_service:
+    name: sshd
+    enabled: true
+  become: true
+
+- name: Make sure sshd service unit is running
+  ansible.builtin.systemd_service:
+    state: started
+    name: sshd

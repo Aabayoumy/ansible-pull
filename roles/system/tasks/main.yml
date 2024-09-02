@@ -1,11 +1,11 @@
 ---
-- name: "System | Checking for Distribution Config: {{ ansible_distribution }}"
+- name: "System | Checking for Distribution Config: {{ ansible_os_family }}"
   ansible.builtin.stat:
-    path: "{{ role_path }}/tasks/{{ ansible_distribution }}.yml"
+    path: "{{ role_path }}/tasks/{{ ansible_os_family }}.yml"
   register: system_distribution_config
 
-- name: "System | Run Tasks: {{ ansible_distribution }}"
-  ansible.builtin.include_tasks: "{{ ansible_distribution }}.yml"
+- name: "System | Run Tasks: {{ ansible_os_family }}"
+  ansible.builtin.include_tasks: "{{ ansible_os_family }}.yml"
   when: system_distribution_config.stat.exists
 
 - name: "System | Set hosts"
