@@ -4,3 +4,7 @@
     host_user: "{{ ansible_env['USER']}}"
   when: host_user is not defined
   become: false
+
+- name: get user
+  ansible.builtin.debug:
+    msg: "'{{ lookup('ansible.builtin.env', 'USER') }}' is current user"
