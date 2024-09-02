@@ -76,7 +76,7 @@
 
     - name: User
       ansible.builtin.debug:
-        var: {{ ansible_user_id }}
+        var: ansible_user_id
       tags:
         - always
 
