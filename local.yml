@@ -101,3 +101,4 @@
       with_items: "{{ run_roles }}"
       tags:
         - always
+      when: not host_user == "root"
