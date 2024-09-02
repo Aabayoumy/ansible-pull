@@ -177,10 +177,10 @@ update_ansible_galaxy() {
   #   os_requirements="./requirements/$os.yml"
   # fi
   # _cmd "ansible-galaxy install -r ./requirements/common.yml $os_requirements"
-  _cmd "ansible-galaxy install community.general ansible.posix --ignore-errors"
+  _cmd "ansible-galaxy collection install community.general ansible.posix --ignore-errors"
   case $os in
     arch)
-      _cmd "ansible-galaxy install kewlfft.aur --ignore-errors"
+      _cmd "ansible-galaxy collection install kewlfft.aur --ignore-errors"
       ;;
     *)
   esac
