@@ -242,6 +242,6 @@ __task "Running playbook ($USER)";
 _cmd "sudo ansible-pull -U https://github.com/Aabayoumy/ansible-pull.git -C Pull-Test"
 _task_done
 
-popd 2>&1 > /dev/null
+# popd 2>&1 > /dev/null
 
 # curl -L https://raw.githubusercontent.com/Aabayoumy/ansible-pull/Pull-Test/run.sh | bash
