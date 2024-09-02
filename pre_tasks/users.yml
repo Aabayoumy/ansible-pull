@@ -8,12 +8,12 @@
     state: present
     update_password: on_create
   loop:
-    - "{{ user }}"
+    - abayoumy
     - ansible
   run_once: true
   become: true
 
-- name: Allow  abayoumy to run any commands without password
+- name: Add abayoumy to sudoers
   community.general.sudoers:
     name: abayoumy
     state: present
@@ -23,7 +23,7 @@
     nopassword: true
   become: true
 
-- name: Allow  ansible to run any commands without password
+- name: Add ansible to sudoers
   community.general.sudoers:
     name: ansible
     state: present
@@ -36,9 +36,9 @@
 - name: Copy Bash files
   ansible.builtin.copy:
     src: "{{ item }}"
-    dest: /home/"{{ user }}"/
-    owner: "{{ user }}"
-    group: "{{ user }}"
+    dest: /home/abayoumy/
+    owner: abayoumy
+    group: abayoumy
     mode: '0755'
     force: yes
   with_fileglob:
