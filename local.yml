@@ -73,12 +73,19 @@
         - always
         
   tasks:
+
+    - name: User
+      ansible.builtin.debug:
+        var: host_user
+      tags:
+        - always
+
     - name: Set roles
       ansible.builtin.set_fact:
         run_roles: "{{ ansible_run_tags != ['all'] and ansible_run_tags or default_roles | difference(exclude_roles | default([])) }}"
       tags:
         - always
-      when: not host_user == "root"
+      when: host_user != "root"
 
     - name: Set roles for root
       ansible.builtin.set_fact:
