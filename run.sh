@@ -260,7 +260,7 @@ _task_done
 
 
 __task "IP $(hostname  -I | cut -f1 -d' ')"
-  _task_done
+_task_done
 if [ $USER == "root" ]; then
   __task "Reboot"; 
   _task_done
