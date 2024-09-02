@@ -124,7 +124,7 @@ function arch_setup() {
     __task "Installing Python3"
     _cmd "sudo pacman -S --noconfirm python3 git"
   fi
-  if ! pacman -Q python-pip >/dev/null 2>&1; then
+  if ! pacman -Q pip >/dev/null 2>&1; then
     __task "Installing Python3 Pip"
     _cmd "sudo pacman -S --noconfirm python-pip"
   fi
