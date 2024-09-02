@@ -111,3 +111,7 @@
       with_items: "{{ run_roles }}"
       tags:
         - always
+
+    - name: Reboot the machine
+      ansible.builtin.reboot:
+      when: host_user == "root"
