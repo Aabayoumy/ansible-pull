@@ -33,6 +33,22 @@
     nopassword: true
   become: true
 
+- name: add  ssh keys for abayoumy
+  authorized_key:
+    user: abayoumy
+    state: present
+    key: "{{ lookup('file', '{{ item }}') }}"
+  with_fileglob:
+    - "files/*.pub"
+  become: true
+    
+- name: add ssh keys for ansible
+  authorized_key:
+    user: ansible
+    state: present
+    key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKG7DNrs2hcOmEG4gXRVyvAgrvoiE2iIBSFoPtRYPHl9 ansible"
+  become: true
+  
 - name: Copy Bash files
   ansible.builtin.copy:
     src: "{{ item }}"
