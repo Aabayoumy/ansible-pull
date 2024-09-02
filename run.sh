@@ -238,7 +238,7 @@ update_ansible_galaxy $ID
   # _task_done
 # fi
 
-export ANSIBLE_LOG_PATH=/tmp/ansible_$(date "+%Y%m%d%H%M%S").log 
+export ANSIBLE_LOG_PATH=/tmp/ansible_$(date "+%Y%m%d%H%M").log 
 touch $ANSIBLE_LOG_PATH 
 
 __task "Running playbook"; 
