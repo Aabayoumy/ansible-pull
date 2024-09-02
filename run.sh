@@ -238,8 +238,11 @@ update_ansible_galaxy $ID
   # _task_done
 # fi
 
+export ANSIBLE_LOG_PATH=/tmp/ansible_$(date "+%Y%m%d%H%M%S").log 
+touch $ANSIBLE_LOG_PATH 
+
 __task "Running playbook"; 
-_cmd "ANSIBLE_LOG_PATH=/tmp/ansible_$(date "+%Y%m%d%H%M%S").log sudo ansible-pull -U https://github.com/Aabayoumy/ansible-pull.git -C Pull-Test"
+_cmd "sudo ansible-pull -U https://github.com/Aabayoumy/ansible-pull.git -C Pull-Test"
 _task_done
 
 # popd 2>&1 > /dev/null
