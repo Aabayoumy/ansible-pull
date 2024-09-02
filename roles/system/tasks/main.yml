@@ -16,6 +16,11 @@
   become: true
   when: not ansible_host_environment_is_wsl
 
+- name: Set timezone to Africa/Cairo
+  become: true
+  community.general.timezone:
+    name: Africa/Cairo
+
 - name: System | Detecting win32yank
   ansible.builtin.stat:
     path: /usr/local/bin/win32yank.exe
@@ -54,4 +59,3 @@
       loop:
         - /tmp/win32yank.zip
         - /tmp/win32yank.exe
-

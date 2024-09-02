@@ -113,6 +113,9 @@ function ubuntu_setup() {
     __task "Installing Python3 Watchdog"
     _cmd "sudo apt-get install -y python3-watchdog"
   fi
+  if ! dpkg -s virt-what >/dev/null 2>&1; then
+    sudo apt install -y virt-what
+  fi
 }
 
 function arch_setup() {
@@ -166,6 +169,12 @@ function rocky_setup() {
     __task "Installing Python3 Watchdog"
     _cmd "pip install watchdog"
   fi
+  _cmd "sudo dnf install  virt-what -y"
+
+  if sudo /usr/sbin/virt-what | grep -q 'kvm'; then
+    _cmd "sudo dnf install qemu-guest-agent -y"
+    _cmd "sudo systemctl enable --now qemu-guest-agent"
+  fi
 
   __task "Setting Locale"
   _cmd "sudo localectl set-locale LANG=en_US.UTF-8"
@@ -195,8 +204,6 @@ update_ansible_galaxy() {
       ;;
     *)
   esac
-
-
 }
 
 
