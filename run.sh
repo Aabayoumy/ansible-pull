@@ -189,18 +189,14 @@ update_ansible_galaxy() {
   #   os_requirements="./requirements/$os.yml"
   # fi
   # _cmd "ansible-galaxy install -r ./requirements/common.yml $os_requirements"
-  if [ NOT -f ~/.ansible/collections/ansible_collections/community/general/FILES.json ]; then
-    __task "Updating Ansible Galaxy"
-    _cmd "ansible-galaxy collection install community.general ansible.posix --ignore-errors"
-    _task_done
-  fi
+  __task "Updating Ansible Galaxy"
+  _cmd "ansible-galaxy collection install community.general ansible.posix --ignore-errors"
+  _task_done
   case $os in
     arch)
-      if [ NOT -f ~/.ansible/collections/ansible_collections/kewlfft/aur/FILES.json ]; then
-        __task "Updating Ansible Galaxy for Arch"
-        _cmd "ansible-galaxy collection install kewlfft.aur --ignore-errors"  
-        _task_done
-      fi
+      __task "Updating Ansible Galaxy for Arch"
+      _cmd "ansible-galaxy collection install kewlfft.aur --ignore-errors"  
+      _task_done
       ;;
     *)
   esac
