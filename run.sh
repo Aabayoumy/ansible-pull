@@ -35,8 +35,8 @@ RIGHT_ANGLE="${GREEN}\xE2\x88\x9F${NC}"
 
 DOTFILES_LOG="$HOME/.dotfiles.log"
 
-export ANSIBLE_LOG_PATH=/tmp/ansible_$(date "+%Y%m%d%H%M").log 
-touch $ANSIBLE_LOG_PATH 
+# export ANSIBLE_LOG_PATH=/tmp/ansible_$(date "+%Y%m%d%H%M").log 
+# touch $ANSIBLE_LOG_PATH 
 
 set -e
 
