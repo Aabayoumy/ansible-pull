@@ -238,7 +238,7 @@ update_ansible_galaxy $ID
   # _task_done
 # fi
 
-__task "Running playbook - $USER"; 
+__task "Running playbook"; 
 _cmd "sudo ansible-pull -U https://github.com/Aabayoumy/ansible-pull.git -C Pull-Test"
 _task_done
 
