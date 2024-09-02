@@ -173,8 +173,8 @@
 - name: Create link bat to batcat in Debian
   become: true
   ansible.builtin.file:
-    src: '/usr/bin/batcat'
-    dest: '/usr/bin/bat'
+    src: '/usr/bin/bat'
+    dest: '/usr/bin/cat'
     state: link
   when: ansible_os_family == 'Debian'
   # and ansible_distribution_version is version('23.04', '<')
