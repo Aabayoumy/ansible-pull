@@ -183,18 +183,20 @@ update_ansible_galaxy() {
   if [ NOT -f ~/.ansible/collections/ansible_collections/community/general/FILES.json ]; then
     __task "Updating Ansible Galaxy"
     _cmd "ansible-galaxy collection install community.general ansible.posix --ignore-errors"
+    _task_done
   fi
   case $os in
     arch)
       if [ NOT -f ~/.ansible/collections/ansible_collections/kewlfft/aur/FILES.json ]; then
         __task "Updating Ansible Galaxy for Arch"
         _cmd "ansible-galaxy collection install kewlfft.aur --ignore-errors"  
+        _task_done
       fi
       ;;
     *)
   esac
 
-  _task_done
+
 }
 
 
