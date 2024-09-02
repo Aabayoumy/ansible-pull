@@ -256,6 +256,8 @@ _cmd "ansible-pull -U https://github.com/Aabayoumy/ansible-pull.git -C Pull-Test
 _task_done
 
 
+__task "IP $(hostname  -I | cut -f1 -d' ')"
+  _task_done
 if [ $USER == "root" ]; then
   __task "Reboot"; 
   _task_done
