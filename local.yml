@@ -74,12 +74,6 @@
         
   tasks:
 
-    - name: User
-      ansible.builtin.debug:
-        var: ansible_user_id
-      tags:
-        - always
-
     - name: Set roles
       ansible.builtin.set_fact:
         run_roles: "{{ ansible_run_tags != ['all'] and ansible_run_tags or default_roles | difference(exclude_roles | default([])) }}"
