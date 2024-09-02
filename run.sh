@@ -244,7 +244,7 @@ update_ansible_galaxy $ID
 
 
 __task "Running playbook"; 
-_cmd "sudo ansible-pull -U https://github.com/Aabayoumy/ansible-pull.git -C Pull-Test"
+_cmd "ansible-pull -U https://github.com/Aabayoumy/ansible-pull.git -C Pull-Test"
 _task_done
 
 # popd 2>&1 > /dev/null
