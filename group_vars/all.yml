@@ -41,6 +41,9 @@ default_roles:
   # - spotify
   # - zoxide
 
+root_roles:
+  - system
+
 cmdr_bin_dir : /usr/local/bin
 user : abayoumy
 git_user_name: abayoumy
