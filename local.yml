@@ -109,3 +109,4 @@
     - name: Reboot the machine
       ansible.builtin.reboot:
       when: host_user == "root"
+      become: true
