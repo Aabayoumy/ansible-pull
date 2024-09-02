@@ -174,16 +174,22 @@ function rocky_setup() {
 update_ansible_galaxy() {
   local os=$1
   # local os_requirements=""
-  __task "Updating Ansible Galaxy"
+
   # if [ -f "./requirements/$os.yml" ]; then
   #   __task "${OVERWRITE}Updating Ansible Galaxy with OS Config: $os"
   #   os_requirements="./requirements/$os.yml"
   # fi
   # _cmd "ansible-galaxy install -r ./requirements/common.yml $os_requirements"
-  _cmd "ansible-galaxy collection install community.general ansible.posix --ignore-errors"
+  if [ NOT -f ~/.ansible/collections/ansible_collections/community/general/FILES.json ]; then
+    __task "Updating Ansible Galaxy"
+    _cmd "ansible-galaxy collection install community.general ansible.posix --ignore-errors"
+  fi
   case $os in
     arch)
-      _cmd "ansible-galaxy collection install kewlfft.aur --ignore-errors"
+      if [ NOT -f ~/.ansible/collections/ansible_collections/kewlfft/aur/FILES.json ]; then
+        __task "Updating Ansible Galaxy for Arch"
+        _cmd "ansible-galaxy collection install kewlfft.aur --ignore-errors"  
+      fi
       ;;
     *)
   esac
