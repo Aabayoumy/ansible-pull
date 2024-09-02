@@ -35,6 +35,9 @@ RIGHT_ANGLE="${GREEN}\xE2\x88\x9F${NC}"
 
 DOTFILES_LOG="$HOME/.dotfiles.log"
 
+export ANSIBLE_LOG_PATH=/tmp/ansible_$(date "+%Y%m%d%H%M").log 
+touch $ANSIBLE_LOG_PATH 
+
 set -e
 
 # Paths
@@ -238,8 +241,7 @@ update_ansible_galaxy $ID
   # _task_done
 # fi
 
-export ANSIBLE_LOG_PATH=/tmp/ansible_$(date "+%Y%m%d%H%M").log 
-touch $ANSIBLE_LOG_PATH 
+
 
 __task "Running playbook"; 
 _cmd "sudo ansible-pull -U https://github.com/Aabayoumy/ansible-pull.git -C Pull-Test"
