@@ -1,10 +1,10 @@
 ---
 # tasks file for oh_my_zsh
 - name: Install Git
-  become: true
   ansible.builtin.package:
     state: present
     name: git
+  become: true
 
 - name: Install ZSH
   become: true
