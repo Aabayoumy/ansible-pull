@@ -1,58 +1,129 @@
----
-# tasks file for starship
-- name: Install starship (cross-shell prompt) as a package
-  become: true
-  ansible.builtin.package:
-    state: present
-    name: starship
-  when: ansible_os_family == 'Archlinux'
+format = """
+[](#3B4252)\
+$username$hostname\
+[](bg:#434C5E fg:#3B4252)\
+$directory\
+[](fg:#434C5E bg:#4C566A)\
+$git_branch\
+$git_status\
+[](fg:#4C566A bg:#86BBD8)\
+$c\
+$elixir\
+$elm\
+$golang\
+$haskell\
+$java\
+$julia\
+$nodejs\
+$nim\
+$rust\
+[](fg:#86BBD8 bg:#06969A)\
+$docker_context\
+[](fg:#06969A bg:#33658A)\
+$time\
+[ ](fg:#33658A)\
+"""
+command_timeout = 5000
+# Disable the blank line at the start of the prompt
+# add_newline = false
 
-- name: Install curl (for starship installation)
-  become: true
-  ansible.builtin.package:
-    state: present
-    name: curl
-  when: ansible_os_family != 'Archlinux'
+# You can also replace your username with a neat symbol like  to save some space
+[username]
+show_always = true
+style_user = "bg:#3B4252"
+style_root = "bg:#3B4252"
+format = '[$user]($style)'
 
-- name: Get starship install script
-  ansible.builtin.get_url:
-    url: https://starship.rs/install.sh
-    dest: /tmp/starship_install.sh
-    mode: '0755'
-  register: starship_installation_script
-  when: ansible_os_family != 'Archlinux'
+[hostname]
+ssh_only = false
+style = "bg:#3B4252"
+format = '[@$hostname ]($style)'
 
-- name: Install starship with installation script
-  become: true
-  ansible.builtin.shell:
-    cmd: /tmp/starship_install.sh --yes
-    executable: /bin/sh
-  when: ansible_os_family != 'Archlinux' and starship_installation_script.changed
-# if the previous task hasn't changed, the shell script is already there
-# and we have already installed starship
-# we check this to satisfy idempotence
+[directory]
+style = "bg:#434C5E"
+format = "[ $path ]($style)"
+truncation_length = 3
+truncation_symbol = "…/"
 
-# - name: Creates directory
-#   ansible.builtin.file:
-#     path: ~/.config
-#     state: directory
-#   when: copy_dot_files
-  
-# - name: Copy zshrc (for starship)
-#   ansible.builtin.copy:
-#     src: zshrc-starship
-#     dest: ~/.zshrc
-#     mode: 0644
-#   when: copy_dot_files
+# Here is how you can shorten some long paths by text replacement
+# similar to mapped_locations in Oh My Posh:
+[directory.substitutions]
+"Documents" = " "
+"Downloads" = " "
+"Music" = " "
+"Pictures" = " "
+# Keep in mind that the order matters. For example:
+# "Important Documents" = "  "
+# will not be replaced, because "Documents" was already substituted before.
+# So either put "Important Documents" before "Documents" or use the substituted version:
+# "Important  " = "  "
 
-- name: Ensure .config directory exists
-  ansible.builtin.file:
-    path: "{{ ansible_env.HOME }}/.config"
-    state: directory
-    mode: '0755'
+[c]
+symbol = " "
+style = "bg:#86BBD8"
+format = '[ $symbol ($version) ]($style)'
 
-- name: Template starship configuration
-  ansible.builtin.template:
-    src: starship.toml.j2
-    dest: "{{ ansible_env.HOME }}/.config/starship.toml"
-    mode: '0644'
+[docker_context]
+symbol = " "
+style = "bg:#06969A"
+format = '[ $symbol $context ]($style) $path'
+
+[elixir]
+symbol = " "
+style = "bg:#86BBD8"
+format = '[ $symbol ($version) ]($style)'
+
+[elm]
+symbol = " "
+style = "bg:#86BBD8"
+format = '[ $symbol ($version) ]($style)'
+
+[git_branch]
+symbol = ""
+style = "bg:#4C566A"
+format = '[ $symbol $branch ]($style)'
+
+[git_status]
+style = "bg:#4C566A"
+format = '[$all_status$ahead_behind ]($style)'
+
+[golang]
+symbol = " "
+style = "bg:#86BBD8"
+format = '[ $symbol ($version) ]($style)'
+
+[haskell]
+symbol = " "
+style = "bg:#86BBD8"
+format = '[ $symbol ($version) ]($style)'
+
+[java]
+symbol = " "
+style = "bg:#86BBD8"
+format = '[ $symbol ($version) ]($style)'
+
+[julia]
+symbol = " "
+style = "bg:#86BBD8"
+format = '[ $symbol ($version) ]($style)'
+
+[nodejs]
+symbol = ""
+style = "bg:#86BBD8"
+format = '[ $symbol ($version) ]($style)'
+
+[nim]
+symbol = " "
+style = "bg:#86BBD8"
+format = '[ $symbol ($version) ]($style)'
+
+[rust]
+symbol = ""
+style = "bg:#86BBD8"
+format = '[ $symbol ($version) ]($style)'
+
+[time]
+disabled = false
+time_format = "%R" # Hour:Minute Format
+style = "bg:#33658A"
+format = '[ $time ]($style)'
