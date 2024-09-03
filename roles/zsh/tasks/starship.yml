@@ -47,12 +47,12 @@
 
 - name: Ensure .config directory exists
   ansible.builtin.file:
-    path: "{{ ansible_env.HOME }}/.config"
+    path: "/home/{{ host_user }}/.config"
     state: directory
     mode: '0755'
 
 - name: Template starship configuration
   ansible.builtin.template:
     src: starship.toml.j2
-    dest: "{{ ansible_env.HOME }}/.config/starship.toml"
+    dest: "/home/{{ host_user }}/.config/starship.toml"
     mode: '0644'
