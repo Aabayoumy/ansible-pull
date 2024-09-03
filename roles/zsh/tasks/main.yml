@@ -224,8 +224,8 @@
 - name: Tasks for starship
   ansible.builtin.include_tasks: starship.yml
   
-# Add this new task to create .config folder
-- name: Ensure .config directory exists
+# Ensure .config directory exists for regular user
+- name: Ensure .config directory exists for regular user
   ansible.builtin.file:
     path: "/home/{{ host_user }}/.config"
     state: directory
@@ -233,13 +233,31 @@
     group: "{{ host_user }}"
     mode: '0755'
 
-# Add this new task
+# Ensure .config directory exists for root user
+- name: Ensure .config directory exists for root user
+  become: true
+  ansible.builtin.file:
+    path: "/root/.config"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
 - name: Copy .zshrc to user's home directory
   ansible.builtin.template:
     src: zshrc.j2
     dest: "/home/{{ host_user }}/.zshrc"
     owner: "{{ host_user }}"
     group: "{{ host_user }}"
+    mode: '0644'
+
+- name: Copy .zshrc to root user's profile
+  become: true
+  ansible.builtin.template:
+    src: zshrc.j2
+    dest: "/root/.zshrc"
+    owner: root
+    group: root
     mode: '0644'
 
 - name: install pfetch

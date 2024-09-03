@@ -51,8 +51,22 @@
     state: directory
     mode: '0755'
 
-- name: Template starship configuration
+- name: Template starship configuration for host user
   ansible.builtin.template:
     src: starship.toml.j2
     dest: "/home/{{ host_user }}/.config/starship.toml"
+    mode: '0644'
+
+- name: Ensure root .config directory exists
+  become: true
+  ansible.builtin.file:
+    path: "/root/.config"
+    state: directory
+    mode: '0755'
+
+- name: Template starship configuration for root user
+  become: true
+  ansible.builtin.template:
+    src: starship.toml.j2
+    dest: "/root/.config/starship.toml"
     mode: '0644'
