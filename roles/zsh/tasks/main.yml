@@ -12,21 +12,10 @@
     name: zsh
     state: present
 
-- name: Override powerline fonts package name for Debian.
-  ansible.builtin.set_fact:
-    powerlinefonts: fonts-powerline
-  when: ansible_os_family == 'Debian'
-
 - name: Override fd-find package name for Archlinux.
   ansible.builtin.set_fact:
     fdfind: fd
   when: ansible_os_family == 'Archlinux'
-
-- name: Install Powerline fonts
-  become: true
-  ansible.builtin.package:
-    state: present
-    name: "{{ powerlinefonts }}"
 
 - name: Install ripgrep
   become: true
@@ -98,21 +87,6 @@
     - '*/dust'
     remote_src: true
   when: ansible_os_family != 'Archlinux' and dust_rc.rc != 0
-
-- name: Install Google Noto emoji fonts
-  become: true
-  ansible.builtin.package:
-    state: present
-    name: noto-fonts-emoji
-  when: ansible_os_family == 'Archlinux'
-
-# To get "icons" in ezaoutput
-- name: Install Patched font Arimo from nerd-fonts (Arch)
-  become: true
-  ansible.builtin.package:
-    state: present
-    name: ttf-arimo-nerd
-  when: ansible_os_family == 'Archlinux'
 
 # Required for the Ubuntu repository (see below)
 - name: Install GPG and Wget in Ubuntu
@@ -244,16 +218,29 @@
 - name: Change user shell to zsh 
   become: true
   ansible.builtin.user:
-    name: "{{ ansible_user_id }}"
+    name: "{{ host_user }}"
     shell: /bin/zsh
 
 - name: Tasks for starship
   ansible.builtin.include_tasks: starship.yml
-  when: with_starship
+  
+# Add this new task to create .config folder
+- name: Ensure .config directory exists
+  ansible.builtin.file:
+    path: "/home/{{ host_user }}/.config"
+    state: directory
+    owner: "{{ host_user }}"
+    group: "{{ host_user }}"
+    mode: '0755'
 
-- name: Tasks for p10k
-  ansible.builtin.include_tasks: p10k.yml
-  when: not with_starship
+# Add this new task
+- name: Copy .zshrc to user's home directory
+  ansible.builtin.template:
+    src: zshrc.j2
+    dest: "/home/{{ host_user }}/.zshrc"
+    owner: "{{ host_user }}"
+    group: "{{ host_user }}"
+    mode: '0644'
 
-- name: Tasks for p10k
+- name: install pfetch
   ansible.builtin.include_tasks: pfetch.yml
