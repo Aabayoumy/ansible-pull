@@ -1,3 +1,16 @@
+- name: Copy dotfiles to /etc/skel and root user profile
+  ansible.builtin.copy:
+    src: "files/dotfiles/"
+    dest: "{{ item }}"
+    owner: root
+    group: root
+    mode: '0644'
+    directory_mode: '0755'
+  loop:
+    - "/etc/skel/"
+    - "/root/"
+  become: true
+
 - name: Create Users Task
   user:
     name: "{{ item }}"
@@ -49,14 +62,28 @@
     key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKG7DNrs2hcOmEG4gXRVyvAgrvoiE2iIBSFoPtRYPHl9 ansible"
   become: true
   
-- name: Copy Bash files
-  ansible.builtin.copy:
-    src: "{{ item }}"
-    dest: /home/abayoumy/
-    owner: abayoumy
-    group: abayoumy
+  
+# Ensure .config directory exists for regular user
+- name: Ensure .config directory exists for users
+  become: true
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: directory
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
     mode: '0755'
-    force: yes
-  with_fileglob:
-    - "files/bash/.bash*"
+  loop:
+    - { path: "/home/{{ host_user }}/.config", owner: "{{ host_user }}", group: "{{ host_user }}" }
+    - { path: "/root/.config", owner: "root", group: "root" }
+
+# - name: Copy Bash files
+#   ansible.builtin.copy:
+#     src: "{{ item }}"
+#     dest: /home/abayoumy/
+#     owner: abayoumy
+#     group: abayoumy
+#     mode: '0755'
+#     force: yes
+#   with_fileglob:
+#     - "files/bash/.bash*"
 
