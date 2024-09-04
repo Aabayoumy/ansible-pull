@@ -215,6 +215,14 @@
     dest: /home/{{ host_user }}/.oh-my-zsh/custom/plugins/autoupdate
     depth: 1
 
+- name: Set ownership and permissions for Oh My Zsh directory
+  ansible.builtin.file:
+    path: /home/{{ host_user }}/.oh-my-zsh
+    owner: "{{ host_user }}"
+    group: "{{ host_user }}"
+    mode: '0755'
+    recurse: yes
+
 - name: Change user shell to zsh 
   become: true
   ansible.builtin.user:
