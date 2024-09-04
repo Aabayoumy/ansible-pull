@@ -1,13 +1,8 @@
 ---
-- name: check pfetch
-  stat:
-    path: /usr/local/bin/pfetch
-  register: pfetch
-
-- name: check pfetch link
+- name: Check pfetch
   stat:
     path: /usr/bin/pfetch
-  register: pfetch_link
+  register: pfetch
 
 - name: Get latest pfetch-rs release info
   uri:
@@ -15,10 +10,28 @@
     return_content: yes
   register: pfetch_release_info
 
+- name: Get installed pfetch version
+  command: /usr/bin/pfetch --version
+  register: installed_pfetch_version
+  changed_when: false
+  failed_when: false
+  when: pfetch.stat.exists
+
+- name: Remove old pfetch version
+  file:
+    path: /usr/bin/pfetch
+    state: absent
+  become: true
+  when: 
+    - pfetch.stat.exists
+    - installed_pfetch_version.stdout is defined
+    - installed_pfetch_version.stdout.split()[1] != pfetch_release_info.json.tag_name[1:]
+
+
 - name: "Installing latest pfetch-rs"
   unarchive:
     src: "{{ pfetch_release_info.json.assets | selectattr('name', 'match', 'pfetch-linux-gnu-x86_64.tar.gz') | map(attribute='browser_download_url') | first }}"
-    dest: /usr/local/bin
+    dest: /usr/bin
     remote_src: yes
     mode: '0755'
     owner: root
@@ -26,15 +39,6 @@
   become: true
   when: not (pfetch.stat.exists)
 
-- name: Create a symbolic link
-  ansible.builtin.file:
-    src: /usr/local/bin/pfetch
-    dest: /usr/bin/pfetch
-    owner: root
-    group: root
-    state: link
-  become: true
-  when: not (pfetch_link.stat.exists) 
 
 # https://api.github.com/repos/Gobidev/pfetch-rs/releases/latest
 
