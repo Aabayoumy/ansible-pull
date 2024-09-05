@@ -28,6 +28,9 @@
   become_method: sudo
   when: current_timezone.stdout != 'Africa/Cairo'
 
+
+
+
 - name: System | Detecting win32yank
   ansible.builtin.stat:
     path: /usr/local/bin/win32yank.exe
@@ -66,3 +69,33 @@
       loop:
         - /tmp/win32yank.zip
         - /tmp/win32yank.exe
+
+- name: Check if IPv6 is enabled
+  ansible.builtin.command: sysctl -n net.ipv6.conf.all.disable_ipv6
+  register: ipv6_status
+  changed_when: false
+  check_mode: no
+
+- name: Disable IPv6
+  block:
+    - name: Disable IPv6 via sysctl
+      ansible.builtin.sysctl:
+        name: "{{ item }}"
+        value: '1'
+        state: present
+        reload: yes
+      loop:
+        - net.ipv6.conf.all.disable_ipv6
+        - net.ipv6.conf.default.disable_ipv6
+        - net.ipv6.conf.lo.disable_ipv6
+      become: yes
+
+    - name: Update GRUB to disable IPv6
+      ansible.builtin.lineinfile:
+        path: /etc/default/grub
+        regexp: '^GRUB_CMDLINE_LINUX_DEFAULT='
+        line: 'GRUB_CMDLINE_LINUX_DEFAULT="ipv6.disable=1"'
+      become: yes
+      notify: Update GRUB
+
+  when: ipv6_status.stdout == "0"
