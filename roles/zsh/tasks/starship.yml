@@ -32,19 +32,6 @@
 # and we have already installed starship
 # we check this to satisfy idempotence
 
-# - name: Creates directory
-#   ansible.builtin.file:
-#     path: ~/.config
-#     state: directory
-#   when: copy_dot_files
-  
-# - name: Copy zshrc (for starship)
-#   ansible.builtin.copy:
-#     src: zshrc-starship
-#     dest: ~/.zshrc
-#     mode: 0644
-#   when: copy_dot_files
-
 - name: Ensure .config directory exists
   ansible.builtin.file:
     path: "/home/{{ host_user }}/.config"

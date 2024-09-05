@@ -185,43 +185,14 @@
     state: present
     name: fzf
 
-- name: Install Oh My Zsh # noqa: latest
-  ansible.builtin.git:
-    repo: https://github.com/ohmyzsh/ohmyzsh.git
-    dest: /home/{{ host_user }}/.oh-my-zsh
-    depth: 1
+- name: Check if .oh-my-zsh directory exists
+  ansible.builtin.stat:
+    path: "/home/{{ host_user }}/.oh-my-zsh"
+  register: oh_my_zsh_dir
 
-- name: Install zsh-autosuggestions plugin # noqa: latest
-  ansible.builtin.git:
-    repo: https://github.com/zsh-users/zsh-autosuggestions
-    dest: /home/{{ host_user }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions
-    depth: 1
-
-- name: Install zsh-completions plugin # noqa: latest
-  ansible.builtin.git:
-    repo: https://github.com/zsh-users/zsh-completions
-    dest: /home/{{ host_user }}/.oh-my-zsh/custom/plugins/zsh-completions
-    depth: 1
-
-- name: Install zsh-syntax-highlighting plugin # noqa: latest
-  ansible.builtin.git:
-    repo: https://github.com/zsh-users/zsh-syntax-highlighting.git
-    dest: /home/{{ host_user }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
-    depth: 1
-
-- name: Install autoupdate-zsh-plugin # noqa: latest
-  ansible.builtin.git:
-    repo: https://github.com/TamCore/autoupdate-oh-my-zsh-plugins
-    dest: /home/{{ host_user }}/.oh-my-zsh/custom/plugins/autoupdate
-    depth: 1
-
-- name: Set ownership and permissions for Oh My Zsh directory
-  ansible.builtin.file:
-    path: /home/{{ host_user }}/.oh-my-zsh
-    owner: "{{ host_user }}"
-    group: "{{ host_user }}"
-    mode: '0755'
-    recurse: yes
+- name: Install Oh My Zsh and plugins
+  ansible.builtin.include_tasks: install_oh_my_zsh.yml
+  when: not oh_my_zsh_dir.stat.exists
 
 - name: Change user shell to zsh 
   become: true
