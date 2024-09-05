@@ -91,9 +91,9 @@ function _task_done {
 }
 
 function ubuntu_setup() {
+  _cmd "sudo apt-get update"
   if ! dpkg -s ansible >/dev/null 2>&1; then
     __task "Installing Ansible"
-    _cmd "sudo apt-get update"
     _cmd "sudo apt-get install -y software-properties-common"
     _cmd "sudo apt-add-repository -y ppa:ansible/ansible"
     _cmd "sudo apt-get update"
