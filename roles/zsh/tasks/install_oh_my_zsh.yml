@@ -29,11 +29,11 @@
     dest: "/home/{{ host_user }}/.oh-my-zsh/custom/plugins/autoupdate"
     depth: 1
 
-- name: Install eza-zsh-plugin # noqa: latest
-  ansible.builtin.git:
-    repo: https://github.com/MohamedElashri/eza-zsh
-    dest: "/home/{{ host_user }}/.oh-my-zsh/custom/plugins/eza-zsh"
-    depth: 1
+# - name: Install eza-zsh-plugin # noqa: latest
+#   ansible.builtin.git:
+#     repo: https://github.com/MohamedElashri/eza-zsh
+#     dest: "/home/{{ host_user }}/.oh-my-zsh/custom/plugins/eza-zsh"
+#     depth: 1
 
 - name: Set ownership and permissions for Oh My Zsh directory
   ansible.builtin.file:
