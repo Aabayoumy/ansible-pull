@@ -16,10 +16,17 @@
   become: true
   when: not ansible_host_environment_is_wsl
 
+- name: Get current timezone
+  ansible.builtin.command: timedatectl show --property=Timezone --value
+  register: current_timezone
+  changed_when: false
+
 - name: Set timezone to Africa/Cairo
-  become: true
   community.general.timezone:
     name: Africa/Cairo
+  become: yes
+  become_method: sudo
+  when: current_timezone.stdout != 'Africa/Cairo'
 
 - name: System | Detecting win32yank
   ansible.builtin.stat:
