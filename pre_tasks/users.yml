@@ -69,6 +69,7 @@
   ansible.builtin.file:
     path: "{{ item.path }}"
     state: directory
+    force: true
     owner: "{{ item.owner }}"
     group: "{{ item.group }}"
     mode: '0755'

@@ -203,17 +203,5 @@
 - name: Tasks for starship
   ansible.builtin.include_tasks: starship.yml
 
-# - name: Copy .zshrc to user and root home directories
-#   become: "{{ item.become | default(false) }}"
-#   ansible.builtin.template:
-#     src: zshrc.j2
-#     dest: "{{ item.dest }}"
-#     owner: "{{ item.owner }}"
-#     group: "{{ item.group }}"
-#     mode: '0644'
-#   loop:
-#     - { dest: "/home/{{ host_user }}/.zshrc", owner: "{{ host_user }}", group: "{{ host_user }}" }
-#     - { dest: "/root/.zshrc", owner: "root", group: "root", become: true }
-
 - name: install pfetch
   ansible.builtin.include_tasks: pfetch.yml
