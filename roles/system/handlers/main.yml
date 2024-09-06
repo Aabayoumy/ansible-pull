@@ -1,3 +1,4 @@
 - name: Update GRUB
-  ansible.builtin.command: update-grub
+  ansible.builtin.command: >
+    {{ 'grub-mkconfig -o /boot/grub/grub.cfg' if ansible_os_family == 'Archlinux' else 'update-grub' }}
   become: yes
