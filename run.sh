@@ -255,7 +255,7 @@ update_ansible_galaxy $ID
 
 
 __task "Running playbook ($USER)"; 
-ansible-pull -U https://github.com/Aabayoumy/ansible-pull.git
+_cmd "ansible-pull -U https://github.com/Aabayoumy/ansible-pull.git"
 _task_done
 
 
@@ -267,5 +267,3 @@ if [ $USER == "root" ]; then
   reboot
 fi
 # popd 2>&1 > /dev/null
-
-# curl -L https://raw.githubusercontent.com/Aabayoumy/ansible-pull/Pull-Test/run.sh | bash
