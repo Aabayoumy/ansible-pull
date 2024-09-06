@@ -12,4 +12,6 @@ based on :
 
 curl -L https://raw.githubusercontent.com/Aabayoumy/ansible-pull/main/run.sh | bash
 
+- OR - 
+
 curl -L https://tinyurl.com/ansible-pull | bash
