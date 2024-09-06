@@ -9,12 +9,12 @@ based on :
 
 
 
-
+- Usage: 
 ```bash 
 
 curl -L https://raw.githubusercontent.com/Aabayoumy/ansible-pull/main/run.sh | bash
 ```
-
+- Or Short Link:
 ```bash
 
 curl -L https://tinyurl.com/ansible-pull | bash
