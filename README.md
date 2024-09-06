@@ -11,11 +11,11 @@ based on :
 
 
 ```bash 
-# Full Link
+
 curl -L https://raw.githubusercontent.com/Aabayoumy/ansible-pull/main/run.sh | bash
 ```
 
 ```bash
-# Short Link
+
 curl -L https://tinyurl.com/ansible-pull | bash
 ```
