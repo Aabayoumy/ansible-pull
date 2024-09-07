@@ -88,6 +88,9 @@ plugins=(
 
 source $ZSH/oh-my-zsh.sh
 
+ # yt-dlp download                                                                                                                                                                        92 alias ytv='noglob yt-dlp -f bv*[height=720]+ba -o "%(title)s (%(id)s).%(ext)s [%(upload_date)s]"'
+alias ytv='noglob yt-dlp -f bv*[height=720]+ba -o "%(title)s (%(id)s).%(ext)s [%(upload_date)s]"'
+
 # Aliases with eza
 alias l='eza -lah --color=always --icons --group-directories-first' # with headers
 alias la='eza -al --color=always --icons --group-directories-first'  # all files and dirs
