@@ -76,7 +76,7 @@ function _cmd {
   done < $DOTFILES_LOG
   printf "\n"
   # remove log file
-  rm $DOTFILES_LOG
+  # rm $DOTFILES_LOG
   # exit installation
   exit 1
 }
