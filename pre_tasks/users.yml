@@ -71,16 +71,17 @@
     - { path: "{{ user.home }}/.config", owner: "{{ user.name }}", group: "{{ user.name }}" }
     - { path: "/root/.config", owner: "root", group: "root" }
 
-- name: Copy dotfiles to /etc/skel and root user profile
+- name: Copy dotfiles to /etc/skel and users profile
   ansible.builtin.copy:
     src: "files/dotfiles/"
-    dest: "{{ item }}"
-    owner: root
-    group: root
+    dest: "{{ item.path }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
     mode: '0644'
     directory_mode: '0755'
+    force: true
   loop:
-    - "/etc/skel/"
-    - "/root/"
-    - "{{ user.name }}"
+    - { path: "{{ user.home }}/", owner: "{{ user.name }}", group: "{{ user.name }}" }
+    - { path: "/root/", owner: "root", group: "root" }
+    - { path: "/etc/skel/", owner: "root", group: "root" }
   become: true
