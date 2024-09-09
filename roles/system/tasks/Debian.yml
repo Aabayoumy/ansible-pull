@@ -79,9 +79,9 @@
     remote_src: true
   when: ansible_distribution_version is version('20.10', '<') and zoxide_rc.rc != 0
 
-- name: Install procs in Ubuntu
-  become: true
-  ansible.builtin.unarchive:
-    src: "https://github.com/dalance/procs/releases/download/{{ procsversion }}/procs-{{ procsversion }}-x86_64-linux.zip"
-    dest: /usr/local/bin
-    remote_src: true
+# - name: "Install procs in {{ ansible_distribution }}"
+#   become: true
+#   ansible.builtin.unarchive:
+#     src: "https://github.com/dalance/procs/releases/download/{{ procsversion }}/procs-{{ procsversion }}-x86_64-linux.zip"
+#     dest: /usr/local/bin
+#     remote_src: true
