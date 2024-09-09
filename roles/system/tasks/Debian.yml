@@ -70,18 +70,37 @@
   changed_when: false
   when: ansible_os_family == 'Debian' and ansible_distribution_version is version('20.10', '<')
 
+- name: Get latest zoxide version
+  ansible.builtin.uri:
+    url: "https://api.github.com/repos/ajeetdsouza/zoxide/releases/latest"
+    return_content: true
+  register: zoxide_release
 
-- name: Install zoxide on Ubuntu Focal
+- name: Install zoxide 
   become: true
   ansible.builtin.unarchive:
-    src: "https://github.com/ajeetdsouza/zoxide/releases/download/v{{ zoxideversion }}/zoxide-{{ zoxideversion }}-x86_64-unknown-linux-musl.tar.gz"
+    src: "{{ zoxide_release.json.assets[0].url }}"
     dest: /usr/local/bin
     remote_src: true
-  when: ansible_distribution_version is version('20.10', '<') and zoxide_rc.rc != 0
+  when: zoxide_rc.rc != 0
 
-# - name: "Install procs in {{ ansible_distribution }}"
-#   become: true
-#   ansible.builtin.unarchive:
-#     src: "https://github.com/dalance/procs/releases/download/{{ procsversion }}/procs-{{ procsversion }}-x86_64-linux.zip"
-#     dest: /usr/local/bin
-#     remote_src: true
+- name: Check if procs is already installed
+  ansible.builtin.shell: >
+    procs --version
+  register: procs_rc
+  failed_when: false
+
+- name: Get latest procs version
+  ansible.builtin.uri:
+    url: "https://api.github.com/repos/dalance/procs/releases/latest"
+    return_content: true
+  register: procs_release
+  when: procs_rc.rc != 0
+
+- name: Install latest procs
+  become: true
+  ansible.builtin.unarchive:
+    src: "{{ procs_release.json.assets[0].url }}"
+    dest: /usr/local/bin
+    remote_src: true
+  when: procs_rc.rc != 0
