@@ -1,0 +1,45 @@
+---
+- name: Check pfetch
+  stat:
+    path: /usr/bin/pfetch
+  register: pfetch
+
+- name: Get latest pfetch-rs release info
+  uri:
+    url: https://api.github.com/repos/Gobidev/pfetch-rs/releases/latest
+    return_content: yes
+  register: pfetch_release_info
+
+- name: Get installed pfetch version
+  command: /usr/bin/pfetch --version
+  register: installed_pfetch_version
+  changed_when: false
+  failed_when: false
+  when: pfetch.stat.exists
+
+- name: Remove old pfetch version
+  file:
+    path: /usr/bin/pfetch
+    state: absent
+  become: true
+  when: 
+    - pfetch.stat.exists
+    - installed_pfetch_version.stdout is defined
+    - installed_pfetch_version.stdout.split()[1] != pfetch_release_info.json.tag_name[1:]
+
+
+- name: "Installing latest pfetch-rs"
+  unarchive:
+    src: "{{ pfetch_release_info.json.assets | selectattr('name', 'match', 'pfetch-linux-gnu-x86_64.tar.gz') | map(attribute='browser_download_url') | first }}"
+    dest: /usr/bin
+    remote_src: yes
+    mode: '0755'
+    owner: root
+    group: root
+  become: true
+  when: not (pfetch.stat.exists)
+
+
+# https://api.github.com/repos/Gobidev/pfetch-rs/releases/latest
+
+# html_url	"https://github.com/Gobidev/pfetch-rs/releases/tag/v2.11.0"

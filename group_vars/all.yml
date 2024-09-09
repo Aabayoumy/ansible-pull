@@ -44,7 +44,8 @@ default_roles:
 root_roles:
   - system
 
-cmdr_bin_dir : /usr/local/bin
-user : abayoumy
-git_user_name: abayoumy
-git_user_email: abayoumy@outlook.com
+cmdr_bin_dir : /usr/bin
+user:
+  name: abayoumy
+  home: /home/abayoumy
+  email: abayoumy@outlook.com

@@ -1,0 +1,59 @@
+---
+# tasks file for starship
+- name: Install starship (cross-shell prompt) as a package
+  become: true
+  ansible.builtin.package:
+    state: present
+    name: starship
+  when: ansible_os_family == 'Archlinux'
+
+- name: Install curl (for starship installation)
+  become: true
+  ansible.builtin.package:
+    state: present
+    name: curl
+  when: ansible_os_family != 'Archlinux'
+
+- name: Get starship install script
+  ansible.builtin.get_url:
+    url: https://starship.rs/install.sh
+    dest: /tmp/starship_install.sh
+    mode: '0755'
+  register: starship_installation_script
+  when: ansible_os_family != 'Archlinux'
+
+- name: Install starship with installation script
+  become: true
+  ansible.builtin.shell:
+    cmd: /tmp/starship_install.sh --yes
+    executable: /bin/sh
+  when: ansible_os_family != 'Archlinux' and starship_installation_script.changed
+# if the previous task hasn't changed, the shell script is already there
+# and we have already installed starship
+# we check this to satisfy idempotence
+
+- name: Ensure .config directory exists
+  ansible.builtin.file:
+    path: "/home/{{ host_user }}/.config"
+    state: directory
+    mode: '0755'
+
+- name: Template starship configuration for host user
+  ansible.builtin.template:
+    src: starship.toml.j2
+    dest: "/home/{{ host_user }}/.config/starship.toml"
+    mode: '0644'
+
+- name: Ensure root .config directory exists
+  become: true
+  ansible.builtin.file:
+    path: "/root/.config"
+    state: directory
+    mode: '0755'
+
+# - name: Template starship configuration for root user
+#   become: true
+#   ansible.builtin.template:
+#     src: starship.toml.j2
+#     dest: "/root/.config/starship.toml"
+#     mode: '0644'

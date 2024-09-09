@@ -11,7 +11,7 @@
     - "/root/"
   become: true
 
-- name: Create Users Task
+- name: Create Users
   user:
     name: "{{ item }}"
     password: ""
@@ -21,16 +21,16 @@
     state: present
     update_password: on_create
   loop:
-    - abayoumy
+    - "{{ user.name }}"
     - ansible
   run_once: true
   become: true
 
-- name: Add abayoumy to sudoers
+- name: "Add {{ user.name }} to sudoers"
   community.general.sudoers:
-    name: abayoumy
+    name: "{{ user.name }}"
     state: present
-    user: abayoumy
+    user: "{{ user.name }}"
     runas: root
     commands: ALL
     nopassword: true
@@ -46,9 +46,17 @@
     nopassword: true
   become: true
 
-- name: add  ssh keys for abayoumy
+- name: "Create SSH Key for {{ user.name }}"
+  community.crypto.openssh_keypair:
+    path: "{{ user.home }}/.ssh/id_ed25519"
+    size: 2048
+    type: ed25519
+    state: present
+    force: no
+    
+- name: "add  ssh keys for {{ user.name }}"
   authorized_key:
-    user: abayoumy
+    user: "{{ user.name }}"
     state: present
     key: "{{ lookup('file', '{{ item }}') }}"
   with_fileglob:

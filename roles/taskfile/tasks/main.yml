@@ -38,7 +38,7 @@
 
     - name: "TASKFILE | Copy custom bash config for os: {{ taskfile_os_config.stat.path | basename }}"
       ansible.builtin.copy:
-        dest: "{{ ansible_user_dir }}/Taskfile.yml"
+        dest: "{{ user.home }}/Taskfile.yml"
         src: "{{ taskfile_os_config.stat.path }}"
         mode: "0644"
         force: true
@@ -48,7 +48,7 @@
 
     - name: "TASKFILE | Mark Ansible-managed file."
       ansible.builtin.blockinfile:
-        dest: "{{ ansible_user_dir }}/Taskfile.yml"
+        dest: "{{ user.home }}/Taskfile.yml"
         mode: "0644"
         insertbefore: 'version:'
         append_newline: true

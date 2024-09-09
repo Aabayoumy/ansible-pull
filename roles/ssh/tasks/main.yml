@@ -1,7 +1,7 @@
 ---
 - name: "SSH | Copy SSH keys"
   copy:
-    dest: "{{ ansible_user_dir }}/.ssh/{{ ssh_key_item.key }}"
+    dest: "{{ user.home }}/.ssh/{{ ssh_key_item.key }}"
     content: "{{ ssh_key_item.value }}"
     mode: "0600"
   no_log: true
@@ -11,7 +11,7 @@
 
 - name: Copy config
   ansible.builtin.copy:
-    dest: "{{ ansible_user_dir }}/.ssh/config"
+    dest: "{{ user.home }}/.ssh/config"
     src: "config"
 
 - name: add  ssh keys for abayoumy
