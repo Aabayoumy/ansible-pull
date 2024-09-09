@@ -28,8 +28,56 @@
   become_method: sudo
   when: current_timezone.stdout != 'Africa/Cairo'
 
+- name: Override fd-find package name for Archlinux.
+  ansible.builtin.set_fact:
+    fdfind: fd
+  when: ansible_os_family == 'Archlinux'
 
+- name: Install fd-find
+  become: true
+  ansible.builtin.package:
+    state: present
+    name: "{{ fdfind }}"
 
+- name: Install procs in Arch/Fedora
+  become: true
+  ansible.builtin.package:
+    state: present
+    name: procs
+  when: ansible_os_family != 'Debian'
+
+- name: Install zoxide through package manager
+  become: true
+  ansible.builtin.package:
+    state: present
+    name: zoxide
+  when: ansible_os_family != 'Debian' or ansible_distribution_version is version('20.10', '>=')
+
+- name: Install fzf (command-line fuzzy finder)
+  become: true
+  ansible.builtin.package:
+    state: present
+    name: fzf
+
+- name: Check if dust is already installed on Ubuntu/Fedora
+  ansible.builtin.shell: >
+    dust --version
+  register: dust_rc
+  failed_when: false
+  changed_when: false
+  when: ansible_os_family != 'Archlinux'
+
+- name: Install dust on Ubuntu/Fedora
+  become: true
+  ansible.builtin.unarchive:
+    src: "https://github.com/bootandy/dust/releases/download/{{ dustversion }}/dust-{{ dustversion }}-x86_64-unknown-linux-gnu.tar.gz"
+    dest: /usr/local/bin
+    extra_opts:
+    - --strip=1
+    - --wildcards
+    - '*/dust'
+    remote_src: true
+  when: ansible_os_family != 'Archlinux' and dust_rc.rc != 0
 
 - name: System | Detecting win32yank
   ansible.builtin.stat:

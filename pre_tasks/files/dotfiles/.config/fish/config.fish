@@ -50,11 +50,6 @@ set LIBVIRT_DEFAULT_URI qemu:///system
 set -e fish_user_paths
 set -U fish_user_paths $HOME/.bin $HOME/.local/bin $HOME/Applications $fish_user_paths
 
-# Starship prompt
-#if command -sq starship
-#    starship init fish | source
-#end
-
 # sets tools
 set -x EDITOR nvim
 set -x VISUAL nvim
@@ -539,4 +534,8 @@ pfetch
 #sysinfo-retro
 #cpufetch
 #colorscript random
-starship init fish | source
+
+# Starship prompt
+if command -sq starship
+   starship init fish | source
+end

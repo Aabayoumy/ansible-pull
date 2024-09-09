@@ -24,6 +24,8 @@
       - btop
       - util-linux-user
       - byobu
+      - bat
+      - ripgrep
     state: latest
   become: true
 

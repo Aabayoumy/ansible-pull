@@ -20,6 +20,9 @@
       - eza
       - openssh
       - btop
+      - bat
       - byobu
+      - dust
+      - ripgrep
     state: present
   become: true

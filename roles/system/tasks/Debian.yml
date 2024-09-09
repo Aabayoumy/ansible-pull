@@ -1,4 +1,23 @@
 ---
+
+# In Ubuntu we have to install it from another repository
+# so it's better to check if it's already installed
+- name: Check if eza is already installed on Ubuntu
+  ansible.builtin.shell: >
+    eza --version
+  register: eza_rc
+  failed_when: false
+
+- name: Repository for eza on Ubuntu
+  become: true
+  ansible.builtin.shell: |
+    mkdir -p /etc/apt/keyrings
+    wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc | gpg --dearmor -o /etc/apt/keyrings/gierens.gpg
+    echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" | tee /etc/apt/sources.list.d/gierens.list
+    chmod 644 /etc/apt/keyrings/gierens.gpg /etc/apt/sources.list.d/gierens.list
+    apt update
+  when: eza_rc.rc != 0
+
 - name: "System | {{ ansible_distribution }} | Update APT Repos and Upgrade APT Packages"
   ansible.builtin.apt:
     update_cache: true
@@ -12,5 +31,48 @@
     name:
       - jq
       - open-iscsi
+      - git
+      - fuse3
+      - eza
+      - xdg-user-dirs
+      - unzip
+      - wget
+      - wmctrl
+      - openssh
+      - btop
+      - bat
+      - byobu
+      - gpg
+      - ripgrep
     state: present
   become: true
+
+- name: Create link fd to fdfind in Debian
+  become: true
+  ansible.builtin.file:
+    src: '/usr/bin/fdfind'
+    dest: '/usr/bin/fd'
+    state: link
+
+- name: Create link bat to batcat in Debian
+  become: true
+  ansible.builtin.file:
+    src: '/usr/bin/bat'
+    dest: '/usr/bin/batcat'
+    state: link
+  when: ansible_distribution_version is version('23.04', '<')
+
+- name: Install zoxide on Ubuntu Focal
+  become: true
+  ansible.builtin.unarchive:
+    src: "https://github.com/ajeetdsouza/zoxide/releases/download/v{{ zoxideversion }}/zoxide-{{ zoxideversion }}-x86_64-unknown-linux-musl.tar.gz"
+    dest: /usr/local/bin
+    remote_src: true
+  when: ansible_distribution_version is version('20.10', '<') and zoxide_rc.rc != 0
+
+- name: Install procs in Ubuntu
+  become: true
+  ansible.builtin.unarchive:
+    src: "https://github.com/dalance/procs/releases/download/{{ procsversion }}/procs-{{ procsversion }}-x86_64-linux.zip"
+    dest: /usr/local/bin
+    remote_src: true
