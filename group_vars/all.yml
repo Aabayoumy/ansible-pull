@@ -21,7 +21,7 @@ default_roles:
   # - nala
   # - neofetch
   - neovim
-  - fesh
+  - fish
   # - npm
   # - nvm
   # - obsidian
