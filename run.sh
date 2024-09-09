@@ -261,6 +261,10 @@ _task_done
 
 __task "IP $(hostname  -I | cut -f1 -d' ')"
 _task_done
+# Rename the log file with date and time
+LOG_FILE="/tmp/ansible-pull_$(date "+%Y%m%d%H%M").log"
+_cmd "mv /tmp/ansible-pull.log $LOG_FILE"
+
 if [ $USER == "root" ]; then
   __task "Reboot"; 
   _task_done
