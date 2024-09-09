@@ -26,6 +26,7 @@
       - byobu
       - bat
       - ripgrep
+      - fd-find
     state: latest
   become: true
 

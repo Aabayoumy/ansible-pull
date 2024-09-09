@@ -28,17 +28,6 @@
   become_method: sudo
   when: current_timezone.stdout != 'Africa/Cairo'
 
-- name: Override fd-find package name for Archlinux.
-  ansible.builtin.set_fact:
-    fdfind: fd
-  when: ansible_os_family == 'Archlinux'
-
-- name: Install fd-find
-  become: true
-  ansible.builtin.package:
-    state: present
-    name: "{{ fdfind }}"
-
 - name: Install procs in Arch/Fedora
   become: true
   ansible.builtin.package:

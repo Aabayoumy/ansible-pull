@@ -24,5 +24,6 @@
       - byobu
       - dust
       - ripgrep
+      - fd
     state: present
   become: true
