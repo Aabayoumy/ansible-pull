@@ -30,7 +30,7 @@
   unarchive:
     src: https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz
     dest: /usr/local
-    remote_src: yes
+    remote_src: true
     mode: '0755'
     owner: root
     group: root
@@ -43,4 +43,8 @@
   ansible.builtin.copy:
     dest: "{{ user.home }}/.config"
     src: "nvim"
-    mode: "0644"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: '0644'
+    directory_mode: '0755'
+    force: true
