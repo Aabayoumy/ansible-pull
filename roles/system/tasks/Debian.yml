@@ -38,7 +38,7 @@
       - unzip
       - wget
       - wmctrl
-      - openssh
+      - openssh-server
       - btop
       - bat
       - byobu
