@@ -271,7 +271,7 @@ if [[ $DELETE_COUNT -gt 0 ]]; then
 
   # Delete the oldest files
   for FILE in "${OLDEST_FILES[@]}"; do
-    _cmd "rm $FILE"
+    _cmd "sudo rm $FILE"
   done
 fi
 _task_done
