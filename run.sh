@@ -262,7 +262,7 @@ _task_done
 LOG_FILE="/tmp/ansible-pull_$(date "+%Y%m%d%H%M").log"
 __task "log: ($LOG_FILE)"
 _cmd "mv /tmp/ansible-pull.log $LOG_FILE"
-LOG_FILES=$(find /tmp/ -name "ansible-pull_*.log" -print0 | xargs -0 ls -tr)
+LOG_FILES=$(sudo find /tmp/ -name "ansible-pull_*.log" -print0 | xargs -0 ls -tr)
 DELETE_COUNT=$((${#LOG_FILES[@]} - 5))
 # If there are more than 5 log files, delete the oldest ones
 if [[ $DELETE_COUNT -gt 0 ]]; then
