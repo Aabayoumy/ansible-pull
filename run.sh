@@ -262,6 +262,18 @@ _task_done
 LOG_FILE="/tmp/ansible-pull_$(date "+%Y%m%d%H%M").log"
 __task "log: ($LOG_FILE)"
 _cmd "mv /tmp/ansible-pull.log $LOG_FILE"
+LOG_FILES=$(find /tmp/ -name "ansible-pull_*.log" -print0 | xargs -0 ls -tr)
+DELETE_COUNT=$((${#LOG_FILES[@]} - 5))
+# If there are more than 5 log files, delete the oldest ones
+if [[ $DELETE_COUNT -gt 0 ]]; then
+  # Extract the oldest files to delete
+  OLDEST_FILES=(${LOG_FILES[@]:0:$DELETE_COUNT})
+
+  # Delete the oldest files
+  for FILE in "${OLDEST_FILES[@]}"; do
+    _cmd "rm $FILE"
+  done
+fi
 _task_done
 
 __task "IP $(hostname  -I | cut -f1 -d' ')"
