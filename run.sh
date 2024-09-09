@@ -260,7 +260,7 @@ _task_done
 
 # Rename the log file with date and time
 LOG_FILE="/tmp/ansible-pull_$(date "+%Y%m%d%H%M").log"
-__task "log: $(LOG_FILE)"
+__task "log: ($LOG_FILE)"
 _cmd "mv /tmp/ansible-pull.log $LOG_FILE"
 _task_done
 
