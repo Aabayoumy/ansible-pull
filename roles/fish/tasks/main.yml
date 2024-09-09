@@ -39,10 +39,6 @@
     name="{{ user.name }}"
     shell=/usr/bin/fish
 
-- name: install zoxide
-  ansible.builtin.shell:
-    fisher install kidonng/zoxide.fish
-
 - name: Tasks for starship
   ansible.builtin.include_tasks: starship.yml
 
