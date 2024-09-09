@@ -1,16 +1,3 @@
-- name: Copy dotfiles to /etc/skel and root user profile
-  ansible.builtin.copy:
-    src: "files/dotfiles/"
-    dest: "{{ item }}"
-    owner: root
-    group: root
-    mode: '0644'
-    directory_mode: '0755'
-  loop:
-    - "/etc/skel/"
-    - "/root/"
-  become: true
-
 - name: Create Users
   user:
     name: "{{ item }}"
@@ -53,7 +40,7 @@
     type: ed25519
     state: present
     force: no
-    
+
 - name: "add  ssh keys for {{ user.name }}"
   authorized_key:
     user: "{{ user.name }}"
@@ -70,8 +57,7 @@
     key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKG7DNrs2hcOmEG4gXRVyvAgrvoiE2iIBSFoPtRYPHl9 ansible"
   become: true
   
-  
-# Ensure .config directory exists for regular user
+  # Ensure .config directory exists for regular user
 - name: Ensure .config directory exists for users
   become: true
   ansible.builtin.file:
@@ -82,17 +68,19 @@
     group: "{{ item.group }}"
     mode: '0755'
   loop:
-    - { path: "/home/{{ host_user }}/.config", owner: "{{ host_user }}", group: "{{ host_user }}" }
+    - { path: "{{ user.home }}/.config", owner: "{{ user.name }}", group: "{{ user.name }}" }
     - { path: "/root/.config", owner: "root", group: "root" }
 
-# - name: Copy Bash files
-#   ansible.builtin.copy:
-#     src: "{{ item }}"
-#     dest: /home/abayoumy/
-#     owner: abayoumy
-#     group: abayoumy
-#     mode: '0755'
-#     force: yes
-#   with_fileglob:
-#     - "files/bash/.bash*"
-
+- name: Copy dotfiles to /etc/skel and root user profile
+  ansible.builtin.copy:
+    src: "files/dotfiles/"
+    dest: "{{ item }}"
+    owner: root
+    group: root
+    mode: '0644'
+    directory_mode: '0755'
+  loop:
+    - "/etc/skel/"
+    - "/root/"
+    - "{{ user.name }}"
+  become: true
