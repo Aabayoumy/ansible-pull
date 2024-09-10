@@ -19,3 +19,10 @@ Or Short Link:
 
 curl -L https://tinyurl.com/ansible-pull | bash
 ```
+With specific role 
+
+```bash
+
+curl -L https://tinyurl.com/ansible-pull | bash -s -- --tags comma,seperated,tags
+```
+
