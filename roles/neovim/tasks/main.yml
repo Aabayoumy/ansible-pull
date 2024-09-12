@@ -24,8 +24,7 @@
   ansible.builtin.include_tasks: "{{ ansible_os_family }}.yml"
   when: neovim_distribution_config.stat.exists
 
-
-- name: Neovim | Install Neovim 
+- name: "Neovim | Install"
   community.general.unarchive:
     src: https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz
     dest: /usr
