@@ -35,7 +35,7 @@
     owner: root
     group: root
   become: true
-  when: not (fastfetch.stat.exists)
+  when: not fastfetch.stat.exists
 
 - name: Copy fastfetch config to /etc/skel and users profile
   ansible.builtin.copy:
