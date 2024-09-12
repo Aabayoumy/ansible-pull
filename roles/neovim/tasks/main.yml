@@ -38,6 +38,7 @@
   become: true
 
 
+
 - name: "Neovim | Copy nvim"
   ansible.builtin.copy:
     dest: "{{ user.home }}/.config"
