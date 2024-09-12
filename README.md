@@ -1,4 +1,4 @@
-# Ansible Pull tutorial
+# Ansible Pull Playbook to initial config Linux Host:
 
 ![Ansible Logo](https://www.learnlinux.tv/wp-content/uploads/2020/12/ansible-e1607524003363.png)
 
@@ -19,3 +19,10 @@ Or Short Link:
 
 curl -L https://tinyurl.com/ansible-pull | bash
 ```
+With specific role 
+
+```bash
+
+curl -L https://tinyurl.com/ansible-pull | bash -s -- --tags comma,seperated,tags
+```
+

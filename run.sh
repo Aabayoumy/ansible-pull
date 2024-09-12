@@ -255,12 +255,12 @@ update_ansible_galaxy $ID
 
 
 __task "Running playbook ($USER)"; 
-ansible-pull -U https://github.com/Aabayoumy/ansible-pull.git
+ansible-pull -U "https://github.com/Aabayoumy/ansible-pull.git" "$@"
 _task_done
 
 # Rename the log file with date and time
 LOG_FILE="/tmp/ansible-pull_$(date "+%Y%m%d%H%M").log"
-__task "log: ($LOG_FILE)"
+__task "log: $LOG_FILE"
 _cmd "mv /tmp/ansible-pull.log $LOG_FILE"
 _cmd "/usr/bin/ls /tmp/ansible-pull_*.log -tr | head -n -5 | xargs --no-run-if-empty rm"
 _task_done
