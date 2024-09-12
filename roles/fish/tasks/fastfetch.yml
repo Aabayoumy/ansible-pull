@@ -1,12 +1,34 @@
----
 - name: Check fastfetch
   stat:
     path: /usr/bin/fastfetch
   register: fastfetch
 
+- name: Get latest fastfetch release info
+  uri:
+    url: https://api.github.com/repos/fastfetch-cli/fastfetch/releases/latest
+    return_content: yes
+  register: fastfetch_release_info
+
+- name: Get installed fastfetch version
+  command: /usr/bin/fastfetch --version
+  register: installed_fastfetch_version
+  changed_when: false
+  failed_when: false
+  when: fastfetch.stat.exists
+
+- name: Remove old fastfetch version
+  file:
+    path: /usr/bin/fastfetch
+    state: absent
+  become: true
+  when: 
+    - fastfetch.stat.exists
+    - installed_fastfetch_version.stdout is defined
+    - installed_fastfetch_version.stdout.split()[1] != fastfetch_release_info.json.tag_name[1:]
+
 - name: "Installing latest fastfetch"
   unarchive:
-    src: "https://dl.fastfetch.org/fastfetch-1.2.6-linux-gnu-x86_64.tar.gz"
+    src: "{{ fastfetch_release_info.json.assets | selectattr('name', 'match', 'fastfetch-linux-gnu-x86_64.tar.gz') | map(attribute='browser_download_url') | first }}"
     dest: /usr/bin
     remote_src: yes
     mode: '0755'
