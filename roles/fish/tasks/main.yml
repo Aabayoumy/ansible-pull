@@ -1,11 +1,5 @@
 
 # tasks file for fish
-- name: Install Git
-  ansible.builtin.package:
-    state: present
-    name: git
-  become: true
-
 - name: Install fish
   become: true
   ansible.builtin.package:
@@ -76,4 +70,4 @@
 # - name: install pfetch
 #   ansible.builtin.include_tasks: pfetch.yml
 - name: Install fastfeach
-  ansible.builtin.include_tasks: fastfeach.yml
+  ansible.builtin.include_tasks: ./fastfetch.yml
