@@ -1,2 +1,13 @@
+- name: "Check if {{ ansible_os_family }} file exists"
+  stat:
+    path: "{{ ansible_os_family }}.yml"
+  register: file_exists
+
 - name: "Update | Run Tasks: {{ ansible_os_family }}"
   ansible.builtin.include_tasks: "{{ ansible_os_family }}.yml"
+  when: file_exists.stat.exists
+
+- name: Display debug message if file doesn't exist
+  debug:
+    msg: "File {{ ansible_os_family }}.yml not found"
+  when: not file_exists.stat.exists

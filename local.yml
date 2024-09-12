@@ -24,38 +24,7 @@
         - deltarpm=true
       run_once: true
       when: ansible_facts['os_family'] == "RedHat"
-    - name: Upgrade all packages
-      ansible.builtin.dnf:
-        name: "*"
-        state: latest
-      when: ansible_facts['os_family'] == "RedHat"
-    
-    - name: Autoremove unneeded packages installed as dependencies
-      ansible.builtin.dnf:
-        autoremove: yes
-      when: ansible_facts['os_family'] == "RedHat"
-    - name: Detect WSL
-      ansible.builtin.import_tasks: pre_tasks/detect_wsl.yml
-      tags:
-        - always
-    - name: Detect wsl
-      ansible.builtin.debug:
-        var: ansible_host_environment_is_wsl
-      tags:
-        - always
-
-    - name: Confirm Windows PowerShell Execution Policy
-      ansible.builtin.import_tasks: pre_tasks/powershell_executionpolicy.yml
-      when: ansible_host_environment_is_wsl
-      tags:
-        - always
-
-    - name: Detect Host User
-      ansible.builtin.import_tasks: pre_tasks/whoami_wsl.yml
-      when: ansible_host_environment_is_wsl
-      tags:
-        - always
-
+ 
     - name: Detect Host User
       ansible.builtin.import_tasks: pre_tasks/whoami.yml
       tags:
@@ -66,12 +35,12 @@
       tags:
         - always
       when: host_user == "root"
-      
-    - name: update
+
+    - name: Update
       ansible.builtin.import_tasks: pre_tasks/update.yml
       tags:
         - always
-        
+
   tasks:
 
     - name: Set roles
