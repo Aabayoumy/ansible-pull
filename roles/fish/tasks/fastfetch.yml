@@ -3,7 +3,7 @@
   stat:
     path: /usr/bin/fastfetch
   register: fastfetch
-  
+
 - name: "Installing latest fastfetch"
   unarchive:
     src: "{{ fastfetch_release_info.json.assets | selectattr('name', 'match', 'fastfetch-linux-gnu-x86_64.tar.gz') | map(attribute='browser_download_url') | first }}"
@@ -13,7 +13,7 @@
     owner: root
     group: root
   become: true
-  when: not fastfetch.stat.exists
+  when: not (fastfetch.stat.exists)
 
 - name: Copy fastfetch config to /etc/skel and users profile
   ansible.builtin.copy:
