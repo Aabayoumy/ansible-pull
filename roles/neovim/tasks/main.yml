@@ -1,6 +1,7 @@
 - name: Check nvim exist
   ansible.builtin.stat:
     path: /usr/bin/nvim
+  register: nvim
 
 - name: "Neovim | Dependencies | {{ ansible_os_family }}"
   ansible.builtin.package:
