@@ -14,7 +14,6 @@
     src: hosts.j2
     mode: "0644"
   become: true
-  when: not ansible_host_environment_is_wsl
 
 - name: Get current timezone
   ansible.builtin.command: timedatectl show --property=Timezone --value
@@ -67,45 +66,6 @@
     - '*/dust'
     remote_src: true
   when: ansible_os_family != 'Archlinux' and dust_rc.rc != 0
-
-- name: System | Detecting win32yank
-  ansible.builtin.stat:
-    path: /usr/local/bin/win32yank.exe
-  register: win32yank_installed
-  when: ansible_host_environment_is_wsl
-
-- name: "System | Install win32yank.exe"
-  when:
-    - ansible_host_environment_is_wsl
-    - not win32yank_installed.stat.exists
-  block:
-    - name: Download win32yank zip
-      ansible.builtin.get_url:
-        url: https://github.com/equalsraf/win32yank/releases/download/v0.0.4/win32yank-x64.zip
-        dest: /tmp/win32yank.zip
-        mode: "0755"
-
-    - name: System | Unzip win32yank.exe
-      ansible.builtin.unarchive:
-        src: /tmp/win32yank.zip
-        dest: /tmp
-        mode: "0755"
-
-    - name: System | Copy win32yank into path
-      ansible.builtin.copy:
-        remote_src: true
-        src: /tmp/win32yank.exe
-        dest: /usr/local/bin/win32yank.exe
-        mode: "0755"
-      become: true
-
-    - name: System | Remove tmp files
-      ansible.builtin.file:
-        path: "{{ item }}"
-        state: absent
-      loop:
-        - /tmp/win32yank.zip
-        - /tmp/win32yank.exe
 
 - name: Check if IPv6 is enabled
   ansible.builtin.command: sysctl -n net.ipv6.conf.all.disable_ipv6
