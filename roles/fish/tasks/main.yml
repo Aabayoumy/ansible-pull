@@ -70,4 +70,4 @@
 # - name: install pfetch
 #   ansible.builtin.include_tasks: pfetch.yml
 - name: Install fastfeach
-  ansible.builtin.include_tasks: ./fastfetch.yml
+  ansible.builtin.include_tasks: fastfetch.yml
