@@ -1,5 +1,5 @@
 ---
 - name: "Neovim | {{ ansible_distribution }} | Install Neovim Nightly"
-  kewlfft.aur.aur:
+  kewlfft.aur:
     name: neovim
     state: present
