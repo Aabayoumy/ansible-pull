@@ -1,9 +1,8 @@
-- name: check nvim exist
-  stat:
-    path: /usr/local/bin/nvim
-  register: nvim
+- name: Check nvim exist
+  ansible.builtin.stat:
+    path: /usr/bin/nvim
 
-- name: "Neovim | {{ ansible_os_family }} | Dependencies"
+- name: "Neovim | Dependencies| {{ ansible_os_family }}"
   ansible.builtin.package:
     name:
       - cmake
@@ -26,10 +25,10 @@
   when: neovim_distribution_config.stat.exists
 
 
-- name: Neovim | {{ ansible_os_family }} | Install Neovim
-  unarchive:
+- name: Neovim | Install Neovim | {{ ansible_os_family }}
+  community.general.unarchive:
     src: https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz
-    dest: /usr/local
+    dest: /usr
     remote_src: true
     mode: '0755'
     owner: root
