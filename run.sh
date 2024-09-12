@@ -252,6 +252,12 @@ update_ansible_galaxy $ID
   # _task_done
 # fi
 
+if [ -d ~/.ansible ]; then
+  __task "Clear old folder"; 
+  rm -rf ~/.ansible
+  _task_done
+fi
+
 
 
 __task "Running playbook ($USER)"; 
