@@ -2,7 +2,7 @@
   ansible.builtin.stat:
     path: /usr/bin/nvim
 
-- name: "Neovim | Dependencies| {{ ansible_os_family }}"
+- name: "Neovim | Dependencies | {{ ansible_os_family }}"
   ansible.builtin.package:
     name:
       - cmake
@@ -24,8 +24,8 @@
   ansible.builtin.include_tasks: "{{ ansible_os_family }}.yml"
   when: neovim_distribution_config.stat.exists
 
-- name: "Neovim | Install"
-  community.general.unarchive:
+- name: "Neovim | Install | {{ ansible_os_family }}"
+  community.builtin.unarchive:
     src: https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz
     dest: /usr
     remote_src: true
@@ -33,7 +33,7 @@
     owner: root
     group: root
     extra_opts: [--strip-components=1]
-  when: not (nvim.stat.exists)
+  when: not (nvim.stat.exists) and ansible_os_family != "Archlinux"
   become: true
 
 
