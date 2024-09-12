@@ -13,8 +13,8 @@
         name: "*"
         state: latest
       when: ansible_facts['os_family'] == "Debian"
-      
-    - name: dnf conf
+
+    - name: Set dnf conf
       ansible.builtin.lineinfile:
         path: /etc/dnf/dnf.conf
         line: "{{ item }}"
@@ -52,7 +52,7 @@
 
     - name: Set roles for root
       ansible.builtin.set_fact:
-       run_roles: "{{ ansible_run_tags != ['all'] and ansible_run_tags or root_roles | difference(exclude_roles | default([])) }}"
+        run_roles: "{{ ansible_run_tags != ['all'] and ansible_run_tags or root_roles | difference(exclude_roles | default([])) }}"
       tags:
         - always
       when: host_user == "root"

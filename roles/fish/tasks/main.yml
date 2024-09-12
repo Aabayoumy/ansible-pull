@@ -1,5 +1,5 @@
----
-# tasks file for oh_my_zsh
+
+# tasks file for fish
 - name: Install Git
   ansible.builtin.package:
     state: present
@@ -20,8 +20,8 @@
     mode=0755
     recurse=yes
 
-- name: install fisherman
-  become: yes
+- name: Install fisherman
+  become: true
   become_user: "{{ user.name }}"
   get_url:
     url="{{ item.url }}"
@@ -29,18 +29,51 @@
   with_items:
     - {url: "https://git.io/fisherman", dest: "{{ user.home }}/.config/fish/functions/fisher.fish"}
 
-- name: install bass
-  become: yes
+- name: Install bass
+  become: true
   become_user: "{{ user.name }}"
-  command: /usr/bin/fish -c 'fisher eds/bass paths'
+  ansible.builtin.command:
+    cmd: "/usr/bin/fish -c 'fisher eds/bass paths'""
 
-- name: change the shell to fish
-  user:
-    name="{{ user.name }}"
-    shell=/usr/bin/fish
+  # Ensure .config directory exists for regular user
+- name: Ensure .config directory exists for users
+  become: true
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: directory
+    force: true
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    mode: '0755'
+  loop:
+    - { path: "{{ user.home }}/.config", owner: "{{ user.name }}", group: "{{ user.name }}" }
+    - { path: "/root/.config", owner: "root", group: "root" }
+    - { path: "/etc/skel/.config", owner: "root", group: "root" }
+
+- name: Copy fish config to /etc/skel and users profile
+  ansible.builtin.copy:
+    src: "files/fish"
+    dest: "{{ item.path }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    mode: '0644'
+    directory_mode: '0755'
+    force: true
+  loop:
+    - { path: "{{ user.home }}/.config", owner: "{{ user.name }}", group: "{{ user.name }}" }
+    - { path: "/root/.config", owner: "root", group: "root" }
+    - { path: "/etc/skel/.config", owner: "root", group: "root" }
+  become: true
+
+- name: Change the shell to fish
+  ansible.builtin.user:
+    name: "{{ user.name }}"
+    shell: "/usr/bin/fish"
 
 - name: Tasks for starship
   ansible.builtin.include_tasks: starship.yml
 
-- name: install pfetch
-  ansible.builtin.include_tasks: pfetch.yml
+# - name: install pfetch
+#   ansible.builtin.include_tasks: pfetch.yml
+- name: Install fastfeach
+  ansible.builtin.include_tasks: fastfeach.yml

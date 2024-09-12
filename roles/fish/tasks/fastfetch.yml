@@ -1,0 +1,48 @@
+- name: Get latest fastfetch release info
+  uri:
+    url: https://api.github.com/repos/fastfetch-cli/fastfetch/releases/latest
+    return_content: yes
+  register: fastfetch_release_info
+
+- name: Get installed fastfetch version
+  command: /usr/bin/fastfetch --version
+  register: installed_fastfetch_version
+  changed_when: false
+  failed_when: false
+  when: fastfetch.stat.exists
+
+- name: Remove old fastfetch version
+  file:
+    path: /usr/bin/fastfetch
+    state: absent
+  become: true
+  when: 
+    - fastfetch.stat.exists
+    - installed_fastfetch_version.stdout is defined
+    - installed_fastfetch_version.stdout.split()[1] != fastfetch_release_info.json.tag_name[1:]
+
+- name: "Installing latest fastfetch"
+  unarchive:
+    src: "{{ fastfetch_release_info.json.assets | selectattr('name', 'match', 'fastfetch-linux-gnu-x86_64.tar.gz') | map(attribute='browser_download_url') | first }}"
+    dest: /usr/bin
+    remote_src: yes
+    mode: '0755'
+    owner: root
+    group: root
+  become: true
+  when: not (fastfetch.stat.exists)
+
+- name: Copy fastfetch config to /etc/skel and users profile
+  ansible.builtin.copy:
+    src: "files/fastfetch"
+    dest: "{{ item.path }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    mode: '0644'
+    directory_mode: '0755'
+    force: true
+  loop:
+    - { path: "{{ user.home }}/.config", owner: "{{ user.name }}", group: "{{ user.name }}" }
+    - { path: "/root/.config", owner: "root", group: "root" }
+    - { path: "/etc/skel/.config", owner: "root", group: "root" }
+  become: true

@@ -520,20 +520,13 @@ alias undopush "git push -f origin HEAD^:master"
 
 
 # reporting tools - install when not installed
-# neofetch
-#screenfetch
-#alsi
-#paleofetch
-#fetch
-#hfetch
-#sfetch
-#ufetch
-#ufetch-arco
-pfetch
-#sysinfo
-#sysinfo-retro
-#cpufetch
-#colorscript random
+if command -sq fastfetch
+   fastfetch 
+else if command -sq pfetch
+   pfetch
+else if command -sq neofetch
+   neofetch 
+end
 
 # Starship prompt
 if command -sq starship
