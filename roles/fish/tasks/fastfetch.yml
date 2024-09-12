@@ -28,7 +28,7 @@
 
 - name: "Installing latest fastfetch"
   unarchive:
-    src: "{{ fastfetch_release_info.json.assets | selectattr('name', 'match', 'fastfetch-linux-gnu-x86_64.tar.gz') | map(attribute='browser_download_url') | first }}"
+    src: "{{ fastfetch_release_info.json.assets | selectattr('name', 'match', ' fastfetch-linux-amd64.tar.gz') | map(attribute='browser_download_url') | first }}"
     dest: /usr/bin
     remote_src: yes
     mode: '0755'
