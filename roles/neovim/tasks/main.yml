@@ -34,7 +34,7 @@
     owner: root
     group: root
     extra_opts: [--strip-components=1]
-  when: not (nvim.stat.exists) and  ansible_os_family I= "Archlinux"
+  when: not (nvim.stat.exists) and  ansible_os_family != "Archlinux"
   become: true
 
 
