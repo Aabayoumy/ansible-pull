@@ -1,3 +1,8 @@
+- name: Check fastfetch
+  stat:
+    path: /usr/bin/fastfetch
+  register: fastfetch.stat.exists
+  
 - name: Get latest fastfetch release info
   uri:
     url: https://api.github.com/repos/fastfetch-cli/fastfetch/releases/latest
