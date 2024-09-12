@@ -25,7 +25,7 @@
   when: neovim_distribution_config.stat.exists
 
 
-- name: "Neovim | Install Neovim | {{ ansible_os_family }}"
+- name: Neovim | Install Neovim | "{{ ansible_os_family }}"
   community.general.unarchive:
     src: https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz
     dest: /usr
