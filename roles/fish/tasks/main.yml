@@ -33,7 +33,7 @@
   become: true
   become_user: "{{ user.name }}"
   ansible.builtin.command:
-    cmd: "/usr/bin/fish -c 'fisher eds/bass paths'""
+    cmd: "/usr/bin/fish -c 'fisher eds/bass paths'"
 
   # Ensure .config directory exists for regular user
 - name: Ensure .config directory exists for users
