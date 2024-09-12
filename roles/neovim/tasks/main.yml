@@ -30,11 +30,11 @@
     src: https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz
     dest: /usr
     remote_src: true
-    mode: 0755
+    mode: "0755"
     owner: root
     group: root
     extra_opts: [--strip-components=1]
-  when: not (nvim.stat.exists) and  ansible_os_family != "Archlinux"
+  when: not (nvim.stat.exists)
   become: true
 
 
