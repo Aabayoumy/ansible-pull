@@ -255,7 +255,7 @@ update_ansible_galaxy $ID
 
 
 __task "Running playbook ($USER)"; 
-ansible-pull -U "https://github.com/Aabayoumy/ansible-pull.git" "$@"
+ansible-pull -U "https://github.com/Aabayoumy/ansible-pull.git --force" "$@"
 _task_done
 
 # Rename the log file with date and time
