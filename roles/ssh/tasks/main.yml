@@ -1,4 +1,8 @@
 ---
+- name: "SSH | Ensure .ssh folder exists"
+  file:
+    path: "{{ user.home }}/.ssh"
+
 - name: "SSH | Copy SSH keys"
   copy:
     dest: "{{ user.home }}/.ssh/{{ ssh_key_item.key }}"
