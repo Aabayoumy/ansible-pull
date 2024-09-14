@@ -3,6 +3,15 @@
   file:
     path: "{{ user.home }}/.ssh"
 
+- name: "Create SSH Key for {{ user.name }}"
+  community.crypto.openssh_keypair:
+    path: "{{ user.home }}/.ssh/id_ed25519"
+    size: 2048
+    type: ed25519
+    state: present
+    force: no
+  when: "{{ user.name }}" == "abayoumy"
+
 - name: "SSH | Copy SSH keys"
   copy:
     dest: "{{ user.home }}/.ssh/{{ ssh_key_item.key }}"
@@ -20,7 +29,7 @@
 
 - name: add  ssh keys for abayoumy
   authorized_key:
-    user: abayoumy
+    user: "{{ user.name }}"
     state: present
     key: "{{ lookup('file', '{{ item }}') }}"
   with_fileglob:

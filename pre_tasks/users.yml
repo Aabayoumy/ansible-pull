@@ -33,14 +33,6 @@
     nopassword: true
   become: true
 
-- name: "Create SSH Key for {{ user.name }}"
-  community.crypto.openssh_keypair:
-    path: "{{ user.home }}/.ssh/id_ed25519"
-    size: 2048
-    type: ed25519
-    state: present
-    force: no
-
 - name: "add  ssh keys for {{ user.name }}"
   authorized_key:
     user: "{{ user.name }}"
