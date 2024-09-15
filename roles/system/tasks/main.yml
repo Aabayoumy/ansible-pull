@@ -67,31 +67,31 @@
     remote_src: true
   when: ansible_os_family != 'Archlinux' and dust_rc.rc != 0
 
-- name: Disable IPv6
-  block:
-    - name: Disable IPv6 via sysctl
-      ansible.builtin.sysctl:
-        name: "{{ item }}"
-        value: '1'
-        state: present
-        reload: yes
-      loop:
-        - net.ipv6.conf.all.disable_ipv6
-        - net.ipv6.conf.default.disable_ipv6
-        - net.ipv6.conf.lo.disable_ipv6
-      become: yes
+# - name: Disable IPv6
+#   block:
+#     - name: Disable IPv6 via sysctl
+#       ansible.builtin.sysctl:
+#         name: "{{ item }}"
+#         value: '1'
+#         state: present
+#         reload: yes
+#       loop:
+#         - net.ipv6.conf.all.disable_ipv6
+#         - net.ipv6.conf.default.disable_ipv6
+#         - net.ipv6.conf.lo.disable_ipv6
+#       become: yes
 
-    - name: Check if GRUB is installed
-      ansible.builtin.stat:
-        path: /etc/default/grub
-      register: grub_installed
+#     - name: Check if GRUB is installed
+#       ansible.builtin.stat:
+#         path: /etc/default/grub
+#       register: grub_installed
 
-    - name: Update GRUB to disable IPv6
-      ansible.builtin.lineinfile:
-        path: /etc/default/grub
-        regexp: '^GRUB_CMDLINE_LINUX_DEFAULT='
-        line: 'GRUB_CMDLINE_LINUX_DEFAULT="ipv6.disable=1"'
-      become: yes
-      notify: Update GRUB
-      when: grub_installed.stat.exists
+#     - name: Update GRUB to disable IPv6
+#       ansible.builtin.lineinfile:
+#         path: /etc/default/grub
+#         regexp: '^GRUB_CMDLINE_LINUX_DEFAULT='
+#         line: 'GRUB_CMDLINE_LINUX_DEFAULT="ipv6.disable=1"'
+#       become: yes
+#       notify: Update GRUB
+#       when: grub_installed.stat.exists
 
