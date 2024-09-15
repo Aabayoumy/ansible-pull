@@ -32,16 +32,14 @@
     dest: /tmp/fastfetch.tar.gz
   delegate_to: localhost
 
-- name: "Extracting fastfetch"
-  archive:
-    path: /tmp/fastfetch.tar.gz
-    dest: /tmp/fastfetch-extracted
-    extract: yes
+- name: "Extract fastfetch (using shell module)"
+  shell: "tar -xzf /tmp/fastfetch.tar.gz -C /tmp" 
   delegate_to: localhost
+  become: true
 
 - name: "Move fastfetch to /usr/bin"
   file:
-    path: /tmp/fastfetch-extracted/usr/bin/fastfetch
+    path: /tmp/usr/bin/fastfetch
     dest: /usr/bin/fastfetch
     mode: 0755
     owner: root
@@ -56,7 +54,7 @@
 
 - name: "Remove fastfetch extraction directory"
   file:
-    path: /tmp/fastfetch-extracted
+    path: /tmp/fastfetch
     state: absent
   delegate_to: localhost
 
