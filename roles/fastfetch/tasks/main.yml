@@ -37,9 +37,19 @@
   become: true
   when: not (fastfetch.stat.exists)
 
+- name: ensures fastfetch dir exists
+  file: 
+    path: "{{ item.path }}"
+    state: directory
+  loop:
+    - { path: "{{ user.home }}/.config/fastfetch" }
+    - { path: "/root/.config/fastfetch" }
+    - { path: "/etc/skel/.config/fastfetch" }
+  become: true
+
 - name: Copy fastfetch config to /etc/skel and users profile
   ansible.builtin.copy:
-    src: "files/fastfetch"
+    src: "files/config.jsonc"
     dest: "{{ item.path }}"
     owner: "{{ item.owner }}"
     group: "{{ item.group }}"
@@ -47,7 +57,7 @@
     directory_mode: '0755'
     force: true
   loop:
-    - { path: "{{ user.home }}/.config", owner: "{{ user.name }}", group: "{{ user.name }}" }
-    - { path: "/root/.config", owner: "root", group: "root" }
-    - { path: "/etc/skel/.config", owner: "root", group: "root" }
+    - { path: "{{ user.home }}/.config/fastfetch", owner: "{{ user.name }}", group: "{{ user.name }}" }
+    - { path: "/root/.config/fastfetch", owner: "root", group: "root" }
+    - { path: "/etc/skel/.config/fastfetch", owner: "root", group: "root" }
   become: true
