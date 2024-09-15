@@ -67,12 +67,6 @@
     remote_src: true
   when: ansible_os_family != 'Archlinux' and dust_rc.rc != 0
 
-- name: Check if IPv6 is enabled
-  ansible.builtin.command: sysctl -n net.ipv6.conf.all.disable_ipv6
-  register: ipv6_status
-  changed_when: false
-  check_mode: no
-
 - name: Disable IPv6
   block:
     - name: Disable IPv6 via sysctl
