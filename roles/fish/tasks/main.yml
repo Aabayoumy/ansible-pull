@@ -67,7 +67,3 @@
 - name: Tasks for starship
   ansible.builtin.include_tasks: starship.yml
 
-# - name: install pfetch
-#   ansible.builtin.include_tasks: pfetch.yml
-- name: Install fastfeach
-  ansible.builtin.include_tasks: fastfetch.yml
