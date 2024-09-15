@@ -39,8 +39,8 @@
 
 - name: "Move fastfetch to /usr/bin"
   file:
-    path: /usr/bin/fastfetch
-    src: /tmp/fastfetch-linux-amd64/usr/bin/fastfetch  # Use src instead of dest
+    src: /tmp/fastfetch-linux-amd64/usr/bin/fastfetch
+    dest: /usr/bin/fastfetch
     mode: 0755
     owner: root
     group: root
@@ -54,7 +54,7 @@
 
 - name: "Remove fastfetch extraction directory"
   file:
-    path: /tmp/fastfetch
+    path: /tmp/fastfetch-linux-amd64
     state: absent
   delegate_to: localhost
 
