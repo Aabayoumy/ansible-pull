@@ -1,4 +1,3 @@
----
 - name: "SSH | Ensure .ssh folder exists"
   file:
     path: "{{ user.home }}/.ssh"
@@ -10,7 +9,7 @@
     type: ed25519
     state: present
     force: no
-  when: "{{ user.name }}" == "abayoumy"
+  when: "{{ user.name }}" == "abayoumy" 
 
 - name: "SSH | Copy SSH keys"
   copy:
