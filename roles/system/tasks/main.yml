@@ -93,6 +93,5 @@
         line: 'GRUB_CMDLINE_LINUX_DEFAULT="ipv6.disable=1"'
       become: yes
       notify: Update GRUB
-      when: grub_installed.stat.exists
   
   when: ipv6_status.stdout == "0"
