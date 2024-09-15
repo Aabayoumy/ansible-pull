@@ -120,4 +120,14 @@ function cd() {
 }
 
 
-pfetch
+if command -v fastfetch >/dev/null 2>&1; then
+  fastfetch
+elif command -v pfetch >/dev/null 2>&1; then
+  pfetch
+elif command -v neofetch >/dev/null 2>&1; then
+  neofetch
+fi
+
+if command -v starship >/dev/null 2>&1; then
+    eval "$(starship init bash)"
+fi
