@@ -27,15 +27,38 @@
     - installed_fastfetch_version.stdout.split()[1] != fastfetch_release_info.json.tag_name[1:]
 
 - name: "Installing latest fastfetch"
-  unarchive:
-    src: "{{ fastfetch_release_info.json.assets | selectattr('name', 'match', 'fastfetch-linux-amd64.tar.gz') | map(attribute='browser_download_url') | first }}"
-    dest: /usr/bin
-    remote_src: yes
-    mode: '0755'
+  get_url:
+    url: "{{ fastfetch_release_info.json.assets | selectattr('name', 'match', 'fastfetch-linux-amd64.tar.gz') | map(attribute='browser_download_url') | first }}"
+    dest: /tmp/fastfetch.tar.gz
+  delegate_to: localhost
+
+- name: "Extracting fastfetch"
+  archive:
+    path: /tmp/fastfetch.tar.gz
+    dest: /tmp/fastfetch-extracted
+    extract: yes
+  delegate_to: localhost
+
+- name: "Move fastfetch to /usr/bin"
+  file:
+    path: /tmp/fastfetch-extracted/usr/bin/fastfetch
+    dest: /usr/bin/fastfetch
+    mode: 0755
     owner: root
     group: root
   become: true
-  when: not (fastfetch.stat.exists)
+
+- name: "Remove fastfetch archive and temporary directory"
+  file:
+    path: /tmp/fastfetch.tar.gz
+    state: absent
+  delegate_to: localhost
+
+- name: "Remove fastfetch extraction directory"
+  file:
+    path: /tmp/fastfetch-extracted
+    state: absent
+  delegate_to: localhost
 
 - name: ensures fastfetch dir exists
   file: 
