@@ -3,6 +3,11 @@
   file:
     path: "{{ user.home }}/.ssh"
 
+- name: "Check if SSH Key exists"
+  stat:
+    path: "{{ user.home }}/.ssh/id_ed25519"
+  register: sshkey
+
 - name: "Create SSH Key for {{ user.name }}"
   community.crypto.openssh_keypair:
     path: "{{ user.home }}/.ssh/id_ed25519"
@@ -10,6 +15,7 @@
     type: ed25519
     state: present
     force: no
+  when: not (sshkey.stat.exists) 
 
 - name: "SSH | Copy SSH keys"
   copy:
