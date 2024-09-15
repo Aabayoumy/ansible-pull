@@ -39,8 +39,8 @@
 
 - name: "Move fastfetch to /usr/bin"
   file:
-    path: /tmp/fastfetch-linux-amd64/usr/bin/fastfetch
-    dest: /usr/bin/fastfetch
+    path: /usr/bin/fastfetch
+    src: /tmp/fastfetch-linux-amd64/usr/bin/fastfetch  # Use src instead of dest
     mode: 0755
     owner: root
     group: root
