@@ -38,7 +38,7 @@
       update: true
   - name: Build and install yay
     command:
-          chdir: "/tmp/yay"
+      chdir: "/tmp/yay"
       cmd: "makepkg -sfi --noconfirm"
       creates: /usr/bin/yay
 
@@ -52,6 +52,6 @@
       update: true
   - name: Build and install paru
     command:
-          chdir: "/tmp/paru"
+      chdir: "/tmp/paru"
       cmd: "makepkg -sfi --noconfirm"
       creates: /usr/bin/paru
