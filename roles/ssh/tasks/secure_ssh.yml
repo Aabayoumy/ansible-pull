@@ -1,9 +1,14 @@
 ---
 - name: Set global variable sshd_config_file
   set_fact:
-    sshd_config_file: /etc/ssh/sshd_config
+    sshd_config_file: /etc/ssh/sshd_config.d/90-ansible-sshd_config.conf
 
+- name: Ensure file is exist
+  ansible.builtin.file:
+    path: "{{ sshd_config_file }}"
+    state: touch
 - name: Secure SSH
+
   block:
   - name: Disable root login
     ansible.builtin.lineinfile:
