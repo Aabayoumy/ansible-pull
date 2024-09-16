@@ -47,25 +47,25 @@
     state: present
     name: fzf
 
-- name: Check if dust is already installed on Ubuntu/Fedora
-  ansible.builtin.shell: >
-    dust --version
-  register: dust_rc
-  failed_when: false
-  changed_when: false
-  when: ansible_os_family != 'Archlinux'
+# - name: Check if dust is already installed on Ubuntu/Fedora
+#   ansible.builtin.shell: >
+#     dust --version
+#   register: dust_rc
+#   failed_when: false
+#   changed_when: false
+#   when: ansible_os_family != 'Archlinux'
 
-- name: Install dust on Ubuntu/Fedora
-  become: true
-  ansible.builtin.unarchive:
-    src: "https://github.com/bootandy/dust/releases/download/{{ dustversion }}/dust-{{ dustversion }}-x86_64-unknown-linux-gnu.tar.gz"
-    dest: /usr/local/bin
-    extra_opts:
-      - --strip=1
-      - --wildcards
-      - '*/dust'
-    remote_src: true
-  when: ansible_os_family != 'Archlinux' and dust_rc.rc != 0
+# - name: Install dust on Ubuntu/Fedora
+#   become: true
+#   ansible.builtin.unarchive:
+#     src: "https://github.com/bootandy/dust/releases/download/{{ dustversion }}/dust-{{ dustversion }}-x86_64-unknown-linux-gnu.tar.gz"
+#     dest: /usr/local/bin
+#     extra_opts:
+#       - --strip=1
+#       - --wildcards
+#       - '*/dust'
+#     remote_src: true
+#   when: ansible_os_family != 'Archlinux' and dust_rc.rc != 0
 
 - name: Set permissions on /etc/passwd-
   ansible.builtin.file:
