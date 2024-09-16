@@ -53,7 +53,7 @@
       chdir: "/tmp/yay"
       cmd: "makepkg -sfi --noconfirm"
       creates: /usr/bin/yay
-
+    become: false
 - name: "System | {{ ansible_distribution }} | Install paru"
   when: 
     - not paru.stat.exists
@@ -69,3 +69,4 @@
       chdir: "/tmp/paru"
       cmd: "makepkg -sfi --noconfirm"
       creates: /usr/bin/paru
+    become: false
