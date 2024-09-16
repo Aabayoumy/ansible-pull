@@ -43,30 +43,38 @@
     - not yay.stat.exists
     - not host_user == 'root' 
   block:
-  - name: Clone yay
+  - name: yay | Clone
     git:
       repo: https://aur.archlinux.org/yay-bin.git
-      dest: "/tmp/yay"
+      dest: "/{{ user.home }}/yay"
       update: true
-  - name: Build and install yay
+  - name: yay | Build and install
     ansible.builtin.command:
-      chdir: "/tmp/yay"
+      chdir: "/{{ user.home }}/yay"
       cmd: "makepkg -sfi --noconfirm"
       creates: /usr/bin/yay
     become: false
+  - name: yay | Cleanup 
+    ansible.builtin.file:
+      path: /{{ user.home }}/yay
+      state: absent
 - name: "System | {{ ansible_distribution }} | Install paru"
   when: 
     - not paru.stat.exists
     - not host_user == 'root
   block:
-  - name: Clone paru
+  - name: paru | Clone
     git:
       repo: https://aur.archlinux.org/paru-bin.git
-      dest: "/tmp/paru"
+      dest: "/{{ user.home }}/paru"
       update: true
-  - name: Build and install paru
+  - name: paru | Build and install
     ansible.builtin.command:
-      chdir: "/tmp/paru"
+      chdir: "/{{ user.home }}/paru"
       cmd: "makepkg -sfi --noconfirm"
       creates: /usr/bin/paru
     become: false
+  - name: paru | Cleanup 
+    ansible.builtin.file:
+      path: /{{ user.home }}/paru
+      state: absent
