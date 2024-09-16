@@ -1,16 +1,44 @@
-- name: Create Users
-  user:
-    name: "{{ item }}"
+- name: Create User
+  ansible.builtin.user:
+    name: "{{ user.name }}"
     password: ""
     shell: /bin/bash
     append: true
     groups: users
     state: present
     update_password: on_create
-  loop:
-    - "{{ user.name }}"
-    - ansible
   run_once: true
+  become: true
+
+- name: Get user ID
+  getent:
+    database: passwd
+    key: ansible
+  register: user_info
+
+- name: Check if user is a system user
+  debug:
+    msg: "User ansible is a system user"
+  when: user_info.getent_passwd[0].uid < 1000
+
+- name: Remove user ansible if it's exist as non system user
+  ansible.builtin.user:
+    name: ansible
+    state: absent
+    remove: yes
+    force: yes
+  when: user_info.getent_passwd[0].uid >= 1000
+  become: true
+
+- name: Create user ansible as system user
+  ansible.builtin.user:
+    name: ansible
+    system: true
+    shell: /bin/bash
+    append: true
+    groups: users
+    state: present
+    update_password: on_create
   become: true
 
 - name: "Add {{ user.name }} to sudoers"
