@@ -117,6 +117,12 @@
   notify: Restart sshd
 
 # Log sftp level file access (read/write/etc.) that would not be easily logged otherwise.
-- name: Log sftp actions
-  ansible.builtin.lineinfile: dest=/etc/ssh/sshd_config regexp='^Subsystem sftp' line='Subsystem sftp  /usr/lib/openssh/sftp-server -f AUTHPRIV -l INFO'
-  notify: Restart sshd
+
+- name: Log sftp level file access (read/write/etc.) that would not be easily logged otherwise.
+  ansible.builtin.lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: '^Subsystem\s+sftp'
+    line: 'Subsystem sftp  /usr/lib/openssh/sftp-server -f AUTHPRIV -l INFO'
+    backup: true
+  notify:
+  - Restart sshd
