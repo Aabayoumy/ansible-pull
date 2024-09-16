@@ -39,7 +39,9 @@
   register: paru
 
 - name: "System | {{ ansible_distribution }} | Install yay"
-  when: not (yay.stat.exists)
+  when: 
+    - not yay.stat.exists
+    - not ansible_user == 'root' 
   block:
   - name: Clone yay
     git:
@@ -53,7 +55,9 @@
       creates: /usr/bin/yay
 
 - name: "System | {{ ansible_distribution }} | Install paru"
-  when: not (paru.stat.exists)
+  when: 
+    - not paru.stat.exists
+    - not ansible_user == 'root
   block:
   - name: Clone paru
     git:
