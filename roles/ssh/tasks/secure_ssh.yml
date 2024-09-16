@@ -33,7 +33,6 @@
     regexp: "^Ciphers"
     line: "Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr"
     backup: true
-    state: exact
   notify: Restart sshd
 
 # I have removed hmac-ripemd160 and hmac-ripemd160-etm@openssh.com from the following line, as Mozilla's SSH guidelines are stricter and avoid using them. Just to be on the safe side.
