@@ -11,7 +11,6 @@
     name:
       - jq
       - open-iscsi
-      - git
       - fuse3
       - xdg-user-dirs
       - unzip
@@ -27,6 +26,13 @@
       - fd
     state: present
   become: true
+
+- name: 'Ensure AUR dependencies are installed'
+  community.general.pacman:
+    name:
+      - 'base-devel'
+      - 'git'
+    state: 'present'
 
 - name: Check yay
   stat:
@@ -103,6 +109,13 @@
       cmd: "makepkg -sfi --noconfirm"
       creates: /usr/bin/paru
     become: false
+  - name: "paru | config"
+    ansible.builtin.template:
+      dest: "/etc/paru.conf"
+      src: paru.j2
+      mode: "0644"
+      force: true
+    become: true
   - name: paru | Cleanup 
     ansible.builtin.file:
       path: /{{ user.home }}/paru
