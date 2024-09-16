@@ -54,4 +54,3 @@
 - name: Secure SSH
   ansible.builtin.import_tasks: roles.ssh.tasks.secure_ssh.yml
   become: true
-
