@@ -108,6 +108,17 @@
         - "$FileOwner root"
         - "$umask 077"
       become: true
+    - name: Add entry in /etc/tmpfiles.d/var.conf
+      ansible.builtin.lineinfile:
+        path: /etc/tmpfiles.d/var.conf
+        line: "{{ item }}"
+        create: true
+      loop:
+        - "f /var/log/faillog 0640 root root -"
+        - "f /var/log/wtmp 0640 root utmp -"
+        - "f /var/log/btmp 0640 root utmp -"
+        - "f /var/log/lastlog 0640 root utmp -"
+      become: true
 # - name: Disable IPv6
 #   block:
 #     - name: Disable IPv6 via sysctl
