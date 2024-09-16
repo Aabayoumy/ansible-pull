@@ -116,7 +116,7 @@
       line: 'PubkeyAuthentication yes'
       
   - name: Log key fingerprint
-    ansible.builtin.file:
+    ansible.builtin.lineinfile:
       dest: /etc/ssh/sshd_config
       regexp: '^LogLevel'
       line: 'LogLevel VERBOSE'
