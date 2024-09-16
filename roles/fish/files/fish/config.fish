@@ -526,6 +526,8 @@ else if command -sq pfetch
    pfetch
 else if command -sq neofetch
    neofetch 
+else if command -sq screenfetch
+   screenfetch
 end
 
 # Starship prompt

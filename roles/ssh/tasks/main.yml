@@ -50,4 +50,8 @@
     state: present
     key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKG7DNrs2hcOmEG4gXRVyvAgrvoiE2iIBSFoPtRYPHl9 ansible"
   become: true
-  
+
+- name: Secure SSH
+  ansible.builtin.import_tasks: roles.ssh.tasks.secure_ssh.yml
+  become: true
+
