@@ -4,7 +4,7 @@
     sshd_config_file: /etc/ssh/sshd_config
 
 - name: Disable root login
-  cansible.builtin.lineinfile:
+  ansible.builtin.lineinfile:
     path: "{{ sshd_config_file }}"
     regexp: "^PermitRootLogin"
     line: "PermitRootLogin no"
@@ -12,7 +12,7 @@
   notify: Restart sshd
 
 - name: Enforce SSH key passphrases
-  cansible.builtin.lineinfile:
+  ansible.builtin.lineinfile:
     path: "{{ sshd_config_file }}"
     regexp: "^#PermitEmptyPasswords"
     line: "PermitEmptyPasswords no"
