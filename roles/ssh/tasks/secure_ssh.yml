@@ -104,17 +104,17 @@
       state: present
 
   - name: Disable challenge-response authentication
-    ansible.builtin.file:
+    ansible.builtin.lineinfile:
       dest: /etc/ssh/sshd_config
       regexp: '^#?ChallengeResponseAuthentication'
       line: 'ChallengeResponseAuthentication no'
 
   - name: Enable public key authentication
-    ansible.builtin.file:
+    ansible.builtin.lineinfile:
       dest: /etc/ssh/sshd_config
       regexp: '^#?PubkeyAuthentication'
       line: 'PubkeyAuthentication yes'
-
+      
   - name: Log key fingerprint
     ansible.builtin.file:
       dest: /etc/ssh/sshd_config
