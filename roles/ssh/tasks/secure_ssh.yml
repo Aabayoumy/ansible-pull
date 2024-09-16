@@ -3,126 +3,139 @@
   set_fact:
     sshd_config_file: /etc/ssh/sshd_config
 
-- name: Disable root login
-  ansible.builtin.lineinfile:
-    path: "{{ sshd_config_file }}"
-    regexp: "^PermitRootLogin"
-    line: "PermitRootLogin no"
-    backup: true
-  notify: Restart sshd
+- name: Secure SSH
+  block:
+    - name: Disable root login
+      ansible.builtin.lineinfile:
+        path: "{{ sshd_config_file }}"
+        regexp: "^PermitRootLogin"
+        line: "PermitRootLogin no"
+        backup: true
 
-- name: Enforce SSH key passphrases
-  ansible.builtin.lineinfile:
-    path: "{{ sshd_config_file }}"
-    regexp: "^#PermitEmptyPasswords"
-    line: "PermitEmptyPasswords no"
-    backup: true
-  notify: Restart sshd
-  # Key exchange, ciphers and MACs
-- name: Secure SSH key exchange algorithms
-  ansible.builtin.lineinfile:
-    path: "{{ sshd_config_file }}"
-    regexp: "^KexAlgorithms"
-    line: "KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256"
-    backup: true
-  notify: Restart sshd
+    - name: Enforce SSH key passphrases
+      ansible.builtin.lineinfile:
+        path: "{{ sshd_config_file }}"
+        regexp: "^#PermitEmptyPasswords"
+        line: "PermitEmptyPasswords no"
+        backup: true
 
-- name: Secure SSH ciphers
-  ansible.builtin.lineinfile:
-    path: "{{ sshd_config_file }}"
-    regexp: "^Ciphers"
-    line: "Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr"
-    backup: true
-  notify: Restart sshd
+    - name: Secure SSH key exchange algorithms
+      ansible.builtin.lineinfile:
+        path: "{{ sshd_config_file }}"
+        regexp: "^KexAlgorithms"
+        line: "KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256"
+        backup: true
 
-# I have removed hmac-ripemd160 and hmac-ripemd160-etm@openssh.com from the following line, as Mozilla's SSH guidelines are stricter and avoid using them. Just to be on the safe side.
-- name: Secure SSH MACs
-  ansible.builtin.lineinfile:
-    path: "{{ sshd_config_file }}"
-    regexp: "^MACs"
-    line: "MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,umac-128@openssh.com"
-    backup: true
-  notify: Restart sshd
+    - name: Secure SSH ciphers
+      ansible.builtin.lineinfile:
+        path: "{{ sshd_config_file }}"
+        regexp: "^Ciphers"
+        line: "Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr"
+        backup: true
 
-- name: Enable the most secure server auth algos and protocol version
-  ansible.builtin.lineinfile:
-    dest: /etc/ssh/sshd_config
-    regexp: '^Protocol 2'
-    line: 'Protocol 2'
-  notify: Restart sshd
+    - name: Secure SSH MACs
+      ansible.builtin.lineinfile:
+        path: "{{ sshd_config_file }}"
+        regexp: "^MACs"
+        line: "MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,umac-128@openssh.com"
+        backup: true
 
-- name: Enable the most secure server host key algorithms
-  ansible.builtin.lineinfile:
-    dest: /etc/ssh/sshd_config
-    regexp: '^HostKey /etc/ssh/ssh_host_ed25519_key'
-    line: 'HostKey /etc/ssh/ssh_host_ed25519_key'
-  notify: Restart sshd
+    - name: Enable the most secure server auth algos and protocol version
+      ansible.builtin.lineinfile:
+        dest: /etc/ssh/sshd_config
+        regexp: '^Protocol 2'
+        line: 'Protocol 2'
 
-- name: Enable the most secure server host key algorithms
-  ansible.builtin.lineinfile:
-    dest: /etc/ssh/sshd_config
-    regexp: '^HostKey /etc/ssh/ssh_host_rsa_key'
-    line: 'HostKey /etc/ssh/ssh_host_rsa_key'
-  notify: Restart sshd
+    - name: Enable the most secure server host key algorithms
+      ansible.builtin.lineinfile:
+        dest: /etc/ssh/sshd_config
+        regexp: '^HostKey /etc/ssh/ssh_host_ed25519_key'
+        line: 'HostKey /etc/ssh/ssh_host_ed25519_key'
 
-- name: Disable ECDSA and DSA host keys
-  ansible.builtin.lineinfile:
-    dest: /etc/ssh/sshd_config
-    regexp: '^HostKey /etc/ssh/ssh_host_ecdsa_key'
-    state: absent
-  notify: Restart sshd
-- name: Disable ECDSA and DSA host keys
-  ansible.builtin.lineinfile:
-    dest: /etc/ssh/sshd_config
-    regexp: '^HostKey /etc/ssh/ssh_host_dsa_key'
-    state: absent
-  notify: Restart sshd
-- name: And remove the files
-  ansible.builtin.file:
-    dest: /etc/ssh/ssh_host_ecdsa_key.pub
-    state: absent
-  notify: Restart sshd
-- name: Remove ECDSA and DSA host keys
-  ansible.builtin.file:
-    dest: /etc/ssh/ssh_host_ecdsa_key
-    state: absent
-  notify: Restart sshd
-- name: Remove ECDSA and DSA host key pub
-  ansible.builtin.file:
-    dest: /etc/ssh/ssh_host_dsa_key.pub
-    state: absent
-  notify: Restart sshd
-- name: Remove ECDSA and DSA host key
-  ansible.builtin.file:
-    dest: /etc/ssh/ssh_host_dsa_key
-    state: absent
-  notify: Restart sshd
+    - name: Enable the most secure server host key algorithms
+      ansible.builtin.lineinfile:
+        dest: /etc/ssh/sshd_config
+        regexp: '^HostKey /etc/ssh/ssh_host_rsa_key'
+        line: 'HostKey /etc/ssh/ssh_host_rsa_key'
 
-- name: Disable password authentication
-  ansible.builtin.lineinfile: dest=/etc/ssh/sshd_config regexp='^#?AuthenticationMethods' line='AuthenticationMethods publickey'
-  notify: Restart sshd
-- name: Disable password authentication
-  ansible.builtin.lineinfile: dest=/etc/ssh/sshd_config regexp='^#?PasswordAuthentication' line='PasswordAuthentication no'
-  notify: Restart sshd
-- name: Disable challenge-response authentication
-  ansible.builtin.lineinfile: dest=/etc/ssh/sshd_config regexp='^#?ChallengeResponseAuthentication' line='ChallengeResponseAuthentication no'
-  notify: Restart sshd
-- name: Enable public key authentication
-  ansible.builtin.lineinfile: dest=/etc/ssh/sshd_config regexp='^#?PubkeyAuthentication' line='PubkeyAuthentication yes'   
-  notify: Restart sshd
-  
-# LogLevel VERBOSE logs user's key fingerprint on login. Needed to have a clear audit track of which key was using to log in.
-- name: Log key fingerprint
-  ansible.builtin.lineinfile: dest=/etc/ssh/sshd_config regexp='^LogLevel' line='LogLevel VERBOSE'
-  notify: Restart sshd
+    - name: Disable ECDSA and DSA host keys
+      ansible.builtin.lineinfile:
+        dest: /etc/ssh/sshd_config
+        regexp: '^HostKey /etc/ssh/ssh_host_ecdsa_key'
+        state: absent
 
-# Log sftp level file access (read/write/etc.) that would not be easily logged otherwise.
+    - name: Disable ECDSA and DSA host keys
+      ansible.builtin.lineinfile:
+        dest: /etc/ssh/sshd_config
+        regexp: '^HostKey /etc/ssh/ssh_host_dsa_key'
+        state: absent
 
-- name: Log sftp level file access (read/write/etc.) that would not be easily logged otherwise.
-  ansible.builtin.lineinfile:
-    dest: /etc/ssh/sshd_config
-    regexp: '^Subsystem\s+sftp'
-    line: 'Subsystem sftp  /usr/lib/openssh/sftp-server -f AUTHPRIV -l INFO'
-    backup: true
+    - name: And remove the files
+      ansible.builtin.file:
+        dest: /etc/ssh/ssh_host_ecdsa_key.pub
+        state: absent
+
+    - name: Remove ECDSA and DSA host keys
+      ansible.builtin.file:
+        dest: /etc/ssh/ssh_host_ecdsa_key
+        state: absent
+
+    - name: Remove ECDSA and DSA host key pub
+      ansible.builtin.file:
+        dest: /etc/ssh/ssh_host_dsa_key.pub
+        state: absent
+
+    - name: Remove ECDSA and DSA host key
+      ansible.builtin.file:
+        dest: /etc/ssh/ssh_host_dsa_key
+        state: absent
+
+    - name: Disable password authentication
+      ansible.builtin.lineinfile:
+        dest: /etc/ssh/sshd_config
+        regexp: '^#?AuthenticationMethods'
+        line: 'AuthenticationMethods publickey'
+
+    - name: Disable password authentication
+      ansible.builtin.lineinfile:
+        dest: /etc/ssh/sshd_config
+        regexp: '^#?PasswordAuthentication'
+        line: 'PasswordAuthentication no'
+        state: present
+
+    - name: Disable challenge-response authentication
+      ansible.builtin.file:
+        dest: /etc/ssh/sshd_config
+        regexp: '^#?ChallengeResponseAuthentication'
+        line: 'ChallengeResponseAuthentication no'
+
+    - name: Enable public key authentication
+      ansible.builtin.file:
+        dest: /etc/ssh/sshd_config
+        regexp: '^#?PubkeyAuthentication'
+        line: 'PubkeyAuthentication yes'
+
+    - name: Log key fingerprint
+      ansible.builtin.file:
+        dest: /etc/ssh/sshd_config
+        regexp: '^LogLevel'
+        line: 'LogLevel VERBOSE'
+
+    - name: Log sftp level file access (read/write/etc.) that would not be easily logged otherwise.
+      ansible.builtin.lineinfile:
+        dest: /etc/ssh/sshd_config
+        regexp: '^Subsystem\s+sftp'
+        line: 'Subsystem sftp  /usr/lib/openssh/sftp-server -f AUTHPRIV -l INFO'
+        backup: true
+
+    - name: Set LoginGraceTime to 60 seconds
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^LoginGraceTime.*'
+        line: 'LoginGraceTime 60'
+        state: present
+        backup: true
   notify:
-  - Restart sshd
+    - Restart sshd
+  become: true
+  

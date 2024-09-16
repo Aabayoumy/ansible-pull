@@ -53,4 +53,3 @@
 
 - name: Secure SSH
   ansible.builtin.import_tasks: secure_ssh.yml
-  become: true
