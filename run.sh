@@ -261,7 +261,7 @@ fi
 
 
 __task "Running playbook ($USER)"; 
-_cmd "ansible-pull --force -U "https://github.com/Aabayoumy/ansible-pull.git" "$@""
+ansible-pull --force -U "https://github.com/Aabayoumy/ansible-pull.git" "$@"
 _task_done
 
 # Rename the log file with date and time
