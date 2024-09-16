@@ -67,6 +67,29 @@
     remote_src: true
   when: ansible_os_family != 'Archlinux' and dust_rc.rc != 0
 
+- name: Set permissions on /etc/passwd-
+  ansible.builtin.file:
+    path: /etc/passwd-
+    owner: root
+    group: root
+    mode: '0600'
+  become: true
+
+- name: Set permissions on /etc/group-
+  ansible.builtin.file:
+    path: /etc/group-
+    owner: root
+    group: root
+    mode: '0600'
+  become: true
+
+- name: Add entry in /etc/tmpfiles.d/etc.conf
+  ansible.builtin.lineinfile:
+    path: /etc/tmpfiles.d/etc.conf
+    line: 'f /etc/group- 0600 root root -'
+    create: true
+  become: true
+
 # - name: Disable IPv6
 #   block:
 #     - name: Disable IPv6 via sysctl
