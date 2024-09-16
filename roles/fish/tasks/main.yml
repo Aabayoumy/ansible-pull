@@ -7,7 +7,7 @@
     state: present
 
 - name: make the fisherman directory
-  file:
+  ansible.builtin.file:
     path="{{ user.home }}/.config/fish/functions"
     state=directory
     owner="{{ user.name }}"

@@ -55,7 +55,7 @@
       dest: "/{{ user.home }}/yay"
       update: true
   - name: yay | change ownership
-    file:
+    ansible.builtin.file:
       path: /{{ user.home }}/yay # this should be as same as `dest` above
       owner: "{{ user.name }}"
       group: "{{ user.name }}"
@@ -101,7 +101,7 @@
       dest: "/{{ user.home }}/paru"
       update: true
   - name: paru | change ownership
-    file:
+    ansible.builtin.file:
       path: /{{ user.home }}/paru # this should be as same as `dest` above
       owner: "{{ user.name }}"
       group: "{{ user.name }}"

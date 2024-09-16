@@ -15,7 +15,7 @@
   when: not (nvim.stat.exists) and ansible_architecture == "x86_64"  
   run_once: true
 # - name: Creates config directory
-#   file:
+#   ansible.builtin.file:
 #     path: ~/.config/nvim
 #     state: directory
 #   run_once: true

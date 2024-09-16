@@ -4,93 +4,96 @@
     sshd_config_file: /etc/ssh/sshd_config
 
 - name: Disable root login
-  community.general.lineinfile:
+  cansible.builtin.lineinfile:
     path: "{{ sshd_config_file }}"
     regexp: "^PermitRootLogin"
     line: "PermitRootLogin no"
-    backup: yes
+    backup: true
   notify: Restart sshd
 
 - name: Enforce SSH key passphrases
-  community.general.lineinfile:
+  cansible.builtin.lineinfile:
     path: "{{ sshd_config_file }}"
     regexp: "^#PermitEmptyPasswords"
     line: "PermitEmptyPasswords no"
-    backup: yes
+    backup: true
   notify: Restart sshd
   # Key exchange, ciphers and MACs
 - name: Secure SSH key exchange algorithms
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: "{{ sshd_config_file }}"
     regexp: "^KexAlgorithms"
     line: "KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256"
-    backup: yes
+    backup: true
   notify: Restart sshd
 
 - name: Secure SSH ciphers
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: "{{ sshd_config_file }}"
     regexp: "^Ciphers"
     line: "Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr"
-    backup: yes
+    backup: true
     state: exact
   notify: Restart sshd
-    
+
 # I have removed hmac-ripemd160 and hmac-ripemd160-etm@openssh.com from the following line, as Mozilla's SSH guidelines are stricter and avoid using them. Just to be on the safe side.
 - name: Secure SSH MACs
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: "{{ sshd_config_file }}"
     regexp: "^MACs"
     line: "MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,umac-128@openssh.com"
-    backup: yes
+    backup: true
   notify: Restart sshd
 
 - name: Enable the most secure server auth algos and protocol version
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/ssh/sshd_config
     regexp: '^Protocol 2'
     line: 'Protocol 2'
   notify: Restart sshd
 
 - name: Enable the most secure server host key algorithms
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/ssh/sshd_config
     regexp: '^HostKey /etc/ssh/ssh_host_ed25519_key'
     line: 'HostKey /etc/ssh/ssh_host_ed25519_key'
   notify: Restart sshd
 
 - name: Enable the most secure server host key algorithms
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/ssh/sshd_config
     regexp: '^HostKey /etc/ssh/ssh_host_rsa_key'
     line: 'HostKey /etc/ssh/ssh_host_rsa_key'
   notify: Restart sshd
 
 - name: Disable ECDSA and DSA host keys
-  lineinfile: 
-    dest: /etc/ssh/sshd_config 
-    regexp: '^HostKey /etc/ssh/ssh_host_ecdsa_key' 
+  ansible.builtin.lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: '^HostKey /etc/ssh/ssh_host_ecdsa_key'
     state: absent
   notify: Restart sshd
-- lineinfile: 
-    dest: /etc/ssh/sshd_config 
+- ansible.builtin.lineinfile:
+    dest: /etc/ssh/sshd_config
     regexp: '^HostKey /etc/ssh/ssh_host_dsa_key'
     state: absent
   notify: Restart sshd
 - name: And remove the files
-  file:
+  ansible.builtin.file:
     dest: /etc/ssh/ssh_host_ecdsa_key.pub
     state: absent
   notify: Restart sshd
-- file:
+- name: Remove ECDSA and DSA host keys
+  ansible.builtin.file:
     dest: /etc/ssh/ssh_host_ecdsa_key
     state: absent
   notify: Restart sshd
-- file:
+- name: Remove ECDSA and DSA host key pub
+  ansible.builtin.file:
     dest: /etc/ssh/ssh_host_dsa_key.pub
     state: absent
   notify: Restart sshd
-- file:
+- name: Remove ECDSA and DSA host key
+  ansible.builtin.file:
     dest: /etc/ssh/ssh_host_dsa_key
     state: absent
   notify: Restart sshd

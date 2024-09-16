@@ -1,5 +1,5 @@
 - name: ensure fonts directory
-  file:
+  ansible.builtin.file:
     path: "{{ lookup('env', 'HOME') }}/.fonts"
     state: directory
 

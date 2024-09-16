@@ -18,7 +18,7 @@
   when: pfetch.stat.exists
 
 - name: Remove old pfetch version
-  file:
+  ansible.builtin.file:
     path: /usr/bin/pfetch
     state: absent
   become: true
