@@ -45,7 +45,13 @@
       dest: "{{ sshd_config_file }}"
       regexp: '^Protocol 2'
       line: 'Protocol 2'
-
+  - name: Disable root login
+    ansible.builtin.lineinfile:
+      path: "{{ sshd_config_file }}"
+      regexp: "^PermitRootLogin"
+      line: "PermitRootLogin no"
+      backup: true
+      
   - name: Enable the most secure server host key algorithms
     ansible.builtin.lineinfile:
       dest: "{{ sshd_config_file }}"
