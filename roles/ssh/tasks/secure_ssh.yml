@@ -42,31 +42,31 @@
 
   - name: Enable the most secure server auth algos and protocol version
     ansible.builtin.lineinfile:
-      dest: /etc/ssh/sshd_config
+      dest: "{{ sshd_config_file }}"
       regexp: '^Protocol 2'
       line: 'Protocol 2'
 
   - name: Enable the most secure server host key algorithms
     ansible.builtin.lineinfile:
-      dest: /etc/ssh/sshd_config
+      dest: "{{ sshd_config_file }}"
       regexp: '^HostKey /etc/ssh/ssh_host_ed25519_key'
       line: 'HostKey /etc/ssh/ssh_host_ed25519_key'
 
   - name: Enable the most secure server host key algorithms
     ansible.builtin.lineinfile:
-      dest: /etc/ssh/sshd_config
+      dest: "{{ sshd_config_file }}"
       regexp: '^HostKey /etc/ssh/ssh_host_rsa_key'
       line: 'HostKey /etc/ssh/ssh_host_rsa_key'
 
   - name: Disable ECDSA and DSA host keys
     ansible.builtin.lineinfile:
-      dest: /etc/ssh/sshd_config
+      dest: "{{ sshd_config_file }}"
       regexp: '^HostKey /etc/ssh/ssh_host_ecdsa_key'
       state: absent
 
   - name: Disable ECDSA and DSA host keys
     ansible.builtin.lineinfile:
-      dest: /etc/ssh/sshd_config
+      dest: "{{ sshd_config_file }}"
       regexp: '^HostKey /etc/ssh/ssh_host_dsa_key'
       state: absent
 
@@ -92,49 +92,57 @@
 
   - name: Disable password authentication
     ansible.builtin.lineinfile:
-      dest: /etc/ssh/sshd_config
+      dest: "{{ sshd_config_file }}"
       regexp: '^#?AuthenticationMethods'
       line: 'AuthenticationMethods publickey'
 
   - name: Disable password authentication
     ansible.builtin.lineinfile:
-      dest: /etc/ssh/sshd_config
+      dest: "{{ sshd_config_file }}"
       regexp: '^#?PasswordAuthentication'
       line: 'PasswordAuthentication no'
       state: present
 
   - name: Disable challenge-response authentication
     ansible.builtin.lineinfile:
-      dest: /etc/ssh/sshd_config
+      dest: "{{ sshd_config_file }}"
       regexp: '^#?ChallengeResponseAuthentication'
       line: 'ChallengeResponseAuthentication no'
 
   - name: Enable public key authentication
     ansible.builtin.lineinfile:
-      dest: /etc/ssh/sshd_config
+      dest: "{{ sshd_config_file }}"
       regexp: '^#?PubkeyAuthentication'
       line: 'PubkeyAuthentication yes'
       
   - name: Log key fingerprint
     ansible.builtin.lineinfile:
-      dest: /etc/ssh/sshd_config
+      dest: "{{ sshd_config_file }}"
       regexp: '^LogLevel'
       line: 'LogLevel VERBOSE'
 
   - name: Log sftp level file access (read/write/etc.) that would not be easily logged otherwise.
     ansible.builtin.lineinfile:
-      dest: /etc/ssh/sshd_config
+      dest: "{{ sshd_config_file }}"
       regexp: '^Subsystem\s+sftp'
       line: 'Subsystem sftp  /usr/lib/openssh/sftp-server -f AUTHPRIV -l INFO'
       backup: true
 
   - name: Set LoginGraceTime to 60 seconds
     ansible.builtin.lineinfile:
-      path: /etc/ssh/sshd_config
+      path: "{{ sshd_config_file }}"
       regexp: '^LoginGraceTime.*'
       line: 'LoginGraceTime 60'
       state: present
       backup: true
+
+  - name: Set ownership and permissions of sshd_config
+    ansible.builtin.file:
+      path: "{{ sshd_config_file }}"
+      owner: root
+      group: root
+      mode: '0600'
+
   notify:
     - Restart sshd
   become: true
