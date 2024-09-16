@@ -66,6 +66,19 @@
     ansible.builtin.file:
       path: /{{ user.home }}/yay
       state: absent
+  - name: Check libalpm.so.14
+    stat:
+      path: /usr/lib/libalpm.so.14
+    register: libalpm
+  - name: Create a symbolic link
+    ansible.builtin.file:
+      src: /usr/lib/libalpm.so.15.0.0
+      dest: /usr/lib/libalpm.so.14
+      owner: root
+      group: root
+      state: link
+    when: not (libalpm.stat.exists) 
+
 - name: "System | {{ ansible_distribution }} | Install paru"
   when: 
     - not paru.stat.exists
