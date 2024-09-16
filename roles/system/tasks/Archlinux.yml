@@ -27,3 +27,31 @@
       - fd
     state: present
   become: true
+
+- name: "System | {{ ansible_distribution }} | Install yay"
+  when: not (ansible_path.get("/usr/bin/yay", default='') | bool)
+  block:
+  - name: Clone yay
+    git:
+      repo: https://aur.archlinux.org/yay-bin.git
+      dest: "/tmp/yay"
+      update: true
+  - name: Build and install yay
+    command:
+          chdir: "/tmp/yay"
+      cmd: "makepkg -sfi --noconfirm"
+      creates: /usr/bin/yay
+
+- name: "System | {{ ansible_distribution }} | Install paru"
+  when: not (ansible_path.get("/usr/bin/paru", default='') | bool)
+  block:
+  - name: Clone paru
+    git:
+      repo: https://aur.archlinux.org/paru-bin.git
+      dest: "/tmp/paru"
+      update: true
+  - name: Build and install paru
+    command:
+          chdir: "/tmp/paru"
+      cmd: "makepkg -sfi --noconfirm"
+      creates: /usr/bin/paru
