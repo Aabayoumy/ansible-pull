@@ -119,6 +119,23 @@
         - "f /var/log/btmp 0640 root utmp -"
         - "f /var/log/lastlog 0640 root utmp -"
       become: true
+
+- name: Secure su
+  block:
+    - name: Create wheel group if not exist
+      ansible.builtin.group:
+        name: wheel
+        state: present
+      become: true
+
+    - name: Secure su
+      ansible.builtin.lineinfile:
+        path: /etc/pam.d/su
+        line: 'auth required pam_wheel.so use_uid'
+        insertafter: EOF
+        create: true
+      become: true
+      
 # - name: Disable IPv6
 #   block:
 #     - name: Disable IPv6 via sysctl
