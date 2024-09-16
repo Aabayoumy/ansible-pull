@@ -136,6 +136,14 @@
         create: true
       become: true
       
+- name: Enable sudo log
+  block:
+    - name: Add sudo log config line
+      ansible.builtin.lineinfile:
+        path: /etc/sudoers
+        line: 'Defaults log_host, log_year, logfile="/var/log/sudo.log"'
+        validate: '/usr/sbin/visudo -cf %s'
+      become: true
 # - name: Disable IPv6
 #   block:
 #     - name: Disable IPv6 via sysctl
