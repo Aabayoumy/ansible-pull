@@ -88,7 +88,7 @@
 - name: "System | {{ ansible_distribution }} | Install paru"
   when: 
     - not paru.stat.exists
-    - not host_user == 'root
+    - not host_user == 'root'
   block:
   - name: paru | Clone
     git:
