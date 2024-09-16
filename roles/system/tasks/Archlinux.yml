@@ -28,8 +28,18 @@
     state: present
   become: true
 
+- name: Check yay
+  stat:
+    path: /usr/bin/yay
+  register: yay
+
+- name: Check paru
+  stat:
+    path: /usr/bin/paru
+  register: paru
+
 - name: "System | {{ ansible_distribution }} | Install yay"
-  when: not (ansible_path.get("/usr/bin/yay", default='') | bool)
+  when: not (yay.stat.exists)
   block:
   - name: Clone yay
     git:
@@ -43,7 +53,7 @@
       creates: /usr/bin/yay
 
 - name: "System | {{ ansible_distribution }} | Install paru"
-  when: not (ansible_path.get("/usr/bin/paru", default='') | bool)
+  when: not (paru.stat.exists)
   block:
   - name: Clone paru
     git:
