@@ -1,10 +1,10 @@
 - name: check pfetch
-   ansible.builtin.stat:
+  ansible.builtin.stat:
     path: /usr/local/bin/pfetch
   register: pfetch
 
 - name: check pfetch link
-   ansible.builtin.stat:
+  ansible.builtin.stat:
     path: /usr/local/bin/pfetch
   register: pfetch_link
 

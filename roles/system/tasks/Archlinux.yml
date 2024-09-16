@@ -35,12 +35,12 @@
     state: 'present'
 
 - name: Check yay
-   ansible.builtin.stat:
+  ansible.builtin.stat:
     path: /usr/bin/yay
   register: yay
 
 - name: Check paru
-   ansible.builtin.stat:
+  ansible.builtin.stat:
     path: /usr/bin/paru
   register: paru
 
@@ -73,7 +73,7 @@
       path: /{{ user.home }}/yay
       state: absent
   - name: Check libalpm.so.14
-     ansible.builtin.stat:
+    ansible.builtin.stat:
       path: /usr/lib/libalpm.so.14
     register: libalpm
   - name: Create a symbolic link

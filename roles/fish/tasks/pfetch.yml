@@ -1,6 +1,6 @@
 ---
 - name: Check pfetch
-   ansible.builtin.stat:
+  ansible.builtin.stat:
     path: /usr/bin/pfetch
   register: pfetch
 

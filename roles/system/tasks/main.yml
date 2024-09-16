@@ -82,7 +82,7 @@
 #       become: yes
 
 #     - name: Check if GRUB is installed
-#       ansible.builtin.stat:
+#      ansible.builtin.stat:
 #         path: /etc/default/grub
 #       register: grub_installed
 
