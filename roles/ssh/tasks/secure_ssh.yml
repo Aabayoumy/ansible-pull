@@ -72,7 +72,8 @@
     regexp: '^HostKey /etc/ssh/ssh_host_ecdsa_key'
     state: absent
   notify: Restart sshd
-- ansible.builtin.lineinfile:
+- name: Disable ECDSA and DSA host keys
+  ansible.builtin.lineinfile:
     dest: /etc/ssh/sshd_config
     regexp: '^HostKey /etc/ssh/ssh_host_dsa_key'
     state: absent
@@ -99,20 +100,24 @@
   notify: Restart sshd
 
 - name: Disable password authentication
-  lineinfile: dest=/etc/ssh/sshd_config regexp='^#?AuthenticationMethods' line='AuthenticationMethods publickey'
+  ansible.builtin.lineinfile: dest=/etc/ssh/sshd_config regexp='^#?AuthenticationMethods' line='AuthenticationMethods publickey'
   notify: Restart sshd
-- lineinfile: dest=/etc/ssh/sshd_config regexp='^#?PasswordAuthentication' line='PasswordAuthentication no'
+- name: Disable password authentication
+  ansible.builtin.lineinfile: dest=/etc/ssh/sshd_config regexp='^#?PasswordAuthentication' line='PasswordAuthentication no'
   notify: Restart sshd
-- lineinfile: dest=/etc/ssh/sshd_config regexp='^#?ChallengeResponseAuthentication' line='ChallengeResponseAuthentication no'
+- name: Disable challenge-response authentication
+  ansible.builtin.lineinfile: dest=/etc/ssh/sshd_config regexp='^#?ChallengeResponseAuthentication' line='ChallengeResponseAuthentication no'
   notify: Restart sshd
-- lineinfile: dest=/etc/ssh/sshd_config regexp='^#?PubkeyAuthentication' line='PubkeyAuthentication yes'   
+- name: Enable public key authentication
+  ansible.builtin.lineinfile: dest=/etc/ssh/sshd_config regexp='^#?PubkeyAuthentication' line='PubkeyAuthentication yes'   
   notify: Restart sshd
   
 # LogLevel VERBOSE logs user's key fingerprint on login. Needed to have a clear audit track of which key was using to log in.
-- lineinfile: dest=/etc/ssh/sshd_config regexp='^LogLevel' line='LogLevel VERBOSE'
+- name: Log key fingerprint
+  ansible.builtin.lineinfile: dest=/etc/ssh/sshd_config regexp='^LogLevel' line='LogLevel VERBOSE'
   notify: Restart sshd
 
 # Log sftp level file access (read/write/etc.) that would not be easily logged otherwise.
-- lineinfile: dest=/etc/ssh/sshd_config regexp='^Subsystem sftp' line='Subsystem sftp  /usr/lib/openssh/sftp-server -f AUTHPRIV -l INFO'
+- name: Log sftp actions
+  ansible.builtin.lineinfile: dest=/etc/ssh/sshd_config regexp='^Subsystem sftp' line='Subsystem sftp  /usr/lib/openssh/sftp-server -f AUTHPRIV -l INFO'
   notify: Restart sshd
- 
