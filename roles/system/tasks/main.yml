@@ -90,6 +90,24 @@
     create: true
   become: true
 
+- name: Secure logs
+  block:
+    - name: Secure logs with chmod
+      ansible.builtin.command:
+        cmd: "find /var/log/ -type f -perm /g+wx,o+rwx -exec chmod g-wx,o-rwx \"{}\" +"
+      become: true
+
+    - name: Update /etc/rsyslog.conf
+      ansible.builtin.lineinfile:
+        path: /etc/rsyslog.conf
+        line: "{{ item }}"
+        insertafter: EOF
+        create: true
+      loop:
+        - "$FileCreateMode 0640"
+        - "$FileOwner root"
+        - "$umask 077"
+      become: true
 # - name: Disable IPv6
 #   block:
 #     - name: Disable IPv6 via sysctl
