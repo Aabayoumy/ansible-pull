@@ -1,14 +1,17 @@
-- name: "byobu | Install"
+- name: "Byobu | Install"
   ansible.builtin.package:
     name: byobu
     state: present
   become: true
 
-- name: "byobu | Copy byobu config"
+- name: "Byobu | Copy byobu config"
   ansible.builtin.copy:
     src: files/
-    dest: ~/
-    mode: "0644"
-
-- name: Enable byobu
-  ansible.builtin.command: byobu-enable
+    dest: "{{ user.home }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    mode: '0644'
+    directory_mode: '0755'
+    force: true
+# - name: Enable byobu
+#   ansible.builtin.command: byobu-enable
