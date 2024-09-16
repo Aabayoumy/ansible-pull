@@ -1,5 +1,5 @@
 - name: Check fastfetch
-  stat:
+   ansible.builtin.stat:
     path: /usr/bin/fastfetch
   register: fastfetch
 

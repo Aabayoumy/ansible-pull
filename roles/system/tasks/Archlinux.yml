@@ -35,12 +35,12 @@
     state: 'present'
 
 - name: Check yay
-  stat:
+   ansible.builtin.stat:
     path: /usr/bin/yay
   register: yay
 
 - name: Check paru
-  stat:
+   ansible.builtin.stat:
     path: /usr/bin/paru
   register: paru
 
@@ -73,7 +73,7 @@
       path: /{{ user.home }}/yay
       state: absent
   - name: Check libalpm.so.14
-    stat:
+     ansible.builtin.stat:
       path: /usr/lib/libalpm.so.14
     register: libalpm
   - name: Create a symbolic link
@@ -84,6 +84,11 @@
       group: root
       state: link
     when: not (libalpm.stat.exists) 
+  - name: set yay options to cleanafter package installation
+    become: false
+    shell: yay -Y --answerclean All --removemake --cleanafter --needed  --noprogressbar --noconfirm --save
+    args:
+      executable: /usr/bin/bash
 
 - name: "System | {{ ansible_distribution }} | Install paru"
   when: 

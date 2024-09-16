@@ -94,4 +94,3 @@
 #       become: yes
 #       notify: Update GRUB
 #       when: grub_installed.stat.exists
-

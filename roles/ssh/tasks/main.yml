@@ -1,10 +1,10 @@
 ---
 - name: "SSH | Ensure .ssh folder exists"
-  file:
+  ansible.builtin.file:
     path: "{{ user.home }}/.ssh"
 
 - name: "Check if SSH Key exists"
-  stat:
+  ansible.builtin.stat:
     path: "{{ user.home }}/.ssh/id_ed25519"
   register: sshkey
 
@@ -14,11 +14,11 @@
     size: 2048
     type: ed25519
     state: present
-    force: no
-  when: not (sshkey.stat.exists) 
+    force: true
+  when: not (sshkey.stat.exists)
 
 - name: "SSH | Copy SSH keys"
-  copy:
+  ansible.builtin.copy:
     dest: "{{ user.home }}/.ssh/{{ ssh_key_item.key }}"
     content: "{{ ssh_key_item.value }}"
     mode: "0600"
@@ -31,18 +31,21 @@
   ansible.builtin.copy:
     dest: "{{ user.home }}/.ssh/config"
     src: "config"
+    mode: '600'
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
 
-- name: add  ssh keys for abayoumy
-  authorized_key:
+- name: Add  ssh keys for abayoumy
+  ansible.posix.authorized_key:
     user: "{{ user.name }}"
     state: present
     key: "{{ lookup('file', '{{ item }}') }}"
   with_fileglob:
     - "files/*.pub"
   become: true
-    
-- name: add ssh keys for ansible
-  authorized_key:
+
+- name: Add ssh keys for ansible
+  ansible.posix.authorized_key:
     user: ansible
     state: present
     key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKG7DNrs2hcOmEG4gXRVyvAgrvoiE2iIBSFoPtRYPHl9 ansible"

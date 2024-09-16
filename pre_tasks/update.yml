@@ -1,5 +1,5 @@
 - name: "Check if {{ ansible_os_family }} file exists"
-  stat:
+   ansible.builtin.stat:
     path: "{{ ansible_os_family }}.yml"
   register: file_exists
 

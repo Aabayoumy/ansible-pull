@@ -1,5 +1,5 @@
 - name: check nvim exist
-  stat:
+   ansible.builtin.stat:
     path: /usr/local/bin/nvim
   register: nvim
 
