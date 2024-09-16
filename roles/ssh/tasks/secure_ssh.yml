@@ -23,7 +23,7 @@
     ansible.builtin.lineinfile:
       path: "{{ sshd_config_file }}"
       regexp: "^KexAlgorithms"
-      line: "KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256"
+      line: "KexAlgorithms sntrup761x25519-sha512@openssh.com,curve25519-sha256@libssh.org,diffie-hellman-group18-sha512"
       backup: true
 
   - name: Secure SSH ciphers
