@@ -271,7 +271,7 @@ _cmd "mv /tmp/ansible-pull.log $LOG_FILE"
 _cmd "/usr/bin/ls /tmp/ansible-pull_*.log -tr | head -n -5 | xargs --no-run-if-empty rm"
 _task_done
 
-__task "IP $(ip addr show | grep 'inet ' | grep -v '127.0.0.1' | awk '{print $2}' | cut -d/ -f1)"
+__task "IP $(ip addr show | grep 'inet ' | grep -v '127.0.0.1' | awk '{print $2}' | cut -d/ -f1 | head -1)"
 _task_done
 
 
