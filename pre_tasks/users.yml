@@ -20,9 +20,17 @@
   #  debug:
 #    msg: "{{ user_info.getent_passwd }}"
   # when: user_info.getent_passwd[0].uid < 1000
-- name: Display user
-  ansible.builtin.debug:
-    var: user_info
+- getent:
+    database: passwd
+- debug:
+    msg: |
+      {{ item }} uid: {{ getent_passwd[item].1 }}
+      {{ item }} gid: {{ getent_passwd[item].2 }}
+      {{ item }} home: {{ getent_passwd[item].4 }}
+      {{ item }} shell: {{ getent_passwd[item].5 }}
+  loop:
+    - abayoumy
+    - ansible
 - name: Remove user ansible if it's exist as non system user
   ansible.builtin.user:
     name: ansible
