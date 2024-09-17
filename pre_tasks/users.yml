@@ -16,11 +16,13 @@
     key: ansible
   register: user_info
 
-- name: Check if user is a system user
-  debug:
-    msg: "User ansible is a system user '{{ user_info.getent_passwd[0].uid }}'"
+#- name: Check if user is a system user
+  #  debug:
+#    msg: "{{ user_info.getent_passwd }}"
   # when: user_info.getent_passwd[0].uid < 1000
-
+- name: Display user
+  ansible.builtin.debug:
+    var: user_info
 - name: Remove user ansible if it's exist as non system user
   ansible.builtin.user:
     name: ansible
