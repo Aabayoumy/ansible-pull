@@ -18,7 +18,7 @@
 
 - name: Check if user is a system user
   debug:
-    msg: "User ansible is a system user"
+    msg: "User ansible is a system user {{ user_info.getent_passwd[0].uid }}"
   when: user_info.getent_passwd[0].uid < 1000
 
 - name: Remove user ansible if it's exist as non system user
@@ -27,7 +27,7 @@
     state: absent
     remove: yes
     force: yes
-  when: user_info.getent_passwd[0].uid >= 1000
+  when: user_info.getent_passwd[0].uid > 1000
   become: true
 
 - name: Create user ansible as system user
