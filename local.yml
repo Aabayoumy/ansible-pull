@@ -3,28 +3,6 @@
   gather_facts: true
   become: true
   pre_tasks:
-    - name: Only run "update_cache=yes" if the last one is more than 3600 seconds ago
-      ansible.builtin.apt:
-        update_cache: true
-        cache_valid_time: 3600
-      when: ansible_facts['os_family'] == "Debian"
-    - name: Update all packages to their latest version
-      ansible.builtin.apt:
-        name: "*"
-        state: latest
-      when: ansible_facts['os_family'] == "Debian"
-
-    - name: Set dnf conf
-      ansible.builtin.lineinfile:
-        path: /etc/dnf/dnf.conf
-        line: "{{ item }}"
-      loop:
-        - max_parallel_downloads=20
-        - fastestmirror=true
-        - deltarpm=true
-      run_once: true
-      when: ansible_facts['os_family'] == "RedHat"
-
     - name: Detect Host User
       ansible.builtin.import_tasks: pre_tasks/whoami.yml
       tags:
