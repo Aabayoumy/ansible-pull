@@ -10,35 +10,22 @@
   run_once: true
   become: true
 
-- name: Get user ID
-  getent:
+- name: Read user data
+  ansible.builtin.getent:
     database: passwd
     key: ansible
-  register: user_info
-
-#- name: Check if user is a system user
-  #  debug:
-#    msg: "{{ user_info.getent_passwd }}"
-  # when: user_info.getent_passwd[0].uid < 1000
-- getent:
-    database: passwd
-- debug:
-    msg: |
-      {{ item }} uid: {{ getent_passwd[item].1 }}
-      {{ item }} gid: {{ getent_passwd[item].2 }}
-      {{ item }} home: {{ getent_passwd[item].4 }}
-      {{ item }} shell: {{ getent_passwd[item].5 }}
-  loop:
-    - abayoumy
-    - ansible
-- name: Remove user ansible if it's exist as non system user
-  ansible.builtin.user:
-    name: ansible
-    state: absent
-    remove: yes
-    force: yes
-  when: user_info.getent_passwd[0].uid > 1000
-  become: true
+  register: users_db
+- block:
+  - name: Display user data 
+    debug:
+      var: users_db.ansible_facts.getent_passwd.ansible.1
+      
+  - name: Delete Ansible user if not system account
+    ansible.builtin.user:
+      name: ansible
+      state: absent
+      remove: true
+  when: users_db.ansible_facts.getent_passwd.ansible.1|default(0)|int >= 1000
 
 - name: Create user ansible as system user
   ansible.builtin.user:

@@ -25,4 +25,3 @@ With specific role
 
 curl -L https://tinyurl.com/ansible-pull | bash -s -- --tags comma,seperated,tags
 ```
-
