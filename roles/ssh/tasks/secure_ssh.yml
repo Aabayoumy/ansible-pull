@@ -44,7 +44,13 @@
       regexp: "^MACs"
       line: "MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,umac-128@openssh.com"
       backup: true
-
+  - name: Limit SSH login attempts
+    ansible.builtin.lineinfile:
+      path: "{{ sshd_config_file }}"
+      regexp: "^MaxAuthTries"
+      line: "MaxAuthTries 3"
+      backup: true
+      
   - name: Enable the most secure server auth algos and protocol version
     ansible.builtin.lineinfile:
       dest: "{{ sshd_config_file }}"

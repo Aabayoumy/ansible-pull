@@ -1,0 +1,174 @@
+---
+- name: Disable unused services
+  service:
+    name: "{{ item }}"
+    enabled: no
+    state: stopped
+  loop:
+    - cups
+    - avahi-daemon
+
+# ------------ Enforce Strong Password Policies
+- name: Set strong password policies in /etc/security/pwquality.conf
+  ansible.builtin.lineinfile:
+    path: /etc/security/pwquality.conf
+    regexp: '^minlen'
+    line: 'minlen = 12'
+  notify:
+    - Reload pam
+
+- name: Enforce password expiration (90 days)
+  ansible.builtin.lineinfile:
+    path: /etc/login.defs
+    regexp: '^PASS_MAX_DAYS'
+    line: 'PASS_MAX_DAYS 90'
+  notify:
+    - Reload pam
+
+- name: Reload pam configuration
+  command: /sbin/pam_tally2 --reset
+
+# ----------------------------
+
+- name: Disable IPv6
+  sysctl:
+    name: net.ipv6.conf.all.disable_ipv6
+    value: 1
+    state: present
+    reload: yes
+
+# ----------------------------
+
+- name: Ensure rsyslog is installed
+  package:
+    name: rsyslog
+    state: present
+
+- name: Configure centralized logging server
+  ansible.builtin.lineinfile:
+    path: /etc/rsyslog.conf
+    line: '*.* @logserver.example.com:514'
+    state: present
+  notify:
+    - Restart rsyslog
+
+- name: Restart rsyslog
+  service:
+    name: rsyslog
+    state: restarted
+
+- name: Enable rsyslog on boot
+  service:
+    name: rsyslog
+    enabled: yes
+    
+# ---------------File Integrity Monitoring (AIDE)-------------
+- name: Install AIDE
+  package:
+    name: aide
+    state: present
+
+- name: Initialize AIDE database
+  command: /usr/bin/aideinit
+
+- name: Update AIDE database
+  command: /usr/sbin/aide --update
+
+- name: Check AIDE database
+  command: /usr/sbin/aidecheck
+
+# ---------------------------
+
+- name: Install Fail2Ban
+  package:
+    name: fail2ban
+    state: present
+
+- name: Configure Fail2Ban for SSH
+  ansible.builtin.lineinfile:
+    path: /etc/fail2ban/jail.local
+    line: |
+      [sshd]
+      enabled = true
+      port = ssh
+      logpath = /var/log/auth.log
+      maxretry = 5
+  notify:
+    - Restart fail2ban
+
+- name: Restart fail2ban service
+  service:
+    name: fail2ban
+    state: restarted
+
+# ----------------------------
+
+- name: Install auditd
+  package:
+    name: auditd
+    state: present
+
+- name: Configure auditd to track sudo activities
+  ansible.builtin.lineinfile:
+    path: /etc/audit/rules.d/audit.rules
+    line: '-w /var/log/sudo.log -p wa -k sudo_activities'
+    state: present
+  notify:
+    - Restart auditd
+
+- name: Restart auditd service
+  service:
+    name: auditd
+    state: restarted
+
+# ----------------------------
+- name: Install NTPD package (generic)
+  package:
+    name: ntp
+    state: present
+
+- name: Ensure NTP service is enabled and running
+  service:
+    name: "{{ 'ntpd' if ansible_facts['os_family'] != 'Archlinux' else 'ntpd.service' }}"
+    state: started
+    enabled: yes
+
+- name: Configure NTP servers (Africa pool)
+  blockinfile:
+    path: /etc/ntp.conf
+    block: |
+      # NTP Servers for Africa region
+      server 0.africa.pool.ntp.org iburst
+      server 1.africa.pool.ntp.org iburst
+      server 2.africa.pool.ntp.org iburst
+      server 3.africa.pool.ntp.org iburst
+    marker: "# {mark} NTP Server Configuration"
+
+- name: Restart NTPD service after configuration change
+  service:
+    name: "{{ 'ntpd' if ansible_facts['os_family'] != 'Archlinux' else 'ntpd.service' }}"
+    state: restarted
+
+- name: Disable systemd-timesyncd on Arch Linux
+  service:
+    name: systemd-timesyncd
+    state: stopped
+    enabled: no
+  when: ansible_facts['os_family'] == 'Archlinux'
+
+- name: Disable systemd-timesyncd on Arch Linux
+  service:
+    name: systemd-timesyncd
+    state: stopped
+    enabled: no
+  when: ansible_facts['os_family'] == 'Archlinux'
+
+#------------- Disable ipv6 
+- name: Disable IPv6
+  sysctl:
+    name: net.ipv6.conf.all.disable_ipv6
+    value: 1
+    state: present
+    reload: yes
+
+#---------------------------
