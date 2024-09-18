@@ -180,28 +180,9 @@ function rocky_setup() {
   _cmd "sudo localectl set-locale LANG=en_US.UTF-8"
 }
 
-update_ansible_galaxy() {
-  local os=$1
-  # local os_requirements=""
-
-  # if [ -f "./requirements/$os.yml" ]; then
-  #   __task "${OVERWRITE}Updating Ansible Galaxy with OS Config: $os"
-  #   os_requirements="./requirements/$os.yml"
-  # fi
-  # _cmd "ansible-galaxy install -r ./requirements/common.yml $os_requirements"
   __task "Updating Ansible Galaxy"
   _cmd "ansible-galaxy collection install community.general ansible.posix --ignore-errors"
   _task_done
-  case $os in
-    arch)
-      __task "Updating Ansible Galaxy for Arch"
-      _cmd "ansible-galaxy collection install kewlfft.aur --ignore-errors"  
-      _task_done
-      ;;
-    *)
-  esac
-}
-
 
 # pushd "$DOTFILES_DIR" 2>&1 > /dev/null
 
@@ -238,7 +219,6 @@ esac
 #   _cmd "git -C $DOTFILES_DIR pull --quiet"
 # fi
 
-# update_ansible_galaxy $ID
 
 # ansible-galaxy install -r requirements.yml
 

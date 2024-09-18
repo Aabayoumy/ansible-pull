@@ -1,4 +1,8 @@
 ---
+# - name: "Check Ansible version"
+#   ansible.builtin.debug:
+#     msg: "Ansible version: {{ ansible_version.full }}"
+
 - name: "Install ansible.posix collection"
   community.general.ansible_galaxy_install:
     name: "ansible.posix"
@@ -13,7 +17,7 @@
 
 - name: "Install kewlfft.aur collection (only for ArchLinux)"
   community.general.ansible_galaxy_install:
-    name: "kewlfft.aur"
-    type: "collection"
+    type: collection
+    name: kewlfft.aur
     force: true
   when: ansible_os_family == "Archlinux"
