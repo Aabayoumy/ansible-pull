@@ -3,17 +3,17 @@
 #   ansible.builtin.debug:
 #     msg: "Ansible version: {{ ansible_version.full }}"
 
-- name: "Install ansible.posix collection"
-  community.general.ansible_galaxy_install:
-    name: "ansible.posix"
-    type: "collection"
-    force: true
+# - name: "Install ansible.posix collection"
+#   community.general.ansible_galaxy_install:
+#     name: "ansible.posix"
+#     type: "collection"
+#     force: true
 
-- name: "Install community.general collection"
-  community.general.ansible_galaxy_install:
-    name: "community.general"
-    type: "collection"
-    force: true
+# - name: "Install community.general collection"
+#   community.general.ansible_galaxy_install:
+#     name: "community.general"
+#     type: "collection"
+#     force: true
 
 - name: "Install kewlfft.aur collection (only for ArchLinux)"
   community.general.ansible_galaxy_install:
