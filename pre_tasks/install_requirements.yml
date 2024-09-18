@@ -1,14 +1,14 @@
 ---
 - name: "Install Ansible Galaxy requirements"
   community.general.ansible_galaxy_install:
-    name: "{{ item['name'] }}"
-    type: "{{ item['type'] | default('collection') }}"
+    name: "{{ item.name }}"
+    type: "{{ item.type }}"
     force: true
   loop:
-    - name: "ansible.posix"
-    - name: "community.general"
-    - name: "devsec.hardening"
-    - name: "community.crypto"
+    - { name: "ansible.posix", type: "collection" }
+    - { name: "community.general", type: "collection" }
+    # - name: "devsec.hardening"
+    # - name: "community.crypto"
 
 - name: "Install kewlfft.aur collection (only for ArchLinux)"
   community.general.ansible_galaxy_install:
