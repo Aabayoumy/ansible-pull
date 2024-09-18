@@ -238,7 +238,7 @@ esac
 #   _cmd "git -C $DOTFILES_DIR pull --quiet"
 # fi
 
-update_ansible_galaxy $ID
+# update_ansible_galaxy $ID
 
 # ansible-galaxy install -r requirements.yml
 

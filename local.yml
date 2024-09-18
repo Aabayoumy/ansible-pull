@@ -9,6 +9,11 @@
       tags:
         - always
 
+    - name: Install ansible reqirements
+      ansible.builtin.import_tasks: pre_tasks/install_requirements.yml
+      tags:
+        - always
+
     - name: Create users
       ansible.builtin.import_tasks: pre_tasks/users.yml
       tags:
