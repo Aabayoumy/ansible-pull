@@ -7,7 +7,7 @@ based on :
 
  - Automating your Dotfiles with Ansible: A Showcase : https://www.youtube.com/watch?v=hPPIScBt4Gw0
 
-
+ - Brad's Bootstrapping & dotfiles Manager: https://github.com/bradleyfrank/ansible
 
 - Usage: 
 ```bash 
