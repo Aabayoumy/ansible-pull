@@ -1,25 +1,18 @@
 ---
+- name: "Install Ansible Galaxy requirements"
+  community.general.ansible_galaxy_install:
+    name: "{{ item['name'] }}"
+    type: "{{ item['type'] | default('collection') }}"
+    force: true
+  loop:
+    - name: "ansible.posix"
+    - name: "community.general"
+    - name: "devsec.hardening"
+    - name: "community.crypto"
 
-- name: "Install and update Ansible Galaxy requirements"
-  hosts: "localhost"
-  gather_facts: false
-  vars:
-    requirements:
-      - name: "ansible.posix"
-      - name: "community.general"
-      - name: "devsec.hardening"
-      - name: "community.crypto"
-  tasks:
-    - name: "Install Ansible Galaxy requirements"
-      community.general.ansible_galaxy_install:
-        name: "{{ item['name'] }}"
-        type: "{{ item['type'] | default('collection') }}"
-        force: true
-      loop: "{{ requirements }}"
-
-    - name: "Install kewlfft.aur collection (only for ArchLinux)"
-      community.general.ansible_galaxy_install:
-        name: "kewlfft.aur"
-        type: "collection"
-        force: true
-      when: ansible_os_family == "Archlinux"
+- name: "Install kewlfft.aur collection (only for ArchLinux)"
+  community.general.ansible_galaxy_install:
+    name: "kewlfft.aur"
+    type: "collection"
+    force: true
+  when: ansible_os_family == "Archlinux"

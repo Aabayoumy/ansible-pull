@@ -10,6 +10,12 @@ based on :
  - Brad's Bootstrapping & dotfiles Manager: https://github.com/bradleyfrank/ansible
 
 - Usage: 
+
+```bash
+curl -sO https://raw.githubusercontent.com/Aabayoumy/ansible-pull/main/run.sh
+bash run.sh
+```
+
 ```bash 
 
 curl -L https://raw.githubusercontent.com/Aabayoumy/ansible-pull/main/run.sh | bash
