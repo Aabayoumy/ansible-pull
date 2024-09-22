@@ -10,22 +10,22 @@
   run_once: true
   become: true
 
-- name: Read user data
-  ansible.builtin.getent:
-    database: passwd
-    key: ansible
-  register: users_db
-- block:
-  - name: Display user data 
-    debug:
-      var: users_db.ansible_facts.getent_passwd.ansible.1
+# - name: Read user data
+#   ansible.builtin.getent:
+#     database: passwd
+#     key: ansible
+#   register: users_db
+# - block:
+#   - name: Display user data 
+#     debug:
+#       var: users_db.ansible_facts.getent_passwd.ansible.1
       
-  - name: Delete Ansible user if not system account
-    ansible.builtin.user:
-      name: ansible
-      state: absent
-      remove: true
-  when: users_db.ansible_facts.getent_passwd.ansible.1|default(0)|int >= 1000
+#   - name: Delete Ansible user if not system account
+#     ansible.builtin.user:
+#       name: ansible
+#       state: absent
+#       remove: true
+#   when: users_db.ansible_facts.getent_passwd.ansible.1|default(0)|int >= 1000
 
 - name: Create user ansible as system user
   ansible.builtin.user:
