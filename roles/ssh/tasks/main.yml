@@ -18,9 +18,26 @@
     group: "{{ user.name }}"
     owner: "{{ user.name }}"
     mode: "0600"
+  become: true  
   when: not (sshkey.stat.exists)
 
-
+- name: ssh key permissions
+  file:
+    path: "{{ user.home }}/.ssh/id_ed25519"
+    state: file
+    group: "{{ user.name }}"
+    owner: "{{ user.name }}"
+    mode: "0600"
+  become: true  
+- name: ssh pup key permissions
+  file:
+    path: "{{ user.home }}/.ssh/id_ed25519.pub"
+    state: file
+    group: "{{ user.name }}"
+    owner: "{{ user.name }}"
+    mode: "0600"
+  become: true  
+  
 - name: "SSH | Copy SSH keys"
   ansible.builtin.copy:
     dest: "{{ user.home }}/.ssh/{{ ssh_key_item.key }}"
