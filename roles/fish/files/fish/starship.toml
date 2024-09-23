@@ -26,7 +26,7 @@ $conda\
 $time\
 [ ](fg:color_bg1)\
 $line_break$character"""
-
+right_format = """$hostname"""
 palette = 'gruvbox_dark'
 
 [palettes.gruvbox_dark]
@@ -73,6 +73,10 @@ style_user = "bg:color_orange fg:color_fg0"
 style_root = "bg:color_orange fg:color_fg0"
 format = '[ $user ]($style)'
 
+[hostname]
+ssh_only = true
+style = "bg:color_orange fg:color_fg0"
+format = '[@$hostname ]($style)'
 [directory]
 style = "fg:color_fg0 bg:color_yellow"
 format = "[ $path ]($style)"
