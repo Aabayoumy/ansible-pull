@@ -15,7 +15,11 @@
     type: ed25519
     state: present
     force: true
+    group: "{{ user.name }}"
+    owner: "{{ user.name }}"
+    mode: "0600"
   when: not (sshkey.stat.exists)
+
 
 - name: "SSH | Copy SSH keys"
   ansible.builtin.copy:
