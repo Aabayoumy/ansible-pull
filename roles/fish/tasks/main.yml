@@ -59,6 +59,21 @@
     - { path: "/etc/skel/.config", owner: "root", group: "root" }
   become: true
 
+
+- name: Copy starship.toml config to /etc/skel and users profile
+  ansible.builtin.copy:
+    src: "files/starship.toml"
+    dest: "{{ item.path }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    mode: '0644'
+    directory_mode: '0755'
+    force: true
+  loop:
+    - { path: "{{ user.home }}/.config", owner: "{{ user.name }}", group: "{{ user.name }}" }
+    - { path: "/root/.config", owner: "root", group: "root" }
+    - { path: "/etc/skel/.config", owner: "root", group: "root" }
+  become: true
 - name: Change the shell to fish
   ansible.builtin.user:
     name: "{{ user.name }}"
