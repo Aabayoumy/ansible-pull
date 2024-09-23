@@ -3,7 +3,7 @@
 format = """
 [](color_orange)\
 $os\
-$username\
+$username\$hostname\
 [](bg:color_yellow fg:color_orange)\
 $directory\
 [](fg:color_yellow bg:color_aqua)\
@@ -26,7 +26,7 @@ $conda\
 $time\
 [ ](fg:color_bg1)\
 $line_break$character"""
-right_format = """$hostname"""
+
 palette = 'gruvbox_dark'
 
 [palettes.gruvbox_dark]
