@@ -31,16 +31,16 @@ default_roles:
   # - ruby
   # - rust
   - ssh
-  - byobu
+  # - byobu
   # - sshfs
   # - taskfile
   # - terraform
   # - tldr
   # - tmate
   # - tmux
-  # - zellij
+  - zellij
   # - spotify
-  # - zoxide
+  - zoxide
 
 root_roles:
   - system
