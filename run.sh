@@ -119,33 +119,8 @@ function ubuntu_setup() {
 }
 
 function arch_setup() {
-  if ! [ -x "$(command -v ansible)" ]; then
-    __task "Installing Ansible"
-    _cmd "sudo pacman -Sy --noconfirm"
-    _cmd "sudo pacman -S --noconfirm ansible-core git"
-    _cmd "sudo pacman -S --noconfirm python-argcomplete"
-    # _cmd "sudo activate-global-python-argcomplete3"
-  fi
-  if ! pacman -Q python3 >/dev/null 2>&1; then
-    __task "Installing Python3"
-    _cmd "sudo pacman -S --noconfirm python3 git"
-  fi
-  if ! pacman -Q python-pip >/dev/null 2>&1; then
-    __task "Installing Python3 Pip"
-    _cmd "sudo pacman -S --noconfirm python-pip"
-  fi
-  if ! pip3 list | grep watchdog >/dev/null 2>&1; then
-    __task "Installing Python3 Watchdog"
-    _cmd "sudo pacman -S --noconfirm python-watchdog"
-  fi
-
-  if ! pacman -Q openssh >/dev/null 2>&1; then
-    __task "Installing OpenSSH"
-    _cmd "sudo pacman -S --noconfirm openssh"
-  fi
-
-  __task "Setting Locale"
-  _cmd "sudo localectl set-locale LANG=en_US.UTF-8"
+  __task "Archlinux install prereqiset"
+  _cmd "sudo pacman -Sy --needed --noconfirm ansible git python-argcomplete python3 python-pip python-watchdog openssh"
 }
 
 function rocky_setup() {
@@ -180,10 +155,6 @@ function rocky_setup() {
   _cmd "sudo localectl set-locale LANG=en_US.UTF-8"
 }
 
-  __task "Updating Ansible Galaxy"
-  _cmd "ansible-galaxy collection install community.general ansible.posix --ignore-errors"
-  _task_done
-
 # Determine the operating system
 if command -v apt &>/dev/null; then
   ID=ubuntu
@@ -197,6 +168,8 @@ else
   ID=unknown
 fi
 
+
+echo "Detected operating system: $ID"
 # Execute setup based on the detected OS
 case $ID in
   ubuntu) ubuntu_setup ;;
@@ -208,6 +181,10 @@ case $ID in
     ;;
 esac
 
+__task "Updating Ansible Galaxy"
+_cmd "ansible-galaxy collection install community.general"
+_cmd "ansible-galaxy collection install ansible.posix"
+_task_done
 
 
 # if ! [[ -d "$DOTFILES_DIR" ]]; then

@@ -3,15 +3,15 @@
   set_fact:
     sshd_config_file: /etc/ssh/sshd_config
 
-- name: Ensure file is exist
+- name: Ensure ssh config file is exist
   ansible.builtin.file:
     path: "{{ sshd_config_file }}"
     state: touch
 
 
-
+- name: Secure SSH
   block:
-  
+
   - name: Set ClientAliveInterval
     ansible.builtin.lineinfile:
       path: "{{ sshd_config_file }}"
