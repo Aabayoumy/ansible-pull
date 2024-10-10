@@ -17,13 +17,18 @@
 
 #set VIRTUAL_ENV_DISABLE_PROMPT "1"
 
-if not status --is-interactive
-   exit
-end
-
-if status is-interactive
-and not set -q TMUX
-    exec tmux
+if status --is-interactive
+    if set -q TMUX
+        if tmux has-session -t $hostname 2>/dev/null
+            tmux attach-session -d -t $hostname
+        else
+            tmux new-session -s $hostname
+        end
+    else
+        tmux new-session -s $hostname
+    end
+else
+    exit
 end
 
 # Load private config
