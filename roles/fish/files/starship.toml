@@ -5,6 +5,7 @@ format = """
 [](color_red0)\
 $os\
 $username$hostname\
+[ ](bg:color_red0 fg:syntax_bg)\
 [](bg:color_orange fg:color_red0)\
 $directory\
 [](fg:color_orange bg:color_yellow)\
@@ -103,12 +104,13 @@ Windows = "󰍲"
 show_always = true
 style_user = "bold bg:color_red0 fg:syntax_bg"
 style_root = "bold italic bg:color_red0 fg:syntax_bg"
-format = '[ $user ]($style)'
+format = '[$user]($style)'
 
 [hostname]
 ssh_only = true
 style = "bg:color_red0 fg:syntax_bg"
-format = '[$ssh_symbol$hostname ]($style)'
+ssh_symbol = '@'
+format = '[$ssh_symbol$hostname]($style)'
 
 # Module that displays the current directory.
 [directory]
