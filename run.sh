@@ -184,32 +184,31 @@ function rocky_setup() {
   _cmd "ansible-galaxy collection install community.general ansible.posix --ignore-errors"
   _task_done
 
-# pushd "$DOTFILES_DIR" 2>&1 > /dev/null
-
-if [ -x "$(command -v apt)" ]; then ID=ubuntu
-elif [ -x "$(command -v dnf)" ];     then ID=rocky
-elif [ -x "$(command -v pacman)" ];  then ID=arch
-elif [ -x "$(command -v zypper)" ];  then ID=suse
-else ID=unkown; 
+# Determine the operating system
+if command -v apt &>/dev/null; then
+  ID=ubuntu
+elif command -v dnf &>/dev/null; then
+  ID=rocky
+elif command -v pacman &>/dev/null; then
+  ID=arch
+elif command -v zypper &>/dev/null; then
+  ID=suse
+else
+  ID=unknown
 fi
 
-# source /etc/os-release
-# __task "Loading Setup for detected OS: $ID"
+# Execute setup based on the detected OS
 case $ID in
-  ubuntu)
-    ubuntu_setup
-    ;;
-  arch)
-    arch_setup
-    ;;
-  rocky)
-    rocky_setup
-    ;;
-  *)
+  ubuntu) ubuntu_setup ;;
+  arch) arch_setup ;;
+  rocky) rocky_setup ;;
+  *) 
     __task "Unsupported OS"
     _cmd "echo 'Unsupported OS'"
     ;;
 esac
+
+
 
 # if ! [[ -d "$DOTFILES_DIR" ]]; then
 #   __task "Cloning repository"

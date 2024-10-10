@@ -7,9 +7,18 @@
   ansible.builtin.file:
     path: "{{ sshd_config_file }}"
     state: touch
-- name: Secure SSH
+
+
 
   block:
+  
+  - name: Set ClientAliveInterval
+    ansible.builtin.lineinfile:
+      path: "{{ sshd_config_file }}"
+      regexp: '^ClientAliveInterval'
+      line: 'ClientAliveInterval 60'
+      state: present
+
   - name: Disable root login
     ansible.builtin.lineinfile:
       path: "{{ sshd_config_file }}"

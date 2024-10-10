@@ -20,6 +20,12 @@
 if not status --is-interactive
    exit
 end
+
+if status is-interactive
+and not set -q TMUX
+    exec tmux
+end
+
 # Load private config
 if [ -f $HOME/.config/fish/private.fish ]
     source $HOME/.config/fish/private.fish
@@ -41,6 +47,8 @@ function reload
     set -l config (status -f)
     echo "reloading: $config"
 end
+#micro
+set -x MICRO_TRUECOLOR 1
 
 # libvirt
 set VIRSH_DEFAULT_CONNECT_URI qemu:///system
