@@ -41,7 +41,6 @@
       - openssh-server
       - btop
       - bat
-      - byobu
       - gpg
       - ripgrep
       - fd-find

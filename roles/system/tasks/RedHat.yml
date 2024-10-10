@@ -23,7 +23,6 @@
       - openssh-server
       - btop
       - util-linux-user
-      - byobu
       - bat
       - ripgrep
       - fd-find
