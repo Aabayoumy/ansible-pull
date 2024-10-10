@@ -103,15 +103,16 @@ Windows = "󰍲"
 show_always = true
 style_user = "bold bg:color_red0 fg:syntax_bg"
 style_root = "bold italic bg:color_red0 fg:syntax_bg"
-format = '[ $user]($style)'
+format = '[ $user ]($style)'
+
 [hostname]
 ssh_only = true
-style = "bg:surface0 fg:text"
-format = '[@$hostname ]($style)'
+style = "bg:color_red0 fg:syntax_bg"
+format = '[$ssh_symbol$hostname ]($style)'
 
 # Module that displays the current directory.
 [directory]
-style = "italic fg:syntax_bg bg:color_orange"
+style = "fg:syntax_bg bg:color_orange"
 format = "[ $path ]($style)"
 truncation_length = 3
 truncation_symbol = "…/"

@@ -11,12 +11,23 @@
 - name: "Tmux | Install TPM"
   ansible.builtin.git:
     repo: https://github.com/tmux-plugins/tpm
-    dest: ~/.tmux/plugins/tpm
+    dest: "{{ user.home }}/.tmux/plugins/tpm"
+
+- name: change ownership
+  file:
+    path: "{{ user.home }}/.tmux/"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
+    state: directory
+    recurse: yes
+  become: true
 
 - name: "Tmux | Configure tmux"
   ansible.builtin.copy:
-    src: tmux
-    dest: "{{ user.home }}/.config/"
+    src: .tmux.conf
+    dest: "{{ user.home }}"
     mode: "0644"
+    owner: "{{ user.name }}"
+    group: "{{ user.name }}"
     directory_mode: "0755"
     force: true
