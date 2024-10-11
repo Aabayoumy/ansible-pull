@@ -1,0 +1,67 @@
+---
+- name: "Get the latest micro release URL"
+  uri:
+    url: https://api.github.com/repos/zyedidia/micro/releases/latest
+    return_content: true
+  register: latest_micro_release
+
+- name: Check if micro binary exists
+  stat:
+    path: /usr/bin/micro
+  register: micro_stat
+
+- name: Get current micro version
+  command: micro --version
+  register: micro_version
+  when: micro_stat.stat.exists
+
+- name: Print debug message with current and latest Micro versions
+  debug:
+    msg: "Current Micro version: {{ micro_version.stdout if micro_stat.stat.exists else 'None' }}, Latest Micro version: {{ latest_micro_release.json.tag_name }}"
+
+- name : "Install or update Micro"
+  become: true
+  when: micro_stat.stat.exists == false
+  block:
+    - name: "Extract download URL from latest release data"
+      ansible.builtin.set_fact:
+        micro_download_url: "{{ latest_micro_release.json.assets | selectattr('name', 'search', 'linux64.tar.gz') | map(attribute='browser_download_url') | first }}"
+
+    - name: Download latest micro build
+      get_url:
+        url: "{{ micro_download_url }}"
+        dest: /tmp/micro_latest.tar.gz
+
+    - name: Extract micro build
+      become: true
+      command: "tar -zxvf /tmp/micro_latest.tar.gz  -C /tmp/  --strip-components=1"
+
+      # ansible.builtin.unarchive:
+      #   src: /tmp/micro_latest.tar.gz
+      #   dest: /tmp/
+      #   remote_src: true
+      #   extra_opts:
+      #   - --strip-components 1
+
+    - name: Move micro binary to /usr/bin
+      become: true
+      command: mv /tmp/micro /usr/bin/
+
+    - name: "Clean up extracted files and tarball"
+      file:
+        path: /tmp/{{ item }}
+        state: absent
+        with_items:
+          - "*.tar.gz"
+          - "*"
+    - name: Ensure micro config directory exists
+      file:
+        path: "{{ user.home }}/.config/micro/"
+        state: directory
+        mode: '0755'
+
+    - name: Copy configuration files
+      copy:
+        src: files/micro/
+        dest: "{{ user.home }}/.config/micro/"
+        recursive: true

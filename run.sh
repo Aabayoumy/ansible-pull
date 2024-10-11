@@ -208,13 +208,6 @@ _task_done
   # _task_done
 # fi
 
-if [ -d ~/.ansible ]; then
-  __task "Clear old folder"; 
-  rm -rf ~/.ansible
-  _task_done
-fi
-
-
 
 __task "Running playbook ($USER)"; 
 ansible-pull --force -U "https://github.com/Aabayoumy/ansible-pull.git" "$@"
@@ -230,6 +223,11 @@ _task_done
 __task "IP $(ip addr show | grep 'inet ' | grep -v '127.0.0.1' | awk '{print $2}' | cut -d/ -f1 | head -1)"
 _task_done
 
+if [ -d ~/.ansible ]; then
+  __task "Clear old folder"; 
+  rm -rf ~/.ansible
+  _task_done
+fi
 
 if [ $USER == "root" ]; then
   __task "Reboot"; 
