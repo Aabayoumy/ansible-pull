@@ -41,7 +41,7 @@ default_roles:
   - tmux
   # - zellij
   # - spotify
-  - zoxide
+  # - zoxide
 
 root_roles:
   - system
