@@ -69,23 +69,23 @@
 #     remote_src: true
 #   when: zoxide_rc.rc != 0
 
-- name: Check if procs is already installed
-  ansible.builtin.shell: >
-    procs --version
-  register: procs_rc
-  failed_when: false
+# - name: Check if procs is already installed
+#   ansible.builtin.shell: >
+#     procs --version
+#   register: procs_rc
+#   failed_when: false
 
-- name: Get latest procs version
-  ansible.builtin.uri:
-    url: "https://api.github.com/repos/dalance/procs/releases/latest"
-    return_content: true
-  register: procs_release
-  when: procs_rc.rc != 0
+# - name: Get latest procs version
+#   ansible.builtin.uri:
+#     url: "https://api.github.com/repos/dalance/procs/releases/latest"
+#     return_content: true
+#   register: procs_release
+#   when: procs_rc.rc != 0
 
-- name: Install latest procs
-  become: true
-  ansible.builtin.unarchive:
-    src: "{{ procs_release.json.assets[0].url }}"
-    dest: /usr/local/bin
-    remote_src: true
-  when: procs_rc.rc != 0
+# - name: Install latest procs
+#   become: true
+#   ansible.builtin.unarchive:
+#     src: "{{ procs_release.json.assets[0].url }}"
+#     dest: /usr/local/bin
+#     remote_src: true
+#   when: procs_rc.rc != 0
