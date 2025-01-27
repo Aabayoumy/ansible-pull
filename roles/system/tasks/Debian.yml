@@ -47,27 +47,27 @@
     state: present
   become: true
 
-- name: Check if zoxide is already installed on Ubuntu Focal
-  ansible.builtin.shell: >
-    zoxide --version
-  register: zoxide_rc
-  failed_when: false
-  changed_when: false
-  when: ansible_os_family == 'Debian' and ansible_distribution_version is version('20.10', '<')
+# - name: Check if zoxide is already installed on Ubuntu Focal
+#   ansible.builtin.shell: >
+#     zoxide --version
+#   register: zoxide_rc
+#   failed_when: false
+#   changed_when: false
+#   when: ansible_os_family == 'Debian' and ansible_distribution_version is version('20.10', '<')
 
-- name: Get latest zoxide version
-  ansible.builtin.uri:
-    url: "https://api.github.com/repos/ajeetdsouza/zoxide/releases/latest"
-    return_content: true
-  register: zoxide_release
+# - name: Get latest zoxide version
+#   ansible.builtin.uri:
+#     url: "https://api.github.com/repos/ajeetdsouza/zoxide/releases/latest"
+#     return_content: true
+#   register: zoxide_release
 
-- name: Install zoxide 
-  become: true
-  ansible.builtin.unarchive:
-    src: "{{ zoxide_release.json.assets[0].url }}"
-    dest: /usr/local/bin
-    remote_src: true
-  when: zoxide_rc.rc != 0
+# - name: Install zoxide 
+#   become: true
+#   ansible.builtin.unarchive:
+#     src: "{{ zoxide_release.json.assets[0].url }}"
+#     dest: /usr/local/bin
+#     remote_src: true
+#   when: zoxide_rc.rc != 0
 
 - name: Check if procs is already installed
   ansible.builtin.shell: >
